@@ -1,7 +1,6 @@
-# Ignore node_modules directory
 node_modules/
-
-# Optionally ignore common build and log files
 .next/
-dist/
-logs/
+.env.local
+.env
+.DS_Store
+*.log
