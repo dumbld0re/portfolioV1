@@ -1,10 +1,12 @@
 "use client"
 
+import Link from "next/link"
 import { MapPin } from "lucide-react"
 
 import { homeContent } from "@/content/home"
 import { useLanguage } from "@/components/language-provider"
 import { Typewriter } from "@/components/typewriter"
+import { Button } from "@/components/ui/button"
 
 export function HomeSection() {
   const { language } = useLanguage()
@@ -38,6 +40,10 @@ export function HomeSection() {
             <span>{t.status}</span>
           </div>
         </div>
+
+        <Button asChild size="lg" className="font-mono uppercase tracking-wide">
+          <Link href="/contact">Let&apos;s work together</Link>
+        </Button>
       </div>
     </main>
   )
