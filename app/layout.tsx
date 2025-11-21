@@ -6,7 +6,7 @@ import { Analytics } from "@vercel/analytics/next"
 
 import { LanguageProvider } from "@/components/language-provider"
 import { ThemeProvider } from "@/components/theme-provider"
-import { DEFAULT_LANGUAGE, isLanguage } from "@/lib/i18n"
+import { DEFAULT_LANGUAGE, LANGUAGE_COOKIE, isLanguage } from "@/lib/i18n"
 import "./globals.css"
 
 const _geist = Geist({ subsets: ["latin"] })
@@ -41,7 +41,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }>) {
   const cookieStore = await cookies()
-  const cookieLanguage = cookieStore.get("lang")?.value
+  const cookieLanguage = cookieStore.get(LANGUAGE_COOKIE)?.value ?? cookieStore.get("lang")?.value
   const defaultLanguage = isLanguage(cookieLanguage) ? cookieLanguage : DEFAULT_LANGUAGE
 
   return (

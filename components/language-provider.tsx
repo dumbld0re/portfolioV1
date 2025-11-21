@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, startTransition, type ReactNode } from "react"
 
-import { DEFAULT_LANGUAGE, type Language } from "@/lib/i18n"
+import { DEFAULT_LANGUAGE, LANGUAGE_COOKIE, type Language } from "@/lib/i18n"
 
 type LanguageContextValue = {
   language: Language
@@ -24,7 +24,7 @@ export function LanguageProvider({ children, defaultLanguage = DEFAULT_LANGUAGE 
     startTransition(() => {
       setLanguageState(next)
       if (typeof document !== "undefined") {
-        document.cookie = `lang=${next};path=/;max-age=${60 * 60 * 24 * 365}`
+        document.cookie = `${LANGUAGE_COOKIE}=${next};path=/;max-age=${60 * 60 * 24 * 365}`
       }
     })
   }

@@ -11,7 +11,7 @@ export function HomeSection() {
   const t = homeContent[language].hero
 
   return (
-    <main className="flex-1 flex items-center justify-center px-6 py-8">
+    <main className="flex-1 flex items-start md:items-center justify-center px-6 pt-4 pb-10 md:py-8">
       <div className="max-w-3xl w-full space-y-6">
         <div className="space-y-3">
           <h1 className="font-mono text-4xl md:text-5xl lg:text-6xl font-bold md:whitespace-nowrap">

@@ -29,25 +29,24 @@ export const experienceContent: Record<
     description: "Mein beruflicher Werdegang und meine Fähigkeiten.",
     experiences: [
       {
-        role: "Freelance Frontend Developer",
+        role: "Frontend-Entwickler",
         company: "Selbstständig",
-        period: "2022 - Heute",
+        period: "Seit 2024",
         description:
-          "Entwicklung moderner Web-Anwendungen für verschiedene Kunden. Fokus auf React, Next.js und responsive Design.",
+          "Entwerfe und entwickle responsive Weboberflächen mit React, Next.js und modernen Toolchains für eigene und Kundenprojekte.",
       },
       {
-        role: "Web Developer",
-        company: "Tech Startup",
-        period: "2020 - 2022",
+        role: "Robotik-Praktikant",
+        company: "MindsInAction",
+        period: "2025",
         description:
-          "Aufbau von User Interfaces und Integration von APIs. Zusammenarbeit in agilen Teams und Code-Reviews.",
+          "Debuggte interne Apps, entwickelte Python-Skripte und schrieb Arduino-Logik zur Unterstützung der MindsInAction-Robotikprojekte.",
       },
       {
-        role: "Junior Developer",
-        company: "Digital Agentur",
-        period: "2018 - 2020",
-        description:
-          "Unterstützung bei der Entwicklung von Websites und Web-Applikationen. Erlernung moderner Frontend-Technologien.",
+        role: "Praktikant Buchhaltung & Verwaltung",
+        company: "Pyronam",
+        period: "2024",
+        description: "Koordinierte Rechnungen, pflegte Tabellen und optimierte tägliche Verwaltungsabläufe.",
       },
     ],
     skills: {
@@ -69,25 +68,24 @@ export const experienceContent: Record<
     description: "My professional background and skills.",
     experiences: [
       {
-        role: "Freelance Frontend Developer",
+        role: "Frontend Developer",
         company: "Self-Employed",
-        period: "2022 - Present",
+        period: "2024 - Present",
         description:
-          "Developing modern web applications for various clients. Focus on React, Next.js and responsive design.",
+          "Designing and shipping responsive web interfaces with React, Next.js, and modern toolchains for personal and client work.",
       },
       {
-        role: "Web Developer",
-        company: "Tech Startup",
-        period: "2020 - 2022",
+        role: "Robotics Intern",
+        company: "MindsInAction",
+        period: "2025",
         description:
-          "Building user interfaces and integrating APIs. Collaborating in agile teams and conducting code reviews.",
+          "Debugged internal apps, built Python tooling, and authored Arduino logic to support MindsInAction robotics projects.",
       },
       {
-        role: "Junior Developer",
-        company: "Digital Agency",
-        period: "2018 - 2020",
-        description:
-          "Supporting the development of websites and web applications. Learning modern frontend technologies.",
+        role: "Accounting & Administrative Intern",
+        company: "Pyronam",
+        period: "2024",
+        description: "Coordinated invoicing, maintained spreadsheets, and streamlined day-to-day office workflows.",
       },
     ],
     skills: {
