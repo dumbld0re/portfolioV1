@@ -20,16 +20,6 @@ export function CvSection() {
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
             <div className="space-y-2">
               <p className="font-serif text-heading font-semibold tracking-tight">{t.name}</p>
-              <p className="font-mono text-sm text-muted-foreground">
-                <a
-                  href={`https://${t.website}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="hover:text-foreground transition-colors"
-                >
-                  {t.website}
-                </a>
-              </p>
             </div>
             <div className="flex flex-wrap gap-3 print:hidden">
               <Button
