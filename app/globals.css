@@ -153,6 +153,77 @@ html.boring {
   filter: grayscale(1);
 }
 
+/* Markdown post bodies (components/sections/post-section.tsx), styled to
+   match the site's typography without pulling in @tailwindcss/typography. */
+.post-prose {
+  color: var(--muted-foreground);
+  line-height: 1.75;
+}
+
+.post-prose > * + * {
+  margin-top: 1.25em;
+}
+
+.post-prose h1,
+.post-prose h2,
+.post-prose h3 {
+  font-family: var(--font-serif);
+  color: var(--foreground);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-top: 2em;
+}
+
+.post-prose a {
+  color: var(--primary);
+  text-underline-offset: 4px;
+}
+
+.post-prose a:hover {
+  text-decoration: underline;
+}
+
+.post-prose code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 0.25rem;
+  padding: 0.125em 0.375em;
+}
+
+.post-prose pre {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.post-prose pre code {
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.post-prose ul {
+  list-style: disc;
+  padding-left: 1.25em;
+}
+
+.post-prose ol {
+  list-style: decimal;
+  padding-left: 1.25em;
+}
+
+.post-prose blockquote {
+  border-left: 2px solid var(--primary);
+  padding-left: 1em;
+  font-style: italic;
+}
+
 /* The CV page prints via window.print() — swap to ink-friendly tokens. */
 @media print {
   :root,
