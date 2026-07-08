@@ -5,7 +5,6 @@ import { useEffect, useState } from "react"
 import { MapPin } from "lucide-react"
 
 import { homeContent } from "@/content/home"
-import { siteCopy } from "@/content/site"
 import { useLanguage } from "@/components/language-provider"
 import { GhostName } from "@/components/ghost-name"
 import { Button } from "@/components/ui/button"
@@ -15,7 +14,6 @@ import { cn } from "@/lib/utils"
 export function HomeSection() {
   const { language } = useLanguage()
   const t = homeContent[language].hero
-  const copy = siteCopy[language]
   const [boot] = useState(() => !hasBootPlayed())
 
   useEffect(() => {
@@ -64,14 +62,6 @@ export function HomeSection() {
               <span>{t.status}</span>
             </div>
           </div>
-        </div>
-
-        <div
-          className={cn("absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3", reveal)}
-          style={delay("heroScroll")}
-        >
-          <span className="font-mono text-label uppercase tracking-[0.3em] text-muted-foreground">{copy.scroll}</span>
-          <span className="w-px h-8 bg-foreground/30 motion-safe:animate-pulse" />
         </div>
       </section>
 

@@ -100,7 +100,19 @@ export function CvSection() {
                       <h3 className="font-semibold">{entry.title}</h3>
                       <span className="font-mono text-sm text-muted-foreground shrink-0">{entry.period}</span>
                     </div>
-                    {entry.org && <p className="text-sm text-primary">{entry.org}</p>}
+                    {entry.org &&
+                      (entry.orgHref ? (
+                        <a
+                          href={entry.orgHref}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-sm text-primary underline-offset-4 hover:underline"
+                        >
+                          {entry.org}
+                        </a>
+                      ) : (
+                        <p className="text-sm text-primary">{entry.org}</p>
+                      ))}
                     <ul className="space-y-1.5 text-sm text-muted-foreground leading-relaxed list-disc pl-4">
                       {entry.bullets.map((bullet) => (
                         <li key={bullet}>{bullet}</li>

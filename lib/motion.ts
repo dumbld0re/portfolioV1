@@ -4,7 +4,6 @@ export const BOOT_SEQUENCE_MS = {
   heroName: 250,
   heroSubtitle: 800,
   heroMeta: 950,
-  heroScroll: 1100,
 } as const
 
 // Module-level so the boot sequence plays once per SPA session and naturally

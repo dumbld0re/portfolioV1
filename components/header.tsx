@@ -64,10 +64,10 @@ export function Header() {
                 </a>
               </Button>
               <Button variant="ghost" size="icon" className="size-8 text-muted-foreground hover:text-foreground" asChild>
-                <Link href="/cv">
+                <a href="/cv.pdf" download>
                   <FileText className="size-4" />
-                  <span className="sr-only">{labels.nav.cv}</span>
-                </Link>
+                  <span className="sr-only">Download {labels.nav.cv}</span>
+                </a>
               </Button>
             </div>
           </div>
@@ -128,10 +128,10 @@ export function Header() {
               </a>
             </Button>
             <Button variant="ghost" size="icon" className="size-9 text-muted-foreground hover:text-foreground" asChild>
-              <Link href="/cv">
+              <a href="/cv.pdf" download>
                 <FileText className="size-4" />
-                <span className="sr-only">{labels.nav.cv}</span>
-              </Link>
+                <span className="sr-only">Download {labels.nav.cv}</span>
+              </a>
             </Button>
           </div>
         </div>

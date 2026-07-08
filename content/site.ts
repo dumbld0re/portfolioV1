@@ -11,7 +11,6 @@ export const siteCopy: Record<
       posts: string
     }
     footer: string
-    scroll: string
     dontClickHere: string
   }
 > = {
@@ -23,8 +22,7 @@ export const siteCopy: Record<
       cv: "Lebenslauf",
       posts: "Beiträge",
     },
-    footer: "2086© danny-miguel (so i dont forget to ever change this)",
-    scroll: "Scrollen",
+    footer: "2086© (so i dont forget to ever change this)",
     dontClickHere: "nicht klicken",
   },
   en: {
@@ -35,8 +33,7 @@ export const siteCopy: Record<
       cv: "CV",
       posts: "Posts",
     },
-    footer: "2086© danny-miguel (so i dont forget to ever change this)",
-    scroll: "Scroll",
+    footer: "2086© (so i dont forget to ever change this)",
     dontClickHere: "dont click here",
   },
 }

@@ -3,6 +3,7 @@ import type { Language } from "@/lib/i18n"
 type CvEntry = {
   title: string
   org: string
+  orgHref?: string
   period: string
   bullets: string[]
 }
@@ -67,6 +68,7 @@ export const cvContent: Record<Language, CvData> = {
       {
         title: "German Tutor (A1–B1)",
         org: "Fluent Academy",
+        orgHref: "https://fluentacademy.co/#",
         period: "Dez 2025 – Heute",
         bullets: [
           "Unterrichte Deutsch für Lernende von Niveau A1 bis B1 in strukturiertem Einzel- und Kleingruppenunterricht.",
@@ -148,6 +150,7 @@ export const cvContent: Record<Language, CvData> = {
       {
         title: "German Tutor (A1–B1)",
         org: "Fluent Academy",
+        orgHref: "https://fluentacademy.co/#",
         period: "Dec 2025 – Present",
         bullets: [
           "Teach German to students from A1 to B1 level through structured individual and small-group lessons.",
