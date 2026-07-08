@@ -21,13 +21,31 @@ export function Header() {
     markBootPlayed()
   }, [])
 
+  const [boring, setBoring] = useState(false)
+
+  useEffect(() => {
+    const stored = localStorage.getItem("boring") === "1"
+    setBoring(stored)
+    document.documentElement.classList.toggle("boring", stored)
+  }, [])
+
+  const toggleBoring = () => {
+    setBoring((prev) => {
+      const next = !prev
+      document.documentElement.classList.toggle("boring", next)
+      localStorage.setItem("boring", next ? "1" : "0")
+      return next
+    })
+  }
+
   const getFilePath = () => {
-    if (pathname === "/cv") return "/home/danny/cv"
-    return "/home/danny/"
+    if (pathname === "/cv") return "/home/danny-miguel/cv"
+    if (pathname === "/posts") return "/home/danny-miguel/posts"
+    return "/home/danny-miguel/"
   }
 
   return (
-    <header className="w-full px-6 py-6 md:px-12 lg:px-16 print:hidden">
+    <header className="sticky top-0 z-30 w-full px-6 py-6 md:px-12 lg:px-16 bg-background/80 backdrop-blur-sm border-b border-border/40 print:hidden">
       <nav
         className={cn(
           "flex flex-col md:flex-row md:items-center md:justify-between gap-4 max-w-7xl mx-auto",
@@ -89,6 +107,13 @@ export function Header() {
             >
               {labels.nav.cv}
             </Link>
+            <Link
+              href="/posts"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              aria-current={pathname === "/posts" ? "page" : undefined}
+            >
+              {labels.nav.posts}
+            </Link>
             <span className="text-muted-foreground/50" aria-hidden="true">
               |
             </span>
@@ -101,6 +126,16 @@ export function Header() {
               aria-label={`Switch to ${language === "de" ? "English" : "German"}`}
             >
               {language === "de" ? "EN" : "DE"}
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={toggleBoring}
+              className="text-sm text-muted-foreground hover:text-foreground font-mono p-0 h-auto"
+              aria-pressed={boring}
+              aria-label="Toggle boring mode"
+            >
+              Boring
             </Button>
           </div>
 

@@ -145,6 +145,14 @@
   }
 }
 
+html {
+  transition: filter 300ms ease-out;
+}
+
+html.boring {
+  filter: grayscale(1);
+}
+
 /* The CV page prints via window.print() — swap to ink-friendly tokens. */
 @media print {
   :root,

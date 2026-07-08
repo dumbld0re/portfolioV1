@@ -8,9 +8,11 @@ export const siteCopy: Record<
       experience: string
       contact: string
       cv: string
+      posts: string
     }
     footer: string
     scroll: string
+    dontClickHere: string
   }
 > = {
   de: {
@@ -19,9 +21,11 @@ export const siteCopy: Record<
       experience: "Erfahrung",
       contact: "Kontakt",
       cv: "Lebenslauf",
+      posts: "Beiträge",
     },
-    footer: "Alle Rechte vorbehalten.",
+    footer: "2086© danny-miguel (so i dont forget to ever change this)",
     scroll: "Scrollen",
+    dontClickHere: "nicht klicken",
   },
   en: {
     nav: {
@@ -29,8 +33,10 @@ export const siteCopy: Record<
       experience: "Experience",
       contact: "Contact",
       cv: "CV",
+      posts: "Posts",
     },
-    footer: "All rights reserved.",
+    footer: "2086© danny-miguel (so i dont forget to ever change this)",
     scroll: "Scroll",
+    dontClickHere: "dont click here",
   },
 }
