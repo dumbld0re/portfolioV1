@@ -21,11 +21,11 @@ export function CvSection() {
             <div className="space-y-2">
               <p className="font-serif text-heading font-semibold tracking-tight">{t.name}</p>
             </div>
-            <div className="flex flex-wrap gap-3 print:hidden">
+            <div className="grid grid-cols-2 gap-3 print:hidden">
               <Button
                 size="lg"
                 onClick={() => window.print()}
-                className="font-mono uppercase tracking-wide font-bold shadow-lg shadow-primary/30 transition-all hover:scale-[1.03] hover:shadow-xl hover:shadow-primary/40"
+                className="px-3 text-xs font-mono font-bold uppercase tracking-wide shadow-lg shadow-primary/30 transition-all hover:scale-[1.03] hover:shadow-xl hover:shadow-primary/40 sm:px-6 sm:text-sm"
               >
                 <Printer className="size-4" />
                 {t.exportLabel}
@@ -34,7 +34,7 @@ export function CvSection() {
                 size="lg"
                 variant="outline"
                 asChild
-                className="border-2 border-primary font-mono uppercase tracking-wide font-bold text-primary transition-all hover:scale-[1.03] hover:bg-primary hover:text-primary-foreground"
+                className="border-2 border-primary px-3 text-xs font-mono font-bold uppercase tracking-wide text-primary transition-all hover:scale-[1.03] hover:bg-primary hover:text-primary-foreground sm:px-6 sm:text-sm"
               >
                 <a href="/cv.pdf" download>
                   <Download className="size-4" />
