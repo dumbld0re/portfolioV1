@@ -4,57 +4,52 @@ export type Project = {
   title: string
   description: string
   tech: string[]
+  demoHref?: string
+  githubHref?: string
+  comingSoon?: boolean
 }
 
 export const projectsContent: Record<
   Language,
   {
-    title: string
-    description: string
+    comingSoonLabel: string
+    viewDemoLabel: string
+    viewSourceLabel: string
     projects: Project[]
   }
 > = {
   de: {
-    title: "Projekte",
-    description: "Eine Auswahl meiner bisherigen Arbeiten und Projekte.",
+    comingSoonLabel: "Demnächst",
+    viewDemoLabel: "Demo ansehen",
+    viewSourceLabel: "Quellcode",
     projects: [
       {
-        title: "E-Commerce Platform",
-        description: "Eine moderne E-Commerce-Lösung mit React und Next.js",
-        tech: ["React", "Next.js", "TypeScript", "Tailwind CSS"],
+        title: "Finance Tracker",
+        description:
+          "Eine persönliche Finanz-App zum Verfolgen von Einnahmen, Ausgaben und Sparzielen – offline-first, mit optionaler geräteübergreifender Synchronisierung.",
+        tech: ["React", "Vite", "Vercel Functions", "Upstash Redis"],
+        githubHref: "https://github.com/dumbld0re/financeApp",
       },
-      {
-        title: "Dashboard Analytics",
-        description: "Interaktives Dashboard für Datenvisualisierung",
-        tech: ["React", "D3.js", "Node.js", "PostgreSQL"],
-      },
-      {
-        title: "Portfolio Website",
-        description: "Minimalistische Portfolio-Website für Kreative",
-        tech: ["Next.js", "Framer Motion", "Tailwind CSS"],
-      },
+      { title: "", description: "", tech: [], comingSoon: true },
+      { title: "", description: "", tech: [], comingSoon: true },
+      { title: "", description: "", tech: [], comingSoon: true },
     ],
   },
   en: {
-    title: "Projects",
-    description: "A selection of my previous work and projects.",
+    comingSoonLabel: "Coming soon",
+    viewDemoLabel: "View demo",
+    viewSourceLabel: "View source",
     projects: [
       {
-        title: "E-Commerce Platform",
-        description: "A modern e-commerce solution built with React and Next.js",
-        tech: ["React", "Next.js", "TypeScript", "Tailwind CSS"],
+        title: "Finance Tracker",
+        description:
+          "A personal finance app for tracking income, expenses, and savings goals — offline-first, with optional cross-device sync.",
+        tech: ["React", "Vite", "Vercel Functions", "Upstash Redis"],
+        githubHref: "https://github.com/dumbld0re/financeApp",
       },
-      {
-        title: "Dashboard Analytics",
-        description: "Interactive dashboard for data visualization",
-        tech: ["React", "D3.js", "Node.js", "PostgreSQL"],
-      },
-      {
-        title: "Portfolio Website",
-        description: "Minimalist portfolio website for creatives",
-        tech: ["Next.js", "Framer Motion", "Tailwind CSS"],
-      },
+      { title: "", description: "", tech: [], comingSoon: true },
+      { title: "", description: "", tech: [], comingSoon: true },
+      { title: "", description: "", tech: [], comingSoon: true },
     ],
   },
 }
-

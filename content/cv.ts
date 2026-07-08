@@ -12,14 +12,13 @@ type CvData = {
   name: string
   phone: string
   email: string
+  website: string
   profileTitle: string
   profile: string
   educationTitle: string
   education: { title: string; detail: string; place: string; period: string }[]
   experienceTitle: string
   experience: CvEntry[]
-  projectsTitle: string
-  projects: CvEntry[]
   skillsTitle: string
   skills: { name: string; items: string }[]
   exportLabel: string
@@ -30,24 +29,25 @@ export const cvContent: Record<Language, CvData> = {
   de: {
     label: "Lebenslauf",
     name: "Danny-Miguel Mittelberger",
-    phone: "+264 85 8000 433",
-    email: "mittelberger2007@gmail.com",
+    phone: "+264 85 800 0433",
+    email: "dannymiiguel@gmail.com",
+    website: "dannymiguel.com",
     profileTitle: "Profil",
     profile:
-      "Anpassungsfähige und detailorientierte Persönlichkeit mit ausgeprägten Kommunikations-, Problemlöse- und Organisationsfähigkeiten. Ich lerne schnell, arbeite gut unter Druck und gehe Aufgaben ruhig und strukturiert an. Sicher im Umgang mit Menschen, im verständlichen Erklären von Konzepten und im sorgfältigen Umgang mit Verantwortung. Durchgehend zuverlässig, motiviert und der Qualität meiner Arbeit verpflichtet.",
+      "Student der quantitativen Finanzwissenschaften mit Erfahrung im Deutschunterricht, in der Robotik-Ausbildung und in der administrativen Unterstützung. Geschickt darin, komplexe Konzepte klar zu erklären, mich an unterschiedliche Lernstile anzupassen und mit vielfältigen Gruppen zu arbeiten. Starke analytische, organisatorische und kommunikative Fähigkeiten mit einer strukturierten und zuverlässigen Herangehensweise an Problemlösungen.",
     educationTitle: "Ausbildung & Zertifikate",
     education: [
       {
-        title: "Eran Academy",
-        detail: "International AS und A Level",
+        title: "University of Namibia (UNAM)",
+        detail: "Bachelor of Science in Quantitative Finance",
         place: "Windhoek, NA",
-        period: "2025",
+        period: "Heute",
       },
       {
-        title: "Delta Secondary School Windhoek",
-        detail: "NSSCO",
+        title: "Eran Academy",
+        detail: "Cambridge International AS and A Level",
         place: "Windhoek, NA",
-        period: "Jan 2021 – Nov 2024",
+        period: "2025",
       },
       {
         title: "Deutsches Sprachdiplom der Kultusministerkonferenz – Stufe I (DSD I)",
@@ -55,26 +55,23 @@ export const cvContent: Record<Language, CvData> = {
         place: "Windhoek, NA",
         period: "2024",
       },
+      {
+        title: "Delta Secondary School Windhoek",
+        detail: "NSSCO",
+        place: "Windhoek, NA",
+        period: "Jan 2021 – Nov 2024",
+      },
     ],
     experienceTitle: "Erfahrung",
     experience: [
       {
-        title: "Learner Fundraiser Committee (LFC)",
-        org: "Delta Secondary School Windhoek",
-        period: "Jan 2022 – Sep 2024",
+        title: "German Tutor (A1–B1)",
+        org: "Fluent Academy",
+        period: "Dez 2025 – Heute",
         bullets: [
-          "Ideen und Updates vor Schüler- und Lehrergruppen präsentiert und dabei Kommunikations- und Vortragsfähigkeiten gestärkt.",
-          "Mit vielfältigen Schülergruppen zusammengearbeitet und Beteiligung sowie Teamarbeit gefördert.",
-          "Schulveranstaltungen organisiert, die Planung, Koordination und klare Anweisungen erforderten.",
-        ],
-      },
-      {
-        title: "Administrative & Accounting Assistant",
-        org: "PyroNam",
-        period: "Jun 2024 – Dez 2024",
-        bullets: [
-          "Effektiv mit Mitarbeitenden und Kundschaft kommuniziert, um Informationen einzuholen und Unterlagen zu erklären.",
-          "Detailgenauigkeit entwickelt – eine Kernkompetenz für Aufgaben wie Korrektur und Unterrichtsvorbereitung.",
+          "Unterrichte Deutsch für Lernende von Niveau A1 bis B1 in strukturiertem Einzel- und Kleingruppenunterricht.",
+          "Erstelle Unterrichtspläne, erkläre Grammatikkonzepte klar und verständlich und passe die Lehrmethoden an unterschiedliche Lernstile an.",
+          "Unterstütze Lernende beim Aufbau von Sprech-, Hör-, Lese- und Schreibfähigkeiten und verfolge ihren Fortschritt.",
         ],
       },
       {
@@ -87,25 +84,25 @@ export const cvContent: Record<Language, CvData> = {
           "Wissensvermittlung in Workshops unterstützt und Klarheit in der Kommunikation gestärkt.",
         ],
       },
-    ],
-    projectsTitle: "Projekte",
-    projects: [
       {
-        title: "NamWeb Collective",
-        org: "",
-        period: "Mai 2025 – Heute",
+        title: "Administrative & Accounting Assistant",
+        org: "PyroNam",
+        period: "Jun 2024 – Dez 2024",
         bullets: [
-          "Arbeit mit Kundschaft, die klare Erklärungen und strukturierte Kommunikation im Stil einer Lehrumgebung erfordert.",
-          "Entwicklung von Online-Ressourcen, die Nutzenden den Umgang mit digitalen Werkzeugen vermitteln.",
+          "Effektiv mit Mitarbeitenden und Kundschaft kommuniziert, um Informationen einzuholen und Unterlagen zu erklären.",
+          "Detailgenauigkeit entwickelt – eine Kernkompetenz für strukturierte Aufgaben und Informationsmanagement.",
         ],
       },
     ],
     skillsTitle: "Kenntnisse",
     skills: [
       { name: "Sprachen", items: "Englisch (fließend), Deutsch (B2), Afrikaans (Konversation)" },
-      { name: "Vermittlung", items: "Coaching, Erklärkompetenz, Gruppenkommunikation, Unterrichtsunterstützung" },
-      { name: "Technisch", items: "Java, Python, HTML/CSS, Git, Docker, VS Code, Linux" },
-      { name: "Office", items: "Excel, Word, PowerPoint, Outlook" },
+      {
+        name: "Vermittlung",
+        items: "Coaching, Mentoring, Unterrichtsplanung, Grammatikvermittlung, Erklärkompetenz, Gruppenkommunikation, strukturierte Anleitung",
+      },
+      { name: "Technisch", items: "Java, Python, HTML/CSS, Git, Docker, VS Code, Linux, Sage Pastel" },
+      { name: "Office", items: "Microsoft Excel, Word, PowerPoint, Outlook" },
     ],
     exportLabel: "Als PDF exportieren",
     downloadLabel: "PDF herunterladen",
@@ -113,24 +110,25 @@ export const cvContent: Record<Language, CvData> = {
   en: {
     label: "Curriculum Vitae",
     name: "Danny-Miguel Mittelberger",
-    phone: "+264 85 8000 433",
-    email: "mittelberger2007@gmail.com",
+    phone: "+264 85 800 0433",
+    email: "dannymiiguel@gmail.com",
+    website: "dannymiguel.com",
     profileTitle: "Profile",
     profile:
-      "Adaptable and detail-driven individual with strong communication, problem-solving, and organisational skills. I learn quickly, work well under pressure, and bring a calm, structured approach to tasks. Confident in working with people, explaining concepts clearly, and handling responsibilities with care. Consistently reliable, motivated, and committed to delivering high-quality work across different roles.",
+      "Quantitative Finance student with experience in German language tutoring, robotics education, and administrative support. Skilled in explaining complex concepts clearly, adapting to different learning styles, and working with diverse groups. Strong analytical, organisational, and communication skills with a structured and reliable approach to problem-solving.",
     educationTitle: "Education & Certification",
     education: [
       {
-        title: "Eran Academy",
-        detail: "International AS and A Level",
+        title: "University of Namibia (UNAM)",
+        detail: "Bachelor of Science in Quantitative Finance",
         place: "Windhoek, NA",
-        period: "2025",
+        period: "Present",
       },
       {
-        title: "Delta Secondary School Windhoek",
-        detail: "NSSCO",
+        title: "Eran Academy",
+        detail: "Cambridge International AS and A Level",
         place: "Windhoek, NA",
-        period: "Jan 2021 – Nov 2024",
+        period: "2025",
       },
       {
         title: "Deutsches Sprachdiplom der Kultusministerkonferenz – Stufe I (DSD I)",
@@ -138,17 +136,33 @@ export const cvContent: Record<Language, CvData> = {
         place: "Windhoek, NA",
         period: "2024",
       },
+      {
+        title: "Delta Secondary School Windhoek",
+        detail: "NSSCO",
+        place: "Windhoek, NA",
+        period: "Jan 2021 – Nov 2024",
+      },
     ],
     experienceTitle: "Experience",
     experience: [
       {
-        title: "Learner Fundraiser Committee (LFC)",
-        org: "Delta Secondary School Windhoek",
-        period: "Jan 2022 – Sep 2024",
+        title: "German Tutor (A1–B1)",
+        org: "Fluent Academy",
+        period: "Dec 2025 – Present",
         bullets: [
-          "Presented ideas and updates to groups of students and teachers, strengthening communication and public-speaking skills.",
-          "Collaborated with diverse student groups, encouraging participation and teamwork.",
-          "Organized school events requiring planning, coordination, and clear instruction delivery.",
+          "Teach German to students from A1 to B1 level through structured individual and small-group lessons.",
+          "Prepare lesson plans, explain grammar concepts clearly, and adapt teaching methods to different learning styles.",
+          "Support students in developing speaking, listening, reading, and writing skills while monitoring their progress.",
+        ],
+      },
+      {
+        title: "Robotics Intern",
+        org: "MindInAction",
+        period: "May 2025 – Aug 2025",
+        bullets: [
+          "Coached and mentored learners in robotics and basic programming, effectively adapting teaching explanations to individual learning levels and styles.",
+          "Guided students using LEGO Mindstorms and NAO robots, providing structured instruction and one-on-one support to facilitate technical skill development.",
+          "Supported knowledge transfer in workshops, strengthening instructional communication and clarity.",
         ],
       },
       {
@@ -157,38 +171,19 @@ export const cvContent: Record<Language, CvData> = {
         period: "Jun 2024 – Dec 2024",
         bullets: [
           "Communicated effectively with staff and clients when gathering required information and explaining documentation.",
-          "Developed attention-to-detail skills essential for teaching tasks such as marking and lesson prep.",
-        ],
-      },
-      {
-        title: "Robotics Intern",
-        org: "MindInAction",
-        period: "May 2025 – Aug 2025",
-        bullets: [
-          "Coached learners in robotics and basic programming, adapting explanations to individual learning levels.",
-          "Guided students using LEGO Mindstorms and NAO robots, reinforcing structured teaching and one-on-one support.",
-          "Supported knowledge transfer in workshops, strengthening clarity and instructional communication.",
-        ],
-      },
-    ],
-    projectsTitle: "Projects",
-    projects: [
-      {
-        title: "NamWeb Collective",
-        org: "",
-        period: "May 2025 – Present",
-        bullets: [
-          "Work with clients, requiring clear explanations and structured communication suited to a teaching environment.",
-          "Develop online resources that train users to navigate and understand digital tools.",
+          "Developed attention-to-detail skills essential for structured tasks and information management.",
         ],
       },
     ],
     skillsTitle: "Skills",
     skills: [
       { name: "Languages", items: "English (fluent), German (B2), Afrikaans (conversational)" },
-      { name: "Teaching-Related", items: "Coaching, explanation skills, group communication, lesson support" },
-      { name: "Technical", items: "Java, Python, HTML/CSS, Git, Docker, VS Code, Linux" },
-      { name: "Office Suite", items: "Excel, Word, PowerPoint, Outlook" },
+      {
+        name: "Teaching-Related",
+        items: "Coaching, mentoring, lesson planning, grammar instruction, explanation skills, group communication, structured instruction",
+      },
+      { name: "Technical", items: "Java, Python, HTML/CSS, Git, Docker, VS Code, Linux, Sage Pastel" },
+      { name: "Office Suite", items: "Microsoft Excel, Word, PowerPoint, Outlook" },
     ],
     exportLabel: "Export as PDF",
     downloadLabel: "Download PDF",

@@ -24,6 +24,15 @@ export function CvSection() {
                 {t.phone} <span className="text-muted-foreground/50">|</span>{" "}
                 <a href={`mailto:${t.email}`} className="hover:text-foreground transition-colors">
                   {t.email}
+                </a>{" "}
+                <span className="text-muted-foreground/50">|</span>{" "}
+                <a
+                  href={`https://${t.website}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:text-foreground transition-colors"
+                >
+                  {t.website}
                 </a>
               </p>
             </div>
@@ -86,28 +95,6 @@ export function CvSection() {
               </h2>
               <div className="space-y-8">
                 {t.experience.map((entry) => (
-                  <div key={entry.title} className="space-y-2">
-                    <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
-                      <h3 className="font-semibold">{entry.title}</h3>
-                      <span className="font-mono text-sm text-muted-foreground shrink-0">{entry.period}</span>
-                    </div>
-                    {entry.org && <p className="text-sm text-primary">{entry.org}</p>}
-                    <ul className="space-y-1.5 text-sm text-muted-foreground leading-relaxed list-disc pl-4">
-                      {entry.bullets.map((bullet) => (
-                        <li key={bullet}>{bullet}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-6">
-              <h2 className="font-mono text-label uppercase tracking-[0.3em] text-muted-foreground">
-                {t.projectsTitle}
-              </h2>
-              <div className="space-y-8">
-                {t.projects.map((entry) => (
                   <div key={entry.title} className="space-y-2">
                     <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
                       <h3 className="font-semibold">{entry.title}</h3>
