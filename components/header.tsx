@@ -8,6 +8,7 @@ import { FileText, Github, Mail } from "lucide-react"
 import { siteCopy } from "@/content/site"
 import { useLanguage } from "@/components/language-provider"
 import { Button } from "@/components/ui/button"
+import { BoringToggle } from "@/components/boring-toggle"
 import { hasBootPlayed, markBootPlayed } from "@/lib/motion"
 import { cn } from "@/lib/utils"
 
@@ -20,23 +21,6 @@ export function Header() {
   useEffect(() => {
     markBootPlayed()
   }, [])
-
-  const [boring, setBoring] = useState(false)
-
-  useEffect(() => {
-    const stored = localStorage.getItem("boring") === "1"
-    setBoring(stored)
-    document.documentElement.classList.toggle("boring", stored)
-  }, [])
-
-  const toggleBoring = () => {
-    setBoring((prev) => {
-      const next = !prev
-      document.documentElement.classList.toggle("boring", next)
-      localStorage.setItem("boring", next ? "1" : "0")
-      return next
-    })
-  }
 
   const getFilePath = () => {
     if (pathname === "/cv") return "/home/danny-miguel/cv"
@@ -90,7 +74,7 @@ export function Header() {
         </div>
 
         <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
-          <div className="flex items-center gap-6">
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 md:justify-start">
             <Link href="/#projects" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               {labels.nav.projects}
             </Link>
@@ -127,16 +111,7 @@ export function Header() {
             >
               {language === "de" ? "EN" : "DE"}
             </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={toggleBoring}
-              className="text-sm text-muted-foreground hover:text-foreground font-mono p-0 h-auto"
-              aria-pressed={boring}
-              aria-label="Toggle boring mode"
-            >
-              Boring
-            </Button>
+            <BoringToggle />
           </div>
 
           <div className="hidden md:flex items-center gap-3">
