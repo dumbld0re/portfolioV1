@@ -1,16 +1,18 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { cookies } from "next/headers"
-import { Geist, Geist_Mono } from "next/font/google"
+import { Geist_Mono, Lora, Nunito_Sans } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 
+import { CustomCursor } from "@/components/custom-cursor"
 import { LanguageProvider } from "@/components/language-provider"
 import { ThemeProvider } from "@/components/theme-provider"
 import { DEFAULT_LANGUAGE, LANGUAGE_COOKIE, isLanguage } from "@/lib/i18n"
 import "./globals.css"
 
-const _geist = Geist({ subsets: ["latin"] })
-const _geistMono = Geist_Mono({ subsets: ["latin"] })
+const lora = Lora({ subsets: ["latin"], variable: "--font-lora" })
+const nunitoSans = Nunito_Sans({ subsets: ["latin"], variable: "--font-nunito" })
+const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" })
 
 export const metadata: Metadata = {
   title: "Danny-Miguel Mittelberger - Frontend Developer",
@@ -45,14 +47,15 @@ export default async function RootLayout({
   const defaultLanguage = isLanguage(cookieLanguage) ? cookieLanguage : DEFAULT_LANGUAGE
 
   return (
-    <html lang={defaultLanguage} suppressHydrationWarning>
-      <body className={`font-sans antialiased`}>
+    <html lang={defaultLanguage} suppressHydrationWarning className="scroll-smooth">
+      <body className={`${lora.variable} ${nunitoSans.variable} ${geistMono.variable} font-sans antialiased`}>
         <LanguageProvider defaultLanguage={defaultLanguage}>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
             {children}
           </ThemeProvider>
           <Analytics />
         </LanguageProvider>
+        <CustomCursor />
       </body>
     </html>
   )

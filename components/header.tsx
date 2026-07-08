@@ -2,28 +2,38 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { useEffect, useState } from "react"
 import { FileText, Github, Mail } from "lucide-react"
 
 import { siteCopy } from "@/content/site"
 import { useLanguage } from "@/components/language-provider"
 import { Button } from "@/components/ui/button"
+import { hasBootPlayed, markBootPlayed } from "@/lib/motion"
+import { cn } from "@/lib/utils"
 
 export function Header() {
   const pathname = usePathname()
   const { language, toggleLanguage } = useLanguage()
   const labels = siteCopy[language]
+  const [boot] = useState(() => !hasBootPlayed())
+
+  useEffect(() => {
+    markBootPlayed()
+  }, [])
 
   const getFilePath = () => {
-    if (pathname === "/") return "/home/danny/"
-    if (pathname === "/projects") return "/home/danny/projects"
-    if (pathname === "/experience") return "/home/danny/experience"
-    if (pathname === "/contact") return "/home/danny/contact"
+    if (pathname === "/cv") return "/home/danny/cv"
     return "/home/danny/"
   }
 
   return (
-    <header className="w-full px-6 py-6 md:px-12 lg:px-16">
-      <nav className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 max-w-7xl mx-auto">
+    <header className="w-full px-6 py-6 md:px-12 lg:px-16 print:hidden">
+      <nav
+        className={cn(
+          "flex flex-col md:flex-row md:items-center md:justify-between gap-4 max-w-7xl mx-auto",
+          boot && "motion-safe:animate-reveal-up",
+        )}
+      >
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-3">
             <Link
@@ -52,10 +62,10 @@ export function Header() {
                 </a>
               </Button>
               <Button variant="ghost" size="icon" className="size-8 text-muted-foreground hover:text-foreground" asChild>
-                <a href="#cv">
+                <Link href="/cv">
                   <FileText className="size-4" />
-                  <span className="sr-only">CV</span>
-                </a>
+                  <span className="sr-only">{labels.nav.cv}</span>
+                </Link>
               </Button>
             </div>
           </div>
@@ -63,19 +73,21 @@ export function Header() {
 
         <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
           <div className="flex items-center gap-6">
-            <Link
-              href="/projects"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              aria-current={pathname === "/projects" ? "page" : undefined}
-            >
+            <Link href="/#projects" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               {labels.nav.projects}
             </Link>
-            <Link
-              href="/experience"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              aria-current={pathname === "/experience" ? "page" : undefined}
-            >
+            <Link href="/#experience" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               {labels.nav.experience}
+            </Link>
+            <Link href="/#contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              {labels.nav.contact}
+            </Link>
+            <Link
+              href="/cv"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              aria-current={pathname === "/cv" ? "page" : undefined}
+            >
+              {labels.nav.cv}
             </Link>
             <span className="text-muted-foreground/50" aria-hidden="true">
               |
@@ -106,10 +118,10 @@ export function Header() {
               </a>
             </Button>
             <Button variant="ghost" size="icon" className="size-9 text-muted-foreground hover:text-foreground" asChild>
-              <a href="#cv">
+              <Link href="/cv">
                 <FileText className="size-4" />
-                <span className="sr-only">CV</span>
-              </a>
+                <span className="sr-only">{labels.nav.cv}</span>
+              </Link>
             </Button>
           </div>
         </div>
