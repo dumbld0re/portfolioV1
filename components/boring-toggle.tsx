@@ -1,26 +1,16 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useSyncExternalStore } from "react"
 
 import { cn } from "@/lib/utils"
+import { getServerSnapshot, getSnapshot, setBoring, subscribe } from "@/lib/boring-store"
 
 export function BoringToggle() {
-  const [boring, setBoring] = useState(false)
+  const boring = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
 
   useEffect(() => {
-    const stored = localStorage.getItem("boring") === "1"
-    setBoring(stored)
-    document.documentElement.classList.toggle("boring", stored)
-  }, [])
-
-  const toggle = () => {
-    setBoring((prev) => {
-      const next = !prev
-      document.documentElement.classList.toggle("boring", next)
-      localStorage.setItem("boring", next ? "1" : "0")
-      return next
-    })
-  }
+    document.documentElement.classList.toggle("boring", boring)
+  }, [boring])
 
   return (
     <button
@@ -28,7 +18,7 @@ export function BoringToggle() {
       role="switch"
       aria-checked={boring}
       aria-label="Toggle boring mode"
-      onClick={toggle}
+      onClick={() => setBoring(!boring)}
       className="inline-flex items-center gap-2 font-mono text-sm text-muted-foreground transition-colors hover:text-foreground"
     >
       <span>Boring</span>

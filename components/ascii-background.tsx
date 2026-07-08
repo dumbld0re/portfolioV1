@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 
 import { cn } from "@/lib/utils"
 
@@ -18,11 +18,12 @@ interface AsciiBackgroundProps {
 
 export function AsciiBackground({ opacity = 0.1, cellSize = 16, className }: AsciiBackgroundProps) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const [tileUrl, setTileUrl] = useState<string | null>(null)
+  const tileRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const container = containerRef.current
-    if (!container) return
+    const tile = tileRef.current
+    if (!container || !tile) return
 
     const color = getComputedStyle(container).color
     const dpr = Math.min(window.devicePixelRatio || 1, 2)
@@ -50,7 +51,10 @@ export function AsciiBackground({ opacity = 0.1, cellSize = 16, className }: Asc
       }
     }
 
-    setTileUrl(canvas.toDataURL())
+    // Direct DOM mutation via ref, not React state — this is a one-time
+    // imperative canvas draw, not an external value to keep in sync, so it
+    // doesn't need (or want) a second render pass.
+    tile.style.backgroundImage = `url(${canvas.toDataURL()})`
   }, [cellSize])
 
   return (
@@ -63,16 +67,14 @@ export function AsciiBackground({ opacity = 0.1, cellSize = 16, className }: Asc
       )}
       style={{ opacity }}
     >
-      {tileUrl && (
-        <div
-          className="absolute motion-safe:animate-bg-drift"
-          style={{
-            inset: -TILE_SIZE,
-            backgroundImage: `url(${tileUrl})`,
-            backgroundSize: `${TILE_SIZE}px ${TILE_SIZE}px`,
-          }}
-        />
-      )}
+      <div
+        ref={tileRef}
+        className="absolute motion-safe:animate-bg-drift"
+        style={{
+          inset: -TILE_SIZE,
+          backgroundSize: `${TILE_SIZE}px ${TILE_SIZE}px`,
+        }}
+      />
     </div>
   )
 }

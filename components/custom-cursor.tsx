@@ -1,6 +1,8 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
+
+import { useMediaQuery } from "@/lib/use-media-query"
 
 const FOLLOW_LERP = 0.3
 const SCALE_LERP = 0.25
@@ -8,14 +10,9 @@ const INTERACTIVE = "a, button, [role=button], input, textarea, select, label"
 
 export function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null)
-  const [enabled, setEnabled] = useState(false)
-
-  useEffect(() => {
-    setEnabled(
-      window.matchMedia("(pointer: fine)").matches &&
-        !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-    )
-  }, [])
+  const finePointer = useMediaQuery("(pointer: fine)")
+  const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)")
+  const enabled = finePointer && !reducedMotion
 
   useEffect(() => {
     if (!enabled) return
