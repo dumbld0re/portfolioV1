@@ -28,6 +28,7 @@ export const projectsContent: Record<
         description:
           "Eine persönliche Finanz-App zum Verfolgen von Einnahmen, Ausgaben und Sparzielen – offline-first, mit optionaler geräteübergreifender Synchronisierung.",
         tech: ["React", "Vite", "Vercel Functions", "Upstash Redis"],
+        demoHref: "https://financetracker-demo.vercel.app/",
         githubHref: "https://github.com/dumbld0re/financeApp",
       },
       { title: "", description: "", tech: [], comingSoon: true },
@@ -45,6 +46,7 @@ export const projectsContent: Record<
         description:
           "A personal finance app for tracking income, expenses, and savings goals — offline-first, with optional cross-device sync.",
         tech: ["React", "Vite", "Vercel Functions", "Upstash Redis"],
+        demoHref: "https://financetracker-demo.vercel.app/",
         githubHref: "https://github.com/dumbld0re/financeApp",
       },
       { title: "", description: "", tech: [], comingSoon: true },
