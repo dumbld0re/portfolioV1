@@ -21,11 +21,6 @@ export function CvSection() {
             <div className="space-y-2">
               <p className="font-serif text-heading font-semibold tracking-tight">{t.name}</p>
               <p className="font-mono text-sm text-muted-foreground">
-                {t.phone} <span className="text-muted-foreground/50">|</span>{" "}
-                <a href={`mailto:${t.email}`} className="hover:text-foreground transition-colors">
-                  {t.email}
-                </a>{" "}
-                <span className="text-muted-foreground/50">|</span>{" "}
                 <a
                   href={`https://${t.website}`}
                   target="_blank"
@@ -36,12 +31,21 @@ export function CvSection() {
                 </a>
               </p>
             </div>
-            <div className="flex gap-3 print:hidden">
-              <Button onClick={() => window.print()}>
+            <div className="flex flex-wrap gap-3 print:hidden">
+              <Button
+                size="lg"
+                onClick={() => window.print()}
+                className="font-mono uppercase tracking-wide font-bold shadow-lg shadow-primary/30 transition-all hover:scale-[1.03] hover:shadow-xl hover:shadow-primary/40"
+              >
                 <Printer className="size-4" />
                 {t.exportLabel}
               </Button>
-              <Button variant="outline" asChild>
+              <Button
+                size="lg"
+                variant="outline"
+                asChild
+                className="border-2 border-primary font-mono uppercase tracking-wide font-bold text-primary transition-all hover:scale-[1.03] hover:bg-primary hover:text-primary-foreground"
+              >
                 <a href="/cv.pdf" download>
                   <Download className="size-4" />
                   {t.downloadLabel}
