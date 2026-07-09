@@ -34,7 +34,22 @@ export function ProjectsSection() {
             ) : (
               <div key={i} className="rounded-lg border border-border bg-card/40 p-6 flex flex-col gap-4">
                 <div className="space-y-2">
-                  <h3 className="font-semibold text-lg">{project.title}</h3>
+                  <div className="flex flex-wrap items-center gap-2">
+                    {project.internalTool && (
+                      <span className="text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 border border-border bg-foreground/5 text-muted-foreground rounded">
+                        {t.internalToolLabel}
+                      </span>
+                    )}
+                    {project.status && (
+                      <span className="text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 border border-primary/40 text-primary rounded">
+                        {t.statusLabels[project.status]}
+                      </span>
+                    )}
+                    <h3 className="font-semibold text-lg w-full sm:w-auto">{project.title}</h3>
+                  </div>
+                  {project.tagline && (
+                    <p className="text-sm italic text-foreground/80">{project.tagline}</p>
+                  )}
                   <p className="text-sm text-muted-foreground leading-relaxed">{project.description}</p>
                 </div>
 
