@@ -20,9 +20,9 @@ export const homeContent: Record<
     hero: {
       role: "Quantitativer Finance Student — UNAM",
       name: "danny-miguel mittelberger",
-      subtitle: "Frontend-Entwickler • Linux-Enthusiast",
+      subtitle: "Entwickler • Linux-Enthusiast",
       intro:
-        "Hallo, ich bin Danny-Miguel Mittelberger – quantitativer finance Student an der University of Namibia (UNAM) und ein Frontend-Entwickler.",
+        "Hallo, ich bin Danny-Miguel Mittelberger – quantitativer finance Student an der University of Namibia (UNAM) und ein Entwickler.",
       description:
         "Ich verbinde Mathematik mit Code, um klare, interaktive digitale Erlebnisse zu schaffen. Als Freelancer bin ich derzeit für neue Projekte verfügbar – mit einer Schwäche für Linux und alles, was im Terminal läuft.",
       location: "Windhoek, Namibia",
@@ -33,11 +33,11 @@ export const homeContent: Record<
   },
   en: {
     hero: {
-      role: "Quantitative Student — UNAM",
+      role: "Quantitative Finance Student — UNAM",
       name: "danny-miguel mittelberger",
-      subtitle: "Frontend Developer • Linux Enthusiast",
+      subtitle: "Developer • Linux Enthusiast",
       intro:
-        "Hello, I'm Danny-Miguel Mittelberger – a quantitative finance student at the University of Namibia (UNAM) and a frontend developer.",
+        "Hello, I'm Danny-Miguel Mittelberger – a quantitative finance student at the University of Namibia (UNAM) and a developer.",
       description:
         "I blend mathematics with code to build clean, interactive digital experiences. I freelance here and there – with a soft spot for Linux and everything that runs in a terminal.",
       location: "Windhoek, Namibia",
