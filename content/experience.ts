@@ -65,7 +65,7 @@ export const experienceContent: Record<
   },
   en: {
     title: "Experience",
-    description: "My professional background and skills.",
+    description: "My background and skills.",
     experiences: [
       {
         role: "Frontend Developer",
@@ -92,12 +92,12 @@ export const experienceContent: Record<
       title: "Skills",
       categories: [
         {
-          name: "Frontend",
-          items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "HTML/CSS"],
+          name: "Frontend and Languages",
+          items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "HTML/CSS", "Python"],
         },
         {
           name: "Tools & Others",
-          items: ["Git", "Linux", "Docker", "Vercel", "Figma"],
+          items: ["Git", "Linux", "Docker", "Vercel", "Figma", "Typst"],
         },
       ],
     },
