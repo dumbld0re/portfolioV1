@@ -50,7 +50,7 @@ export const projectsContent: Record<
         tagline:
           "Ein CLI, das aus einer Typst-Quelle sowohl ein Arbeitsblatt als auch den Lösungsschlüssel erzeugt.",
         description:
-          "Persönliches Ops-Monorepo für Deutsch-Nachhilfe und Studium. Ein typisiertes Python-CLI verwaltet zwei Typst-Template-Familien; Lückentext-Übungen kompilieren aus einer Quelle per Flag zum Arbeitsblatt- oder Lösungs-PDF. Schülerdaten liegen als Markdown mit YAML-Frontmatter, eine Variablen-Kaskade füllt Templates automatisch. Roadmap: Nachhilfe-CRM, Vokabeltrainer, Kurs-Dashboard-TUI.",
+          "Persönliches Ops-Monorepo für Deutsch-Nachhilfe und Studium. Ein typisiertes Python-CLI verwaltet zwei Typst-Template-Familien; Lückentext-Übungen kompilieren aus einer Quelle per Flag zum Arbeitsblatt- oder Lösungs-PDF. Schülerdaten liegen als Markdown mit YAML-Frontmatter, eine Variablen-Kaskade füllt Templates automatisch.",
         tech: ["Python 3.12", "typer", "Typst", "uv", "pytest", "mypy (strict)"],
         internalTool: true,
         status: "inDevelopment",
@@ -84,7 +84,7 @@ export const projectsContent: Record<
         tagline:
           "A CLI that turns one Typst source into both a student worksheet and its answer key.",
         description:
-          "Personal ops monorepo for my German tutoring work and university coursework. A typed Python CLI manages two Typst template families; gap-fill exercises compile from a single source into a worksheet or answer-key PDF via a flag. Student data lives in markdown with YAML frontmatter, and a variable cascade fills templates automatically. Roadmap: tutoring CRM, vocab engine, course dashboard TUI.",
+          "Personal ops monorepo for my German tutoring work and university coursework. A typed Python CLI manages two Typst template families; gap-fill exercises compile from a single source into a worksheet or answer-key PDF via a flag. Student data lives in markdown with YAML frontmatter, and a variable cascade fills templates automatically.",
         tech: ["Python 3.12", "typer", "Typst", "uv", "pytest", "mypy (strict)"],
         internalTool: true,
         status: "inDevelopment",
