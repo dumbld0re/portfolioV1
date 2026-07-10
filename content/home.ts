@@ -24,7 +24,7 @@ export const homeContent: Record<
       intro:
         "Hallo, ich bin Danny-Miguel Mittelberger – quantitativer finance Student an der University of Namibia (UNAM) und ein Entwickler.",
       description:
-        "Ich verbinde Mathematik mit Code, um klare, interaktive digitale Erlebnisse zu schaffen. Als Freelancer bin ich derzeit für neue Projekte verfügbar – mit einer Schwäche für Linux und alles, was im Terminal läuft.",
+        "Als Freelancer bin ich derzeit für neue Projekte verfügbar – mit einer Schwäche für Linux und alles, was im Terminal läuft.",
       location: "Windhoek, Namibia",
       status: "Freelancer – Verfügbar für Arbeit",
       introLabel: "Einführung",
@@ -39,7 +39,7 @@ export const homeContent: Record<
       intro:
         "Hello, I'm Danny-Miguel Mittelberger – a quantitative finance student at the University of Namibia (UNAM) and a developer.",
       description:
-        "I blend mathematics with code to build clean, interactive digital experiences. I freelance here and there – with a soft spot for Linux and everything that runs in a terminal.",
+        "I freelance here and there – with a soft spot for Linux and everything that runs in a terminal.",
       location: "Windhoek, Namibia",
       status: "Freelancer – Available for Work",
       introLabel: "Introduction",
