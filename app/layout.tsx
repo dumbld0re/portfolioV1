@@ -15,7 +15,7 @@ const nunitoSans = Nunito_Sans({ subsets: ["latin"], variable: "--font-nunito" }
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" })
 
 export const metadata: Metadata = {
-  title: "Danny-Miguel Mittelberger - Frontend Developer",
+  title: "danny-miguel",
   description: "Freelance Frontend Developer & Linux Enthusiast from Windhoek, Namibia",
   generator: "v0.app",
   icons: {
