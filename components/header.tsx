@@ -44,7 +44,12 @@ export function Header() {
               className="font-mono text-sm md:text-base text-foreground/80 hover:text-foreground transition-colors flex items-center gap-3 flex-1 min-w-0"
               aria-label="Navigate home"
             >
-              <span className="font-bold text-base md:text-lg whitespace-nowrap">DM</span>
+              <span className="font-bold text-base md:text-lg whitespace-nowrap">
+                dm
+                <span className="text-primary motion-safe:animate-caret-blink" aria-hidden="true">
+                  _
+                </span>
+              </span>
               <span className="text-muted-foreground/50" aria-hidden="true">
                 |
               </span>

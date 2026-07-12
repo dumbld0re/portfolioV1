@@ -16,8 +16,19 @@ const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono"
 
 export const metadata: Metadata = {
   title: "danny-miguel",
-  description: "Freelance Frontend Developer & Linux Enthusiast from Windhoek, Namibia",
-  generator: "v0.app",
+  description:
+    "Developer and quantitative finance student in Windhoek, Namibia — building fast, clean web interfaces with a soft spot for Linux and the terminal.",
+  openGraph: {
+    title: "danny-miguel",
+    description:
+      "Developer and quantitative finance student in Windhoek, Namibia — building fast, clean web interfaces with a soft spot for Linux and the terminal.",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "danny-miguel",
+    description: "Developer and quantitative finance student in Windhoek, Namibia.",
+  },
   icons: {
     icon: [
       {
