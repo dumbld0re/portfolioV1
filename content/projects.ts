@@ -3,6 +3,8 @@ import type { Language } from "@/lib/i18n"
 export type ProjectStatus = "inDevelopment" | "inUse"
 
 export type Project = {
+  /** Rendered as a terminal-style path header: ~/projects/<slug> */
+  slug?: string
   title: string
   tagline?: string
   description: string
@@ -36,6 +38,7 @@ export const projectsContent: Record<
     },
     projects: [
       {
+        slug: "finance-tracker",
         title: "Finance Tracker",
         description:
           "Eine persönliche Finanz-App zum Verfolgen von Einnahmen, Ausgaben und Sparzielen – offline-first, mit optionaler geräteübergreifender Synchronisierung.",
@@ -46,6 +49,7 @@ export const projectsContent: Record<
         status: "inUse",
       },
       {
+        slug: "uni",
         title: "uni — Nachhilfe- & Studiums-Ops-Suite",
         tagline:
           "Ein CLI, das aus einer Typst-Quelle sowohl ein Arbeitsblatt als auch den Lösungsschlüssel erzeugt.",
@@ -70,6 +74,7 @@ export const projectsContent: Record<
     },
     projects: [
       {
+        slug: "finance-tracker",
         title: "Finance Tracker",
         description:
           "A personal finance app for tracking income, expenses, and savings goals — offline-first, with optional cross-device sync.",
@@ -80,6 +85,7 @@ export const projectsContent: Record<
         status: "inUse",
       },
       {
+        slug: "uni",
         title: "uni — tutoring & coursework ops suite",
         tagline:
           "A CLI that turns one Typst source into both a student worksheet and its answer key.",

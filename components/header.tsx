@@ -9,6 +9,7 @@ import { siteCopy } from "@/content/site"
 import { useLanguage } from "@/components/language-provider"
 import { Button } from "@/components/ui/button"
 import { BoringToggle } from "@/components/boring-toggle"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { hasBootPlayed, markBootPlayed } from "@/lib/motion"
 import { cn } from "@/lib/utils"
 
@@ -112,6 +113,7 @@ export function Header() {
               {language === "de" ? "EN" : "DE"}
             </Button>
             <BoringToggle />
+            <ThemeToggle />
           </div>
 
           <div className="hidden md:flex items-center gap-3">

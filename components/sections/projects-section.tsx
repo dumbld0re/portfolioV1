@@ -34,6 +34,12 @@ export function ProjectsSection() {
             ) : (
               <div key={i} className="rounded-lg border border-border bg-card/40 p-6 flex flex-col gap-4">
                 <div className="space-y-2">
+                  {project.slug && (
+                    <p className="font-mono text-xs text-muted-foreground">
+                      <span className="text-primary">~/projects/</span>
+                      {project.slug}
+                    </p>
+                  )}
                   <div className="flex flex-wrap items-center gap-2">
                     {project.internalTool && (
                       <span className="text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 border border-border bg-foreground/5 text-muted-foreground rounded">

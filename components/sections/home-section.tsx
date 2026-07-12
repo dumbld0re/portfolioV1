@@ -52,13 +52,16 @@ export function HomeSection() {
             </div>
           </div>
 
-          <div className={cn("space-y-2 text-sm text-muted-foreground", reveal)} style={delay("heroMeta")}>
+          <div className={cn("space-y-3 text-sm text-muted-foreground", reveal)} style={delay("heroMeta")}>
             <div className="flex items-center gap-2">
               <MapPin className="size-4" />
               <span>{t.location}</span>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="size-2 rounded-full bg-accent-green" />
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-border bg-card/60 px-3.5 py-1.5 font-mono text-label uppercase tracking-[0.2em] text-foreground/80">
+              <span className="relative flex size-2" aria-hidden="true">
+                <span className="absolute inline-flex h-full w-full rounded-full bg-accent-green opacity-60 motion-safe:animate-ping" />
+                <span className="relative inline-flex size-2 rounded-full bg-accent-green" />
+              </span>
               <span>{t.status}</span>
             </div>
           </div>
