@@ -1,7 +1,7 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { cookies } from "next/headers"
-import { Geist_Mono, Lora, Nunito_Sans } from "next/font/google"
+import { Fraunces, Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 
 import { CustomCursor } from "@/components/custom-cursor"
@@ -10,11 +10,13 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { DEFAULT_LANGUAGE, LANGUAGE_COOKIE, isLanguage } from "@/lib/i18n"
 import "./globals.css"
 
-const lora = Lora({ subsets: ["latin"], variable: "--font-lora" })
-const nunitoSans = Nunito_Sans({ subsets: ["latin"], variable: "--font-nunito" })
+// Two typefaces, one system: Fraunces (an expressive old-style serif) carries
+// every editorial/reading surface, Geist Mono every terminal/UI surface.
+const fraunces = Fraunces({ subsets: ["latin"], style: ["normal", "italic"], variable: "--font-fraunces" })
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" })
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://dannymiguel.com"),
   title: "danny-miguel",
   description:
     "Developer and quantitative finance student in Windhoek, Namibia — building fast, clean web interfaces with a soft spot for Linux and the terminal.",
@@ -59,7 +61,7 @@ export default async function RootLayout({
 
   return (
     <html lang={defaultLanguage} suppressHydrationWarning className="scroll-smooth">
-      <body className={`${lora.variable} ${nunitoSans.variable} ${geistMono.variable} font-sans antialiased`}>
+      <body className={`${fraunces.variable} ${geistMono.variable} font-serif antialiased`}>
         <LanguageProvider defaultLanguage={defaultLanguage}>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
             {children}

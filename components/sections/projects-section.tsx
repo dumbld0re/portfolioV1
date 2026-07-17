@@ -75,7 +75,7 @@ export function ProjectsSection() {
                     <Button size="sm" asChild>
                       <Link href={project.demoHref} target="_blank" rel="noreferrer">
                         <ExternalLink className="size-4" />
-                        {t.viewDemoLabel}
+                        {project.demoKind === "site" ? t.viewSiteLabel : t.viewDemoLabel}
                       </Link>
                     </Button>
                   )}

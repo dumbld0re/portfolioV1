@@ -4,40 +4,39 @@ export const contactContent: Record<
   Language,
   {
     title: string
-    description: string
-    emailLabel: string
+    statement: string
     email: string
-    cta: string
-    phoneLabel: string
+    getInTouch: string
     phone: string
     phoneCta: string
-    footnote: string
+    responseTime: string
+    role: string
+    location: string
+    backToTop: string
   }
 > = {
-  en: {
-    title: "Contact",
-    description:
-      "Interested in collaborating or have a project in mind? Reach out and let's discuss how we can build something great together.",
-    emailLabel: "Email",
-    email: "dannymiiguel@gmail.com",
-    cta: "Send Email",
-    phoneLabel: "Phone",
-    phone: "+264 85 800 0433",
-    phoneCta: "Call or WhatsApp",
-    footnote: "I usually respond within 24 hours.",
-  },
   de: {
     title: "Kontakt",
-    description:
-      "Interesse an einer Zusammenarbeit oder einem Projekt? Melde dich und wir besprechen, wie wir gemeinsam etwas Großartiges schaffen können.",
-    emailLabel: "E-Mail",
+    statement: "lass uns etwas bauen.",
     email: "dannymiiguel@gmail.com",
-    cta: "E-Mail senden",
-    phoneLabel: "Telefon",
+    getInTouch: "Kontakt aufnehmen",
     phone: "+264 85 800 0433",
-    phoneCta: "Anrufen oder WhatsApp",
-    footnote: "Ich antworte in der Regel innerhalb von 24 Stunden.",
+    phoneCta: "Anrufen / WhatsApp",
+    responseTime: "antwortet meist innerhalb von 24 h.",
+    role: "entwickler & designer",
+    location: "windhoek, namibia",
+    backToTop: "nach oben",
+  },
+  en: {
+    title: "Contact",
+    statement: "let's build something.",
+    email: "dannymiiguel@gmail.com",
+    getInTouch: "Get in touch",
+    phone: "+264 85 800 0433",
+    phoneCta: "Call / WhatsApp",
+    responseTime: "usually replies within 24h.",
+    role: "developer & designer",
+    location: "windhoek, namibia",
+    backToTop: "back to top",
   },
 }
-
-

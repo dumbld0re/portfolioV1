@@ -25,7 +25,7 @@ export function Header() {
 
   const getFilePath = () => {
     if (pathname === "/cv") return "/home/danny-miguel/cv"
-    if (pathname === "/posts") return "/home/danny-miguel/posts"
+    if (pathname.startsWith("/posts")) return "/home/danny-miguel/posts"
     return "/home/danny-miguel/"
   }
 

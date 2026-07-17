@@ -77,8 +77,8 @@
 }
 
 @theme inline {
-  --font-sans: var(--font-nunito), ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-lora), ui-serif, Georgia, serif;
+  --font-sans: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-serif: var(--font-fraunces), ui-serif, Georgia, serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
   --text-display: clamp(2.5rem, 1.5rem + 3.5vw, 6rem);
   --text-display--line-height: 1.05;
@@ -136,6 +136,11 @@
   body {
     @apply bg-background text-foreground;
   }
+  /* One icon system: every lucide glyph shares a lighter, uniform stroke so
+     the iconography reads consistently against the thin mono UI. */
+  svg.lucide {
+    stroke-width: 1.5;
+  }
 }
 
 @media (pointer: fine) {
@@ -151,6 +156,32 @@ html {
 
 html.boring {
   filter: grayscale(1);
+}
+
+/* Two-tone contact footer (components/sections/contact-section.tsx): a darker
+   surface that flips with the theme. Overriding the base color tokens on the
+   element re-tints every Tailwind color utility used inside it, so the section
+   stays legible in both light and dark. */
+.contact-footer {
+  --background: #1d2021;
+  --foreground: #fbf1c7;
+  --card: #32302f;
+  --muted-foreground: #a89984;
+  --border: #3c3836;
+  --primary: #fabd2f;
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+/* In dark mode the page is dark, so the footer inverts to a warm light panel —
+   the two-tone always flips against whatever the rest of the page is. */
+.dark .contact-footer {
+  --background: #fbf1c7;
+  --foreground: #282828;
+  --card: #f2e5bc;
+  --muted-foreground: #7c6f64;
+  --border: #d5c4a1;
+  --primary: #b57614;
 }
 
 /* Markdown post bodies (components/sections/post-section.tsx), styled to

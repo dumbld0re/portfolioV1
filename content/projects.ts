@@ -10,6 +10,8 @@ export type Project = {
   description: string
   tech: string[]
   demoHref?: string
+  /** Which label the demoHref button uses. Defaults to "demo". */
+  demoKind?: "demo" | "site"
   githubHref?: string
   comingSoon?: boolean
   internalTool?: boolean
@@ -21,6 +23,7 @@ export const projectsContent: Record<
   {
     comingSoonLabel: string
     viewDemoLabel: string
+    viewSiteLabel: string
     viewSourceLabel: string
     internalToolLabel: string
     statusLabels: Record<ProjectStatus, string>
@@ -30,6 +33,7 @@ export const projectsContent: Record<
   de: {
     comingSoonLabel: "Demnächst",
     viewDemoLabel: "Demo ansehen",
+    viewSiteLabel: "Website ansehen",
     viewSourceLabel: "Quellcode",
     internalToolLabel: "Internes Tool",
     statusLabels: {
@@ -59,13 +63,25 @@ export const projectsContent: Record<
         internalTool: true,
         status: "inDevelopment",
       },
-      { title: "", description: "", tech: [], comingSoon: true },
+      {
+        slug: "ae",
+        title: "æ design studio",
+        tagline: "Mein persönliches Designstudio.",
+        description:
+          "Die einseitige Website für æ, mein Designstudio. Von Grund auf gebaut – keine Templates, kein CSS-Framework.",
+        tech: ["Next.js", "TypeScript", "Canvas", "CSS"],
+        demoHref: "https://aenu.vercel.app/",
+        demoKind: "site",
+        githubHref: "https://github.com/dumbld0re/ae",
+        status: "inUse",
+      },
       { title: "", description: "", tech: [], comingSoon: true },
     ],
   },
   en: {
     comingSoonLabel: "Coming soon",
     viewDemoLabel: "View demo",
+    viewSiteLabel: "View site",
     viewSourceLabel: "View source",
     internalToolLabel: "Internal tool",
     statusLabels: {
@@ -95,7 +111,18 @@ export const projectsContent: Record<
         internalTool: true,
         status: "inDevelopment",
       },
-      { title: "", description: "", tech: [], comingSoon: true },
+      {
+        slug: "ae",
+        title: "æ design studio",
+        tagline: "My personal design studio.",
+        description:
+          "The one-page site for æ, my design studio. Built from scratch — no templates, no CSS framework.",
+        tech: ["Next.js", "TypeScript", "Canvas", "CSS"],
+        demoHref: "https://aenu.vercel.app/",
+        demoKind: "site",
+        githubHref: "https://github.com/dumbld0re/ae",
+        status: "inUse",
+      },
       { title: "", description: "", tech: [], comingSoon: true },
     ],
   },

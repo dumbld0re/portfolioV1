@@ -78,7 +78,7 @@ export const cvContent: Record<Language, CvData> = {
       },
       {
         title: "Robotics Intern",
-        org: "MindInAction",
+        org: "MindsInAction",
         period: "Mai 2025 – Aug 2025",
         bullets: [
           "Lernende in Robotik und Programmier-Grundlagen gecoacht und Erklärungen an individuelle Lernniveaus angepasst.",
@@ -160,7 +160,7 @@ export const cvContent: Record<Language, CvData> = {
       },
       {
         title: "Robotics Intern",
-        org: "MindInAction",
+        org: "MindsInAction",
         period: "May 2025 – Aug 2025",
         bullets: [
           "Coached and mentored learners in robotics and basic programming, effectively adapting teaching explanations to individual learning levels and styles.",
