@@ -4,39 +4,30 @@ export const contactContent: Record<
   Language,
   {
     title: string
-    statement: string
+    heading: string
+    blurbBefore: string
     email: string
-    getInTouch: string
+    blurbAfter: string
     phone: string
-    phoneCta: string
-    responseTime: string
-    role: string
-    location: string
     backToTop: string
   }
 > = {
   de: {
     title: "Kontakt",
-    statement: "lass uns etwas bauen.",
+    heading: "lass uns etwas bauen.",
+    blurbBefore: "hast du ein projekt im kopf oder möchtest einfach quatschen? schreib mir an",
     email: "dannymiiguel@gmail.com",
-    getInTouch: "Kontakt aufnehmen",
+    blurbAfter: "— ich freue mich, von dir zu hören.",
     phone: "+264 85 800 0433",
-    phoneCta: "Anrufen / WhatsApp",
-    responseTime: "antwortet meist innerhalb von 24 h.",
-    role: "entwickler & designer",
-    location: "windhoek, namibia",
     backToTop: "nach oben",
   },
   en: {
     title: "Contact",
-    statement: "let's build something.",
+    heading: "let's build something.",
+    blurbBefore: "got a project in mind, or just want to chat? drop me a line at",
     email: "dannymiiguel@gmail.com",
-    getInTouch: "Get in touch",
+    blurbAfter: "— i'd love to hear from you.",
     phone: "+264 85 800 0433",
-    phoneCta: "Call / WhatsApp",
-    responseTime: "usually replies within 24h.",
-    role: "developer & designer",
-    location: "windhoek, namibia",
     backToTop: "back to top",
   },
 }

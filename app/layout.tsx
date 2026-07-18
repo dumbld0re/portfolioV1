@@ -1,7 +1,8 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { cookies } from "next/headers"
-import { Fraunces, Geist_Mono } from "next/font/google"
+import localFont from "next/font/local"
+import { Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 
 import { CustomCursor } from "@/components/custom-cursor"
@@ -10,9 +11,21 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { DEFAULT_LANGUAGE, LANGUAGE_COOKIE, isLanguage } from "@/lib/i18n"
 import "./globals.css"
 
-// Two typefaces, one system: Fraunces (an expressive old-style serif) carries
-// every editorial/reading surface, Geist Mono every terminal/UI surface.
-const fraunces = Fraunces({ subsets: ["latin"], style: ["normal", "italic"], variable: "--font-fraunces" })
+// The type system: Gambarino (an expressive display serif) for headlines,
+// Cabinet Grotesk (a variable grotesque) for body and UI, and Geist Mono for
+// the terminal chrome — file paths, tags, the email.
+const gambarino = localFont({
+  src: "./fonts/Gambarino-Regular.woff2",
+  variable: "--font-gambarino",
+  weight: "400",
+  display: "swap",
+})
+const cabinet = localFont({
+  src: "./fonts/CabinetGrotesk-Variable.woff2",
+  variable: "--font-cabinet",
+  weight: "100 900",
+  display: "swap",
+})
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" })
 
 export const metadata: Metadata = {
@@ -61,7 +74,7 @@ export default async function RootLayout({
 
   return (
     <html lang={defaultLanguage} suppressHydrationWarning className="scroll-smooth">
-      <body className={`${fraunces.variable} ${geistMono.variable} font-serif antialiased`}>
+      <body className={`${gambarino.variable} ${cabinet.variable} ${geistMono.variable} font-sans antialiased`}>
         <LanguageProvider defaultLanguage={defaultLanguage}>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
             {children}

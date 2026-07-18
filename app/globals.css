@@ -77,8 +77,8 @@
 }
 
 @theme inline {
-  --font-sans: var(--font-fraunces), ui-serif, Georgia, serif;
-  --font-serif: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-sans: var(--font-cabinet), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-gambarino), ui-serif, Georgia, serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
   --text-display: clamp(2.5rem, 1.5rem + 3.5vw, 6rem);
   --text-display--line-height: 1.05;
@@ -135,6 +135,9 @@
   }
   body {
     @apply bg-background text-foreground;
+    /* Gambarino ships a single (400) weight and no italic — never synthesize a
+       faux bold/italic from it; render the real weight instead. */
+    font-synthesis: none;
   }
   /* One icon system: every lucide glyph shares a lighter, uniform stroke so
      the iconography reads consistently against the thin mono UI. */
