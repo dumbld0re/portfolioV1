@@ -31,12 +31,6 @@ export function HomeSection() {
       <section className="relative min-h-[calc(100svh-9rem)] flex items-center px-6">
         <div className="relative max-w-3xl w-full mx-auto space-y-6 py-16">
           <div className="space-y-4">
-            <p
-              className={cn("font-mono text-label uppercase tracking-[0.3em] text-primary", reveal)}
-              style={delay("heroKicker")}
-            >
-              {t.role}
-            </p>
             <h1
               className={cn("font-serif text-display font-semibold tracking-tight text-balance", reveal)}
               style={delay("heroName")}

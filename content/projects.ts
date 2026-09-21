@@ -45,7 +45,7 @@ export const projectsContent: Record<
         slug: "finance-tracker",
         title: "Finance Tracker",
         description:
-          "Eine persönliche Finanz-App zum Verfolgen von Einnahmen, Ausgaben und Sparzielen – offline-first, mit optionaler geräteübergreifender Synchronisierung.",
+          "Eine Offline-first-Finanz-App für Einnahmen, Ausgaben und Sparziele.",
         tech: ["React", "Vite", "Vercel Functions", "Upstash Redis"],
         demoHref: "https://financetracker-demo.vercel.app/",
         githubHref: "https://github.com/dumbld0re/financeApp",
@@ -58,19 +58,18 @@ export const projectsContent: Record<
         tagline:
           "Ein CLI, das aus einer Typst-Quelle sowohl ein Arbeitsblatt als auch den Lösungsschlüssel erzeugt.",
         description:
-          "Persönliches Ops-Monorepo für Deutsch-Nachhilfe und Studium. Ein typisiertes Python-CLI verwaltet zwei Typst-Template-Familien; Lückentext-Übungen kompilieren aus einer Quelle per Flag zum Arbeitsblatt- oder Lösungs-PDF. Schülerdaten liegen als Markdown mit YAML-Frontmatter, eine Variablen-Kaskade füllt Templates automatisch.",
-        tech: ["Python 3.12", "typer", "Typst", "uv", "pytest", "mypy (strict)"],
+          "Ein typisiertes Python-CLI für meine Deutsch-Nachhilfe und mein Studium.",
+        tech: ["Python", "typer", "Typst", "pytest"],
         internalTool: true,
         status: "inDevelopment",
       },
       {
         slug: "ae",
         title: "æ design studio",
-        tagline: "Mein persönliches Designstudio.",
         description:
-          "Die einseitige Website für æ, mein Designstudio. Von Grund auf gebaut – keine Templates, kein CSS-Framework.",
+          "Die Website meines Designstudios, von Grund auf ohne Templates gebaut.",
         tech: ["Next.js", "TypeScript", "Canvas", "CSS"],
-        demoHref: "https://aenu.vercel.app/",
+        demoHref: "https://aestudio.site/",
         demoKind: "site",
         githubHref: "https://github.com/dumbld0re/ae",
         status: "inUse",
@@ -93,7 +92,7 @@ export const projectsContent: Record<
         slug: "finance-tracker",
         title: "Finance Tracker",
         description:
-          "A personal finance app for tracking income, expenses, and savings goals — offline-first, with optional cross-device sync.",
+          "An offline-first app for tracking income, expenses, and savings goals.",
         tech: ["React", "Vite", "Vercel Functions", "Upstash Redis"],
         demoHref: "https://financetracker-demo.vercel.app/",
         githubHref: "https://github.com/dumbld0re/financeApp",
@@ -106,19 +105,18 @@ export const projectsContent: Record<
         tagline:
           "A CLI that turns one Typst source into both a student worksheet and its answer key.",
         description:
-          "Personal ops monorepo for my German tutoring work and university coursework. A typed Python CLI manages two Typst template families; gap-fill exercises compile from a single source into a worksheet or answer-key PDF via a flag. Student data lives in markdown with YAML frontmatter, and a variable cascade fills templates automatically.",
-        tech: ["Python 3.12", "typer", "Typst", "uv", "pytest", "mypy (strict)"],
+          "A typed Python CLI for my German tutoring and university coursework.",
+        tech: ["Python", "typer", "Typst", "pytest"],
         internalTool: true,
         status: "inDevelopment",
       },
       {
         slug: "ae",
         title: "æ design studio",
-        tagline: "My personal design studio.",
         description:
-          "The one-page site for æ, my design studio. Built from scratch — no templates, no CSS framework.",
+          "The site for my design studio, built from scratch with no templates.",
         tech: ["Next.js", "TypeScript", "Canvas", "CSS"],
-        demoHref: "https://aenu.vercel.app/",
+        demoHref: "https://aestudio.site/",
         demoKind: "site",
         githubHref: "https://github.com/dumbld0re/ae",
         status: "inUse",

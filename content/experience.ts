@@ -3,104 +3,88 @@ import type { Language } from "@/lib/i18n"
 export type ExperienceItem = {
   role: string
   company: string
+  companyHref?: string
   period: string
   description: string
-}
-
-export type SkillCategory = {
-  name: string
-  items: string[]
 }
 
 export const experienceContent: Record<
   Language,
   {
     title: string
-    description: string
     experiences: ExperienceItem[]
     skills: {
       title: string
-      categories: SkillCategory[]
+      items: string[]
     }
   }
 > = {
   de: {
     title: "Erfahrung",
-    description: "Mein beruflicher Werdegang und meine Fähigkeiten.",
     experiences: [
+      {
+        role: "Deutsch-Nachhilfelehrer",
+        company: "Fluent Academy",
+        companyHref: "https://fluentacademy.co/",
+        period: "Seit Dez. 2025",
+        description: "Deutschunterricht für Lernende.",
+      },
       {
         role: "Frontend-Entwickler",
         company: "Selbstständig",
         period: "Seit 2024",
-        description:
-          "Entwerfe und entwickle responsive Weboberflächen mit React, Next.js und modernen Toolchains für eigene und Kundenprojekte.",
+        description: "Responsive Websites mit React und Next.js für Kunden.",
       },
       {
         role: "Robotik-Praktikant",
         company: "MindsInAction",
         period: "2025",
-        description:
-          "Debuggte interne Apps, entwickelte Python-Skripte und schrieb Arduino-Logik zur Unterstützung der MindsInAction-Robotikprojekte.",
+        description: "Python-Tools und Arduino-Logik für Robotikprojekte.",
       },
       {
         role: "Praktikant Buchhaltung & Verwaltung",
         company: "Pyronam",
         period: "2024",
-        description: "Koordinierte Rechnungen, pflegte Tabellen und optimierte tägliche Verwaltungsabläufe.",
+        description: "Rechnungen, Tabellen und tägliche Verwaltungsabläufe.",
       },
     ],
     skills: {
       title: "Fähigkeiten",
-      categories: [
-        {
-          name: "Frontend",
-          items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "HTML/CSS"],
-        },
-        {
-          name: "Tools & Andere",
-          items: ["Git", "Linux", "Docker", "Vercel", "Figma"],
-        },
-      ],
+      items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Python", "Git", "Linux", "Docker", "Vercel", "Figma", "Typst"],
     },
   },
   en: {
     title: "Experience",
-    description: "My background and skills.",
     experiences: [
+      {
+        role: "German Tutor",
+        company: "Fluent Academy",
+        companyHref: "https://fluentacademy.co/",
+        period: "Dec 2025 - Present",
+        description: "Teaching German to learners.",
+      },
       {
         role: "Frontend Developer",
         company: "Self-Employed",
         period: "2024 - Present",
-        description:
-          "Designing and shipping responsive web interfaces with React, Next.js, and modern toolchains for personal and client work.",
+        description: "Building responsive sites with React and Next.js for clients.",
       },
       {
         role: "Robotics Intern",
         company: "MindsInAction",
         period: "2025",
-        description:
-          "Debugged internal apps, built Python tooling, and authored Arduino logic to support MindsInAction robotics projects.",
+        description: "Built Python tooling and Arduino logic for robotics projects.",
       },
       {
         role: "Accounting & Administrative Intern",
         company: "Pyronam",
         period: "2024",
-        description: "Coordinated invoicing, maintained spreadsheets, and streamlined day-to-day office workflows.",
+        description: "Handled invoicing, spreadsheets, and daily office workflows.",
       },
     ],
     skills: {
       title: "Skills",
-      categories: [
-        {
-          name: "Frontend and Languages",
-          items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "HTML/CSS", "Python"],
-        },
-        {
-          name: "Tools & Others",
-          items: ["Git", "Linux", "Docker", "Vercel", "Figma", "Typst"],
-        },
-      ],
+      items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Python", "Git", "Linux", "Docker", "Vercel", "Figma", "Typst"],
     },
   },
 }
-

@@ -1,6 +1,5 @@
 export const BOOT_SEQUENCE_MS = {
   header: 0,
-  heroKicker: 100,
   heroName: 250,
   heroSubtitle: 800,
   heroMeta: 950,

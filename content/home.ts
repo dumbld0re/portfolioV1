@@ -4,7 +4,6 @@ export const homeContent: Record<
   Language,
   {
     hero: {
-      role: string
       name: string
       subtitle: string
       intro: string
@@ -18,7 +17,6 @@ export const homeContent: Record<
 > = {
   de: {
     hero: {
-      role: "Quantitativer Finance Student — UNAM",
       name: "danny-miguel mittelberger",
       subtitle: "Entwickler • Linux-Enthusiast",
       intro:
@@ -33,7 +31,6 @@ export const homeContent: Record<
   },
   en: {
     hero: {
-      role: "Quantitative Finance Student — UNAM",
       name: "danny-miguel mittelberger",
       subtitle: "Developer • Linux Enthusiast",
       intro:
