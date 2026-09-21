@@ -5,6 +5,7 @@ import { ArrowUp } from "lucide-react"
 
 import { contactContent } from "@/content/contact"
 import { siteCopy } from "@/content/site"
+import { DontClickLink } from "@/components/dont-click-link"
 import { useLanguage } from "@/components/language-provider"
 
 export function ContactSection() {
@@ -64,9 +65,7 @@ export function ContactSection() {
 
         <p className="mt-20 font-mono text-xs text-muted-foreground/50">
           {copy.footer}{" "}
-          <Link href="/dont-click-here" className="transition-colors hover:text-muted-foreground">
-            {copy.dontClickHere}
-          </Link>
+          <DontClickLink className="transition-colors hover:text-muted-foreground">{copy.dontClickHere}</DontClickLink>
         </p>
       </div>
     </section>

@@ -1,10 +1,10 @@
 "use client"
 
 import type React from "react"
-import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 import { AsciiBackground } from "@/components/ascii-background"
+import { DontClickLink } from "@/components/dont-click-link"
 import { Header } from "@/components/header"
 import { useLanguage } from "@/components/language-provider"
 import { siteCopy } from "@/content/site"
@@ -32,12 +32,9 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
         {showFooter && (
           <footer className="w-full px-6 py-6 text-center text-xs text-muted-foreground print:hidden space-y-1">
             <p>{copy.footer}</p>
-            <Link
-              href="/dont-click-here"
-              className="block text-muted-foreground/30 hover:text-muted-foreground transition-colors"
-            >
+            <DontClickLink className="block text-muted-foreground/30 hover:text-muted-foreground transition-colors">
               {copy.dontClickHere}
-            </Link>
+            </DontClickLink>
           </footer>
         )}
       </div>

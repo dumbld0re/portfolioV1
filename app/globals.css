@@ -313,3 +313,41 @@ html.boring {
     opacity: 0;
   }
 }
+
+/* "dont click here" easter egg (components/dont-click-link.tsx): an inverted
+   circle floods out from the click point, then letters sharpen out of a blur. */
+.dont-click-wipe {
+  clip-path: circle(0 at var(--wipe-x) var(--wipe-y));
+  animation: dont-click-wipe var(--wipe-ms) cubic-bezier(0.76, 0, 0.24, 1) forwards;
+}
+
+@keyframes dont-click-wipe {
+  to {
+    clip-path: circle(150vmax at var(--wipe-x) var(--wipe-y));
+  }
+}
+
+@utility dont-click-letter {
+  animation: dont-click-letter 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes dont-click-letter {
+  from {
+    opacity: 0;
+    filter: blur(14px);
+    transform: translateY(0.35em) scale(1.3);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+}
+
+@utility dont-click-fade {
+  animation: page-fade-in 900ms ease-out both;
+}
+
+html.dont-click-inverted body {
+  background-color: var(--foreground);
+}
