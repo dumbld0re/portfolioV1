@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect } from "react"
+import { usePathname } from "next/navigation"
 import { useTheme } from "next-themes"
 
 // Keeps the browser chrome (iOS status bar / Android toolbar) the same color as
@@ -8,15 +9,18 @@ import { useTheme } from "next-themes"
 // them when the site's own theme toggle disagrees with the OS.
 export function ThemeColorSync() {
   const { resolvedTheme } = useTheme()
+  const pathname = usePathname()
+  // The dont-click-here page is inverted, so the chrome takes the foreground color.
+  const token = pathname === "/dont-click-here" ? "--foreground" : "--background"
 
   useEffect(() => {
     if (!resolvedTheme) return
-    const color = getComputedStyle(document.documentElement).getPropertyValue("--background").trim()
+    const color = getComputedStyle(document.documentElement).getPropertyValue(token).trim()
     if (!color) return
     document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]').forEach((meta) => {
       meta.content = color
     })
-  }, [resolvedTheme])
+  }, [resolvedTheme, token])
 
   return null
 }

@@ -34,7 +34,7 @@ export function ContactSection() {
 
         <p className="mt-6 max-w-2xl text-lg md:text-xl leading-relaxed text-muted-foreground">
           {t.blurbBefore}{" "}
-          <a href={`mailto:${t.email}`} className="text-primary underline-offset-4 hover:underline break-words">
+          <a href={`mailto:${t.email}`} className="text-primary underline decoration-primary/40 underline-offset-4 transition-colors hover:decoration-primary break-words">
             {t.email}
           </a>{" "}
           {t.blurbAfter}
@@ -63,9 +63,9 @@ export function ContactSection() {
           {t.backToTop}
         </button>
 
-        <p className="mt-20 font-mono text-xs text-muted-foreground/50">
+        <p className="mt-20 font-mono text-xs text-muted-foreground">
           {copy.footer}{" "}
-          <DontClickLink className="transition-colors hover:text-muted-foreground">{copy.dontClickHere}</DontClickLink>
+          <DontClickLink className="transition-colors hover:text-foreground">{copy.dontClickHere}</DontClickLink>
         </p>
       </div>
     </section>

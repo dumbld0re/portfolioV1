@@ -26,11 +26,15 @@ export default function DontClickHerePage() {
   const t = copy[language]
   const asideDelay = t.heading.length * LETTER_STAGGER_MS + 600
 
-  // The transition inverts <body> so the hand-off is seamless; undo it on the way out.
-  useEffect(() => () => document.documentElement.classList.remove(DONT_CLICK_CLASS), [])
+  // The transition sets this class for a seamless hand-off; set it here too so
+  // direct loads invert the browser chrome, and undo it on the way out.
+  useEffect(() => {
+    document.documentElement.classList.add(DONT_CLICK_CLASS)
+    return () => document.documentElement.classList.remove(DONT_CLICK_CLASS)
+  }, [])
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center gap-10 px-6 bg-foreground text-background">
+    <div className="min-h-dvh flex flex-col items-center justify-center gap-10 px-6 bg-foreground text-background">
       <h1 className="font-serif text-4xl md:text-7xl tracking-tight text-center text-balance" aria-label={t.heading}>
         {t.heading.split(" ").map((word, w, words) => (
           // Words stay unbreakable so the per-letter spans still wrap like text.

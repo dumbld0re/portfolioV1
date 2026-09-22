@@ -27,7 +27,7 @@ export function ProjectsSection() {
                 key={i}
                 className="aspect-[4/3] rounded-lg border border-dashed border-border bg-card/40 flex items-center justify-center"
               >
-                <span className="font-mono text-label uppercase tracking-[0.3em] text-muted-foreground/60">
+                <span className="font-mono text-label uppercase tracking-[0.3em] text-muted-foreground">
                   {t.comingSoonLabel}
                 </span>
               </div>
@@ -42,7 +42,7 @@ export function ProjectsSection() {
                   )}
                   <div className="flex flex-wrap items-center gap-2">
                     {project.internalTool && (
-                      <span className="text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 border border-border bg-foreground/5 text-muted-foreground rounded">
+                      <span className="text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 border border-border bg-foreground/5 text-foreground/80 rounded">
                         {t.internalToolLabel}
                       </span>
                     )}

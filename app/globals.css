@@ -184,9 +184,10 @@ html.boring {
   --background: #fbf1c7;
   --foreground: #282828;
   --card: #f2e5bc;
-  --muted-foreground: #7c6f64;
+  /* Both darkened from the gruvbox defaults to clear WCAG AA (4.5:1) on the cream panel. */
+  --muted-foreground: #665c54;
   --border: #d5c4a1;
-  --primary: #b57614;
+  --primary: #9d5c0d;
 }
 
 /* Markdown post bodies (components/sections/post-section.tsx), styled to
@@ -350,6 +351,10 @@ html.boring {
   animation: page-fade-in 900ms ease-out both;
 }
 
+/* Invert the root too, not just <body>: mobile browsers paint the status bar,
+   toolbar and overscroll area from <html>, which otherwise shows the normal
+   background as a band above and below the page. */
+html.dont-click-inverted,
 html.dont-click-inverted body {
   background-color: var(--foreground);
 }

@@ -42,7 +42,6 @@ export function Header() {
             <Link
               href="/"
               className="font-mono text-sm md:text-base text-foreground/80 hover:text-foreground transition-colors flex items-center gap-3 flex-1 min-w-0"
-              aria-label="Navigate home"
             >
               <span className="font-bold text-base md:text-lg whitespace-nowrap">
                 dm
@@ -113,7 +112,7 @@ export function Header() {
               onClick={toggleLanguage}
               className="text-sm text-muted-foreground hover:text-foreground font-mono p-0 h-auto"
               aria-pressed={language === "en"}
-              aria-label={`Switch to ${language === "de" ? "English" : "German"}`}
+              aria-label={language === "de" ? "EN — switch to English" : "DE — switch to German"}
             >
               {language === "de" ? "EN" : "DE"}
             </Button>

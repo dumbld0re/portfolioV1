@@ -32,7 +32,7 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
         {showFooter && (
           <footer className="w-full px-6 py-6 text-center text-xs text-muted-foreground print:hidden space-y-1">
             <p>{copy.footer}</p>
-            <DontClickLink className="block text-muted-foreground/30 hover:text-muted-foreground transition-colors">
+            <DontClickLink className="block text-muted-foreground hover:text-foreground transition-colors">
               {copy.dontClickHere}
             </DontClickLink>
           </footer>

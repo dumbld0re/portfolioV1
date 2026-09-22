@@ -10,6 +10,7 @@ import { LanguageProvider } from "@/components/language-provider"
 import { ThemeColorSync } from "@/components/theme-color-sync"
 import { ThemeProvider } from "@/components/theme-provider"
 import { DEFAULT_LANGUAGE, LANGUAGE_COOKIE, isLanguage } from "@/lib/i18n"
+import { SITE_NAME, SITE_URL } from "@/lib/seo"
 import "./globals.css"
 
 // The type system: Gambarino (an expressive display serif) for headlines,
@@ -29,23 +30,42 @@ const cabinet = localFont({
 })
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" })
 
+const SITE_DESCRIPTION =
+  "Developer and quantitative finance student in Windhoek, Namibia — building fast, clean web interfaces with a soft spot for Linux and the terminal."
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.dannymiguel.com"),
-  title: "danny-miguel",
-  description:
-    "Developer and quantitative finance student in Windhoek, Namibia — building fast, clean web interfaces with a soft spot for Linux and the terminal.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: `${SITE_NAME} — Developer in Windhoek, Namibia`,
+    template: `%s — ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  creator: SITE_NAME,
+  keywords: [
+    "Danny-Miguel Mittelberger",
+    "web developer",
+    "freelance developer",
+    "Windhoek",
+    "Namibia",
+    "Next.js",
+    "React",
+    "quantitative finance",
+    "UNAM",
+  ],
+  alternates: { canonical: "/" },
+  robots: { index: true, follow: true },
   openGraph: {
-    title: "danny-miguel",
-    description:
-      "Developer and quantitative finance student in Windhoek, Namibia — building fast, clean web interfaces with a soft spot for Linux and the terminal.",
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
     url: "/",
+    siteName: SITE_NAME,
+    locale: "en_US",
     type: "website",
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "danny-miguel",
-    description: "Developer and quantitative finance student in Windhoek, Namibia.",
-  },
+  // title/description are left out so each page's own values carry through.
+  twitter: { card: "summary_large_image" },
   icons: {
     icon: [
       {
