@@ -28,8 +28,8 @@ export function HomeSection() {
     <>
       <GhostName text={t.name.split(/\s/)[0]} />
 
-      <section className="relative min-h-[calc(100svh-9rem)] flex items-center px-6">
-        <div className="relative max-w-3xl w-full mx-auto space-y-6 py-16">
+      <section className="relative flex px-6 md:min-h-[calc(100svh-9rem)] md:items-center">
+        <div className="relative max-w-3xl w-full mx-auto space-y-6 pt-12 pb-4 md:py-16">
           <div className="space-y-4">
             <h1
               className={cn("font-serif text-display font-semibold tracking-tight text-balance", reveal)}
