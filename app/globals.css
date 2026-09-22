@@ -154,6 +154,8 @@
 }
 
 html {
+  /* Safari tints its status bar and overscroll area from the root background. */
+  background-color: var(--background);
   transition: filter 300ms ease-out;
 }
 

@@ -1,5 +1,5 @@
 import type React from "react"
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { cookies } from "next/headers"
 import localFont from "next/font/local"
 import { Geist_Mono } from "next/font/google"
@@ -7,6 +7,7 @@ import { Analytics } from "@vercel/analytics/next"
 
 import { CustomCursor } from "@/components/custom-cursor"
 import { LanguageProvider } from "@/components/language-provider"
+import { ThemeColorSync } from "@/components/theme-color-sync"
 import { ThemeProvider } from "@/components/theme-provider"
 import { DEFAULT_LANGUAGE, LANGUAGE_COOKIE, isLanguage } from "@/lib/i18n"
 import "./globals.css"
@@ -29,7 +30,7 @@ const cabinet = localFont({
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" })
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://dannymiguel.com"),
+  metadataBase: new URL("https://www.dannymiguel.com"),
   title: "danny-miguel",
   description:
     "Developer and quantitative finance student in Windhoek, Namibia — building fast, clean web interfaces with a soft spot for Linux and the terminal.",
@@ -37,6 +38,7 @@ export const metadata: Metadata = {
     title: "danny-miguel",
     description:
       "Developer and quantitative finance student in Windhoek, Namibia — building fast, clean web interfaces with a soft spot for Linux and the terminal.",
+    url: "/",
     type: "website",
   },
   twitter: {
@@ -63,6 +65,15 @@ export const metadata: Metadata = {
   },
 }
 
+// Initial browser-chrome color by OS scheme; ThemeColorSync corrects it to the
+// site's chosen theme after hydration. Values mirror --background in globals.css.
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#282828" },
+  ],
+}
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -77,6 +88,7 @@ export default async function RootLayout({
       <body className={`${gambarino.variable} ${cabinet.variable} ${geistMono.variable} font-sans antialiased`}>
         <LanguageProvider defaultLanguage={defaultLanguage}>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+            <ThemeColorSync />
             {children}
           </ThemeProvider>
           <Analytics />
