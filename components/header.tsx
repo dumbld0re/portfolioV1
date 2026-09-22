@@ -30,7 +30,7 @@ export function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-30 w-full px-6 py-6 md:px-12 lg:px-16 bg-background/80 backdrop-blur-sm border-b border-border/40 print:hidden">
+    <header className="relative md:sticky md:top-0 z-30 w-full px-6 py-6 md:px-12 lg:px-16 bg-background/80 backdrop-blur-sm border-b border-border/40 print:hidden">
       <nav
         className={cn(
           "flex flex-col md:flex-row md:items-center md:justify-between gap-4 max-w-7xl mx-auto",
