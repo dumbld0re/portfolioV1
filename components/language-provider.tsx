@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState, startTransition, type ReactNode } from "react"
+import { createContext, useContext, useEffect, useState, startTransition, type ReactNode } from "react"
 
 import { DEFAULT_LANGUAGE, LANGUAGE_COOKIE, type Language } from "@/lib/i18n"
 
@@ -19,6 +19,12 @@ type LanguageProviderProps = {
 
 export function LanguageProvider({ children, defaultLanguage = DEFAULT_LANGUAGE }: LanguageProviderProps) {
   const [language, setLanguageState] = useState<Language>(defaultLanguage)
+
+  // Keep <html lang> in step with the toggle so screen readers switch
+  // pronunciation and browsers stop offering to translate German as English.
+  useEffect(() => {
+    document.documentElement.lang = language
+  }, [language])
 
   const setLanguage = (next: Language) => {
     startTransition(() => {

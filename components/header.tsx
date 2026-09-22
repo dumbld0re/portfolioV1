@@ -99,7 +99,7 @@ export function Header() {
             <Link
               href="/posts"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              aria-current={pathname === "/posts" ? "page" : undefined}
+              aria-current={pathname.startsWith("/posts") ? "page" : undefined}
             >
               {labels.nav.posts}
             </Link>
