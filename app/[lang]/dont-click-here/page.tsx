@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Fragment, useEffect, useLayoutEffect, useRef, type MouseEvent } from "react"
+import { Fragment, useLayoutEffect, type MouseEvent } from "react"
 
 import { elementCenter, useCircleNavigate } from "@/components/circle-transition"
 import { useLanguage } from "@/components/language-provider"
@@ -11,15 +11,11 @@ const copy = {
     heading: "ich sagte doch, nicht klicken.",
     aside: "(ehrlich gesagt wollte ich nur ein bisschen angeben.)",
     back: "zurück",
-    status: "neugier: bestätigt",
-    marquee: "nicht klicken",
   },
   en: {
     heading: "i said dont click here, silly.",
     aside: "(honestly, i just wanted to show off a little.)",
     back: "go back",
-    status: "curiosity: confirmed",
-    marquee: "dont click here",
   },
 }
 
@@ -47,13 +43,12 @@ export default function DontClickHerePage() {
 
   return (
     <main className="fixed inset-0 z-40 flex flex-col overflow-hidden bg-(--egg-bg) text-(--egg-fg)">
-      <div
-        className="flex justify-between gap-4 whitespace-nowrap px-6 pt-[max(1.5rem,env(safe-area-inset-top))] font-mono text-label uppercase tracking-[0.2em] text-(--egg-fg)/80 md:px-12 motion-safe:animate-fade-up"
+      <p
+        className="px-6 pt-[max(1.5rem,env(safe-area-inset-top))] font-mono text-label uppercase tracking-[0.2em] text-(--egg-fg)/80 md:px-12 motion-safe:animate-fade-up"
         style={{ animationDelay: `${restDelay}ms` }}
       >
-        <span>~/dont-click-here</span>
-        <span className="hidden sm:inline">{t.status}</span>
-      </div>
+        ~/dont-click-here
+      </p>
 
       <div className="flex flex-1 flex-col items-center justify-center gap-10 px-6">
         <h1
@@ -90,53 +85,32 @@ export default function DontClickHerePage() {
         </div>
       </div>
 
-      <Marquee text={t.marquee} delay={restDelay} />
+      {/* Balances the path label so the content stays optically centered. */}
+      <div aria-hidden="true" className="h-[max(2.5rem,calc(env(safe-area-inset-bottom)+1rem))]" />
     </main>
   )
 }
 
 function BackButton({ href, label }: { href: string; label: string }) {
-  const ref = useRef<HTMLAnchorElement>(null)
   const navigate = useCircleNavigate()
-
-  // Magnetic pull toward the pointer — fine pointers only, never with reduced motion.
-  useEffect(() => {
-    const el = ref.current
-    if (!el || !window.matchMedia("(pointer: fine) and (prefers-reduced-motion: no-preference)").matches) return
-
-    const onMove = (event: PointerEvent) => {
-      const rect = el.getBoundingClientRect()
-      const dx = event.clientX - (rect.left + rect.width / 2)
-      const dy = event.clientY - (rect.top + rect.height / 2)
-      el.style.transform = `translate3d(${dx * 0.3}px, ${dy * 0.4}px, 0)`
-    }
-    const onLeave = () => {
-      el.style.transform = ""
-    }
-
-    el.addEventListener("pointermove", onMove)
-    el.addEventListener("pointerleave", onLeave)
-    return () => {
-      el.removeEventListener("pointermove", onMove)
-      el.removeEventListener("pointerleave", onLeave)
-    }
-  }, [])
 
   const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return
     event.preventDefault()
-    // Shrink the page back into the button it was left through.
+    // Shrink the page back into the link it was left through.
     navigate(href, elementCenter(event.currentTarget), "out")
   }
 
   return (
     <Link
-      ref={ref}
       href={href}
       onClick={handleClick}
-      className="group inline-flex items-center gap-3 rounded-full border border-(--egg-fg)/30 px-7 py-4 font-mono text-xs uppercase tracking-[0.25em] transition-[transform,background-color,color,border-color] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-(--egg-fg) hover:bg-(--egg-fg) hover:text-(--egg-bg) focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--egg-fg)"
+      className="group inline-flex items-center gap-3 py-2 font-mono text-xs uppercase tracking-[0.25em] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--egg-fg)"
     >
-      <span aria-hidden="true" className="transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-x-1">
+      <span
+        aria-hidden="true"
+        className="transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-x-1.5"
+      >
         ←
       </span>
       {/* Text roll: the label slides up and an identical copy follows it in. */}
@@ -152,30 +126,5 @@ function BackButton({ href, label }: { href: string; label: string }) {
         </span>
       </span>
     </Link>
-  )
-}
-
-function Marquee({ text, delay }: { text: string; delay: number }) {
-  const items = Array.from({ length: 8 }, () => text)
-
-  return (
-    <div
-      aria-hidden="true"
-      className="select-none overflow-hidden pb-[max(1.5rem,env(safe-area-inset-bottom))] motion-safe:animate-fade-up"
-      style={{ animationDelay: `${delay + 200}ms` }}
-    >
-      {/* Two identical halves; sliding by -50% loops seamlessly. */}
-      <div className="flex w-max motion-safe:animate-marquee">
-        {[0, 1].map((half) => (
-          <div key={half} className="flex shrink-0">
-            {items.map((item, i) => (
-              <span key={i} className="whitespace-nowrap px-6 font-serif text-3xl text-(--egg-fg)/15 md:text-5xl">
-                {item} <span className="font-mono text-base align-middle">✳</span>
-              </span>
-            ))}
-          </div>
-        ))}
-      </div>
-    </div>
   )
 }

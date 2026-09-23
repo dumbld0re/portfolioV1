@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import { MapPin } from "lucide-react"
+import { ArrowRight, MapPin } from "lucide-react"
 
 import { homeContent } from "@/content/home"
 import { useLanguage } from "@/components/language-provider"
@@ -29,10 +29,10 @@ export function HomeSection() {
       <GhostName text={t.name.split(/\s/)[0]} />
 
       <section className="relative flex px-6 md:min-h-[calc(100svh-9rem)] md:items-center">
-        <div className="relative max-w-3xl w-full mx-auto space-y-6 pt-12 pb-4 md:py-16">
+        <div className="relative max-w-4xl w-full mx-auto space-y-6 pt-12 pb-4 md:py-16">
           <div className="space-y-4">
             <h1
-              className={cn("font-serif text-display font-semibold tracking-tight text-balance", reveal)}
+              className={cn("max-w-3xl font-serif text-display font-semibold tracking-tight text-balance", reveal)}
               style={delay("heroName")}
             >
               {t.name}
@@ -64,22 +64,27 @@ export function HomeSection() {
 
       <section className="px-6 py-20 md:py-28">
         <div className="max-w-4xl mx-auto space-y-10">
-          <h2 className="font-mono text-label uppercase tracking-[0.3em] text-muted-foreground">
+          <h2 data-reveal className="font-mono text-label uppercase tracking-[0.3em] text-muted-foreground">
             <span className="text-primary">001</span> / {t.introLabel}
           </h2>
 
-          <p className="font-serif text-2xl md:text-3xl leading-snug font-medium max-w-2xl text-balance">{t.intro}</p>
+          <p data-reveal className="font-serif text-2xl md:text-3xl leading-snug font-medium max-w-2xl text-balance">{t.intro}</p>
 
-          <div className="md:grid md:grid-cols-5 md:gap-8">
+          <div data-reveal className="md:grid md:grid-cols-5 md:gap-8">
             <div className="hidden md:block md:col-span-2" />
             <div className="md:col-span-3 border-l border-border pl-6 text-muted-foreground leading-relaxed">
               <p>{t.description}</p>
             </div>
           </div>
 
-          <Button asChild size="lg">
-            <Link href="#contact">{t.cta}</Link>
-          </Button>
+          <div data-reveal>
+            <Button asChild size="lg" className="group/cta">
+              <Link href="#contact">
+                {t.cta}
+                <ArrowRight className="size-4 transition-transform duration-300 ease-out group-hover/cta:translate-x-1" />
+              </Link>
+            </Button>
+          </div>
         </div>
       </section>
     </>

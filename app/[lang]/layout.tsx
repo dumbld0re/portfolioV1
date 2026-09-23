@@ -9,6 +9,7 @@ import { BoringClassSync } from "@/components/boring-toggle"
 import { CircleTransitionSignal } from "@/components/circle-transition"
 import { CustomCursor } from "@/components/custom-cursor"
 import { LanguageProvider } from "@/components/language-provider"
+import { ScrollReveal } from "@/components/scroll-reveal"
 import { ThemeColorSync } from "@/components/theme-color-sync"
 import { ThemeProvider } from "@/components/theme-provider"
 import { DEFAULT_LANGUAGE, LANGUAGES, isLanguage, localizePath } from "@/lib/i18n"
@@ -115,6 +116,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
             <BoringClassSync />
             {children}
             <CircleTransitionSignal />
+            <ScrollReveal />
           </ThemeProvider>
           <Analytics />
         </LanguageProvider>

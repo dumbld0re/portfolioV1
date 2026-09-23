@@ -4,6 +4,7 @@ import Link from "next/link"
 
 import { postsContent } from "@/content/posts"
 import { useLanguage } from "@/components/language-provider"
+import { formatPostDate } from "@/lib/format-date"
 import type { PostMeta } from "@/lib/posts"
 
 export function PostsSection({ posts }: { posts: PostMeta[] }) {
@@ -48,8 +49,18 @@ export function PostsSection({ posts }: { posts: PostMeta[] }) {
               <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                 <h2 className="font-serif text-xl font-semibold tracking-tight transition-colors group-hover:text-primary">
                   {post.title}
+                  <span
+                    aria-hidden="true"
+                    className="ml-2 inline-block -translate-x-2 opacity-0 transition-[opacity,transform] duration-300 ease-out group-hover:translate-x-0 group-hover:opacity-100"
+                  >
+                    →
+                  </span>
                 </h2>
-                {post.date && <span className="font-mono text-sm text-muted-foreground shrink-0">{post.date}</span>}
+                {post.date && (
+                  <time dateTime={post.date} className="font-mono text-sm text-muted-foreground shrink-0">
+                    {formatPostDate(post.date, language)}
+                  </time>
+                )}
               </div>
               {post.summary && <p className="text-muted-foreground leading-relaxed">{post.summary}</p>}
             </Link>

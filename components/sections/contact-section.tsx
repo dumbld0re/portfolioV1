@@ -14,7 +14,9 @@ export function ContactSection() {
   const copy = siteCopy[language]
   const whatsapp = `https://wa.me/${t.phone.replace(/[^\d]/g, "")}`
 
-  const linkClass = "text-primary transition-opacity hover:opacity-60"
+  // Underline sweeps in from the left on hover.
+  const linkClass =
+    "relative text-primary after:absolute after:inset-x-0 after:-bottom-1 after:h-px after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100"
   const divider = (
     <span className="text-muted-foreground/40" aria-hidden="true">
       /
@@ -28,11 +30,11 @@ export function ContactSection() {
           <span className="text-primary">004</span> / {t.title}
         </h2>
 
-        <h3 className="mt-8 max-w-2xl font-sans text-4xl md:text-6xl font-bold tracking-tight text-foreground">
+        <h3 data-reveal className="mt-8 max-w-2xl font-sans text-4xl md:text-6xl font-bold tracking-tight text-foreground">
           {t.heading}
         </h3>
 
-        <p className="mt-6 max-w-2xl text-lg md:text-xl leading-relaxed text-muted-foreground">
+        <p data-reveal className="mt-6 max-w-2xl text-lg md:text-xl leading-relaxed text-muted-foreground">
           {t.blurbBefore}{" "}
           <a href={`mailto:${t.email}`} className="text-primary underline decoration-primary/40 underline-offset-4 transition-colors hover:decoration-primary break-words">
             {t.email}
@@ -40,7 +42,7 @@ export function ContactSection() {
           {t.blurbAfter}
         </p>
 
-        <div className="mt-10 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-sm uppercase tracking-[0.15em]">
+        <div data-reveal className="mt-10 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-sm uppercase tracking-[0.15em]">
           <Link href={localize("/cv")} className={linkClass}>
             {copy.nav.cv}
           </Link>
@@ -57,9 +59,9 @@ export function ContactSection() {
         <button
           type="button"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="mt-8 inline-flex items-center gap-2 font-mono text-sm uppercase tracking-[0.15em] text-primary transition-opacity hover:opacity-60"
+          className="group mt-8 inline-flex items-center gap-2 font-mono text-sm uppercase tracking-[0.15em] text-primary"
         >
-          <ArrowUp className="size-4" />
+          <ArrowUp className="size-4 transition-transform duration-300 ease-out group-hover:-translate-y-1" />
           {t.backToTop}
         </button>
 
