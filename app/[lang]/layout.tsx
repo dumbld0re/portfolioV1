@@ -5,6 +5,7 @@ import localFont from "next/font/local"
 import { Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 
+import { BoringClassSync } from "@/components/boring-toggle"
 import { CustomCursor } from "@/components/custom-cursor"
 import { LanguageProvider } from "@/components/language-provider"
 import { ThemeColorSync } from "@/components/theme-color-sync"
@@ -110,6 +111,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
         <LanguageProvider language={lang}>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
             <ThemeColorSync />
+            <BoringClassSync />
             {children}
           </ThemeProvider>
           <Analytics />

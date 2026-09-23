@@ -5,12 +5,20 @@ import { useEffect, useSyncExternalStore } from "react"
 import { cn } from "@/lib/utils"
 import { getServerSnapshot, getSnapshot, setBoring, subscribe } from "@/lib/boring-store"
 
-export function BoringToggle() {
+// Mounted in the root layout rather than inside the toggle, so boring mode also
+// applies on pages without the header (dont-click-here) and on direct loads.
+export function BoringClassSync() {
   const boring = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
 
   useEffect(() => {
     document.documentElement.classList.toggle("boring", boring)
   }, [boring])
+
+  return null
+}
+
+export function BoringToggle() {
+  const boring = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
 
   return (
     <button

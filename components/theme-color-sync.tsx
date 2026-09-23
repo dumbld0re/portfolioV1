@@ -1,28 +1,28 @@
 "use client"
 
 import { useEffect } from "react"
-import { usePathname } from "next/navigation"
-import { useTheme } from "next-themes"
-
-import { stripLanguage } from "@/lib/i18n"
 
 // Keeps the browser chrome (iOS status bar / Android toolbar) the same color as
-// the page. The static metas in layout.tsx follow the OS scheme; this corrects
-// them when the site's own theme toggle disagrees with the OS.
+// the page. The static metas in layout.tsx follow the OS scheme; this mirrors
+// <html>'s actual background whenever its classes change — the theme (dark),
+// boring mode's grayscale and the inverted dont-click-here page all live there.
 export function ThemeColorSync() {
-  const { resolvedTheme } = useTheme()
-  const pathname = usePathname()
-  // The dont-click-here page is inverted, so the chrome takes the foreground color.
-  const token = stripLanguage(pathname) === "/dont-click-here" ? "--foreground" : "--background"
-
   useEffect(() => {
-    if (!resolvedTheme) return
-    const color = getComputedStyle(document.documentElement).getPropertyValue(token).trim()
-    if (!color) return
-    document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]').forEach((meta) => {
-      meta.content = color
-    })
-  }, [resolvedTheme, token])
+    const root = document.documentElement
+
+    const sync = () => {
+      const color = getComputedStyle(root).backgroundColor
+      if (!color) return
+      document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]').forEach((meta) => {
+        meta.content = color
+      })
+    }
+
+    sync()
+    const observer = new MutationObserver(sync)
+    observer.observe(root, { attributes: true, attributeFilter: ["class"] })
+    return () => observer.disconnect()
+  }, [])
 
   return null
 }

@@ -159,8 +159,15 @@ html {
   transition: filter 300ms ease-out;
 }
 
+/* The filter greys the page but not the root background that browsers paint
+   behind it and use for their bars, so that gets the same grayscale applied
+   by hand (sRGB luminance weights, matching grayscale()). */
 html.boring {
   filter: grayscale(1);
+  background-color: rgb(
+    from var(--background) calc(0.2126 * r + 0.7152 * g + 0.0722 * b) calc(0.2126 * r + 0.7152 * g + 0.0722 * b)
+      calc(0.2126 * r + 0.7152 * g + 0.0722 * b)
+  );
 }
 
 /* Two-tone contact footer (components/sections/contact-section.tsx): a darker
@@ -357,4 +364,11 @@ html.boring {
 html.dont-click-inverted,
 html.dont-click-inverted body {
   background-color: var(--foreground);
+}
+
+html.boring.dont-click-inverted {
+  background-color: rgb(
+    from var(--foreground) calc(0.2126 * r + 0.7152 * g + 0.0722 * b) calc(0.2126 * r + 0.7152 * g + 0.0722 * b)
+      calc(0.2126 * r + 0.7152 * g + 0.0722 * b)
+  );
 }
