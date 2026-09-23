@@ -7,13 +7,10 @@ export const metadata: Metadata = {
   robots: { index: false, follow: true },
 }
 
-// Pre-hydration chrome color for the inverted page (mirrors --foreground);
-// ThemeColorSync corrects it to the site's chosen theme afterwards.
+// Pre-hydration chrome color for the page (mirrors --egg-bg in globals.css);
+// ThemeColorSync takes over after hydration.
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#1c1c1c" },
-    { media: "(prefers-color-scheme: dark)", color: "#ebdbb2" },
-  ],
+  themeColor: "#d79921",
 }
 
 export default function DontClickHereLayout({ children }: { children: React.ReactNode }) {

@@ -6,6 +6,7 @@ import { Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 
 import { BoringClassSync } from "@/components/boring-toggle"
+import { CircleTransitionSignal } from "@/components/circle-transition"
 import { CustomCursor } from "@/components/custom-cursor"
 import { LanguageProvider } from "@/components/language-provider"
 import { ThemeColorSync } from "@/components/theme-color-sync"
@@ -113,6 +114,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
             <ThemeColorSync />
             <BoringClassSync />
             {children}
+            <CircleTransitionSignal />
           </ThemeProvider>
           <Analytics />
         </LanguageProvider>
