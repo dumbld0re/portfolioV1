@@ -6,16 +6,18 @@ import { useEffect, useState } from "react"
 import { FileText, Github, Mail } from "lucide-react"
 
 import { siteCopy } from "@/content/site"
-import { useLanguage } from "@/components/language-provider"
+import { rememberLanguage, useLanguage } from "@/components/language-provider"
 import { Button } from "@/components/ui/button"
 import { BoringToggle } from "@/components/boring-toggle"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { localizePath, stripLanguage } from "@/lib/i18n"
 import { hasBootPlayed, markBootPlayed } from "@/lib/motion"
 import { cn } from "@/lib/utils"
 
 export function Header() {
-  const pathname = usePathname()
-  const { language, toggleLanguage } = useLanguage()
+  const { language, localize } = useLanguage()
+  const pathname = stripLanguage(usePathname())
+  const otherLanguage = language === "de" ? "en" : "de"
   const labels = siteCopy[language]
   const [boot] = useState(() => !hasBootPlayed())
 
@@ -40,7 +42,7 @@ export function Header() {
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-3">
             <Link
-              href="/"
+              href={localize("/")}
               className="font-mono text-sm md:text-base text-foreground/80 hover:text-foreground transition-colors flex items-center gap-3 flex-1 min-w-0"
             >
               <span className="font-bold text-base md:text-lg whitespace-nowrap">
@@ -80,24 +82,24 @@ export function Header() {
 
         <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 md:justify-start">
-            <Link href="/#projects" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <Link href={localize("/#projects")} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               {labels.nav.projects}
             </Link>
-            <Link href="/#experience" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <Link href={localize("/#experience")} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               {labels.nav.experience}
             </Link>
-            <Link href="/#contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <Link href={localize("/#contact")} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               {labels.nav.contact}
             </Link>
             <Link
-              href="/cv"
+              href={localize("/cv")}
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               aria-current={pathname === "/cv" ? "page" : undefined}
             >
               {labels.nav.cv}
             </Link>
             <Link
-              href="/posts"
+              href={localize("/posts")}
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               aria-current={pathname.startsWith("/posts") ? "page" : undefined}
             >
@@ -106,16 +108,18 @@ export function Header() {
             <span className="text-muted-foreground/50" aria-hidden="true">
               |
             </span>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={toggleLanguage}
-              className="text-sm text-muted-foreground hover:text-foreground font-mono p-0 h-auto"
-              aria-pressed={language === "en"}
-              aria-label={language === "de" ? "EN — switch to English" : "DE — switch to German"}
+            <Link
+              href={localizePath(otherLanguage, pathname)}
+              onClick={() => rememberLanguage(otherLanguage)}
+              // A prefetch would run before the click stores the cookie, and
+              // proxy.ts could answer it with a redirect back to this language.
+              prefetch={false}
+              hrefLang={otherLanguage}
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors font-mono"
+              aria-label={otherLanguage === "en" ? "EN — switch to English" : "DE — auf Deutsch wechseln"}
             >
-              {language === "de" ? "EN" : "DE"}
-            </Button>
+              {otherLanguage.toUpperCase()}
+            </Link>
             <BoringToggle />
             <ThemeToggle />
           </div>

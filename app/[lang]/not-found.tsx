@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
-import Link from "next/link"
 
 import { LayoutWrapper } from "@/components/layout-wrapper"
+import { NotFoundHomeLink } from "@/components/not-found-home-link"
 
 export const metadata: Metadata = {
   title: "404",
@@ -22,12 +22,7 @@ export default function NotFound() {
               ▍
             </span>
           </p>
-          <Link
-            href="/"
-            className="inline-block font-mono text-sm uppercase tracking-[0.2em] text-primary transition-opacity hover:opacity-60"
-          >
-            cd ~
-          </Link>
+          <NotFoundHomeLink />
         </div>
       </main>
     </LayoutWrapper>

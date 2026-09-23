@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation"
 import { useEffect, useState, type MouseEvent, type ReactNode } from "react"
 import { createPortal } from "react-dom"
 
+import { useLanguage } from "@/components/language-provider"
 import { useMediaQuery } from "@/lib/use-media-query"
 
-const HREF = "/dont-click-here"
 const OVERLAY_TEXT = "you clicked it."
 
 // Timeline (ms) of the overlay before handing off to the route. The wipe
@@ -23,13 +23,14 @@ export const DONT_CLICK_CLASS = "dont-click-inverted"
 
 export function DontClickLink({ className, children }: { className?: string; children: ReactNode }) {
   const router = useRouter()
+  const href = useLanguage().localize("/dont-click-here")
   const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)")
   const [origin, setOrigin] = useState<{ x: number; y: number } | null>(null)
   const [textOut, setTextOut] = useState(false)
 
   useEffect(() => {
-    router.prefetch(HREF)
-  }, [router])
+    router.prefetch(href)
+  }, [router, href])
 
   useEffect(() => {
     if (!origin) return
@@ -37,11 +38,11 @@ export function DontClickLink({ className, children }: { className?: string; chi
       setTimeout(() => setTextOut(true), TEXT_OUT_MS),
       setTimeout(() => {
         document.documentElement.classList.add(DONT_CLICK_CLASS)
-        router.push(HREF)
+        router.push(href)
       }, NAVIGATE_MS),
     ]
     return () => timers.forEach(clearTimeout)
-  }, [origin, router])
+  }, [origin, router, href])
 
   const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
     if (reducedMotion || origin) return
@@ -52,7 +53,7 @@ export function DontClickLink({ className, children }: { className?: string; chi
 
   return (
     <>
-      <Link href={HREF} onClick={handleClick} className={className}>
+      <Link href={href} onClick={handleClick} className={className}>
         {children}
       </Link>
       {origin &&

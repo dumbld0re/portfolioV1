@@ -7,7 +7,7 @@ import { useLanguage } from "@/components/language-provider"
 import type { PostMeta } from "@/lib/posts"
 
 export function PostsSection({ posts }: { posts: PostMeta[] }) {
-  const { language } = useLanguage()
+  const { language, localize } = useLanguage()
   const t = postsContent[language]
 
   if (posts.length === 0) {
@@ -41,7 +41,7 @@ export function PostsSection({ posts }: { posts: PostMeta[] }) {
           {posts.map((post, i) => (
             <Link
               key={post.slug}
-              href={`/posts/${post.slug}`}
+              href={localize(`/posts/${post.slug}`)}
               className="group block space-y-2 border-b border-border pb-8 last:border-0 motion-safe:animate-reveal-up"
               style={{ animationDelay: `${100 + i * 60}ms` }}
             >

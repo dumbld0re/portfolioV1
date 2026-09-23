@@ -22,7 +22,7 @@ const copy = {
 const LETTER_STAGGER_MS = 40
 
 export default function DontClickHerePage() {
-  const { language } = useLanguage()
+  const { language, localize } = useLanguage()
   const t = copy[language]
   const asideDelay = t.heading.length * LETTER_STAGGER_MS + 600
 
@@ -61,7 +61,7 @@ export default function DontClickHerePage() {
         style={{ animationDelay: `${asideDelay}ms` }}
       >
         <p className="text-center">{t.aside}</p>
-        <Link href="/" className="uppercase tracking-[0.2em] text-xs transition-opacity hover:opacity-60">
+        <Link href={localize("/")} className="uppercase tracking-[0.2em] text-xs transition-opacity hover:opacity-60">
           ← {t.back}
         </Link>
       </div>

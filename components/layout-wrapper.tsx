@@ -8,6 +8,7 @@ import { DontClickLink } from "@/components/dont-click-link"
 import { Header } from "@/components/header"
 import { useLanguage } from "@/components/language-provider"
 import { siteCopy } from "@/content/site"
+import { stripLanguage } from "@/lib/i18n"
 
 interface LayoutWrapperProps {
   children: React.ReactNode
@@ -21,7 +22,7 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
   // The home page ends with the ContactSection, which carries its own
   // statement-footer (copyright + back to top). The shared footer below would
   // duplicate it there, so it only renders on the other routes.
-  const showFooter = pathname !== "/"
+  const showFooter = stripLanguage(pathname) !== "/"
 
   return (
     <div className="relative min-h-screen flex flex-col bg-background">

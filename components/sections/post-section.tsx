@@ -7,7 +7,7 @@ import { useLanguage } from "@/components/language-provider"
 import type { Post } from "@/lib/posts"
 
 export function PostSection({ post }: { post: Post }) {
-  const { language } = useLanguage()
+  const { language, localize } = useLanguage()
   const labels = siteCopy[language]
 
   return (
@@ -15,7 +15,7 @@ export function PostSection({ post }: { post: Post }) {
       <article className="max-w-3xl mx-auto space-y-8">
         <div className="space-y-4">
           <Link
-            href="/posts"
+            href={localize("/posts")}
             className="font-mono text-label uppercase tracking-[0.3em] text-muted-foreground transition-colors hover:text-foreground"
           >
             ← {labels.nav.posts}

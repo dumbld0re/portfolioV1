@@ -1,52 +1,27 @@
 "use client"
 
-import { createContext, useContext, useEffect, useState, startTransition, type ReactNode } from "react"
+import { createContext, useContext, type ReactNode } from "react"
 
-import { DEFAULT_LANGUAGE, LANGUAGE_COOKIE, type Language } from "@/lib/i18n"
+import { LANGUAGE_COOKIE, localizePath, type Language } from "@/lib/i18n"
 
 type LanguageContextValue = {
   language: Language
-  setLanguage: (next: Language) => void
-  toggleLanguage: () => void
+  /** Prefixes an internal path for the current language ("/cv" -> "/de/cv"). */
+  localize: (path: string) => string
 }
 
 const LanguageContext = createContext<LanguageContextValue | null>(null)
 
 type LanguageProviderProps = {
   children: ReactNode
-  defaultLanguage?: Language
+  language: Language
 }
 
-export function LanguageProvider({ children, defaultLanguage = DEFAULT_LANGUAGE }: LanguageProviderProps) {
-  const [language, setLanguageState] = useState<Language>(defaultLanguage)
-
-  // Keep <html lang> in step with the toggle so screen readers switch
-  // pronunciation and browsers stop offering to translate German as English.
-  useEffect(() => {
-    document.documentElement.lang = language
-  }, [language])
-
-  const setLanguage = (next: Language) => {
-    startTransition(() => {
-      setLanguageState(next)
-      if (typeof document !== "undefined") {
-        document.cookie = `${LANGUAGE_COOKIE}=${next};path=/;max-age=${60 * 60 * 24 * 365}`
-      }
-    })
-  }
-
-  const toggleLanguage = () => {
-    setLanguage(language === "de" ? "en" : "de")
-  }
-
+// The language comes from the URL (app/[lang]); this only hands it down to the
+// client sections along with a helper for building links in that language.
+export function LanguageProvider({ children, language }: LanguageProviderProps) {
   return (
-    <LanguageContext.Provider
-      value={{
-        language,
-        setLanguage,
-        toggleLanguage,
-      }}
-    >
+    <LanguageContext.Provider value={{ language, localize: (path) => localizePath(language, path) }}>
       {children}
     </LanguageContext.Provider>
   )
@@ -62,3 +37,7 @@ export function useLanguage() {
   return context
 }
 
+/** Remembers an explicit language choice so proxy.ts stops redirecting by browser language. */
+export function rememberLanguage(language: Language) {
+  document.cookie = `${LANGUAGE_COOKIE}=${language};path=/;max-age=${60 * 60 * 24 * 365};samesite=lax`
+}

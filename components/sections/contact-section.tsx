@@ -9,7 +9,7 @@ import { DontClickLink } from "@/components/dont-click-link"
 import { useLanguage } from "@/components/language-provider"
 
 export function ContactSection() {
-  const { language } = useLanguage()
+  const { language, localize } = useLanguage()
   const t = contactContent[language]
   const copy = siteCopy[language]
   const whatsapp = `https://wa.me/${t.phone.replace(/[^\d]/g, "")}`
@@ -41,7 +41,7 @@ export function ContactSection() {
         </p>
 
         <div className="mt-10 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-sm uppercase tracking-[0.15em]">
-          <Link href="/cv" className={linkClass}>
+          <Link href={localize("/cv")} className={linkClass}>
             {copy.nav.cv}
           </Link>
           {divider}
