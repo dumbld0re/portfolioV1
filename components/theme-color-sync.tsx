@@ -12,7 +12,8 @@ export function ThemeColorSync() {
 
     const sync = () => {
       const color = getComputedStyle(root).backgroundColor
-      if (!color) return
+      // A transparent value would make browsers fall back to white bars.
+      if (!color || color === "transparent" || color === "rgba(0, 0, 0, 0)") return
       document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]').forEach((meta) => {
         meta.content = color
       })

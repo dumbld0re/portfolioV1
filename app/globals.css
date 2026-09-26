@@ -164,15 +164,12 @@ html {
   transition: filter 300ms ease-out;
 }
 
-/* The filter greys the page but not the root background that browsers paint
-   behind it and use for their bars, so that gets the same grayscale applied
-   by hand (sRGB luminance weights, matching grayscale()). */
+/* Boring mode greys the rendered page, but browsers tint their bars from the
+   computed colors of the root, body and edge-pinned elements, which a filter
+   doesn't touch. The theme backgrounds are already neutral grey, so only
+   colored surfaces need a grey stand-in token (see --egg-bg below). */
 html.boring {
   filter: grayscale(1);
-  background-color: rgb(
-    from var(--background) calc(0.2126 * r + 0.7152 * g + 0.0722 * b) calc(0.2126 * r + 0.7152 * g + 0.0722 * b)
-      calc(0.2126 * r + 0.7152 * g + 0.0722 * b)
-  );
 }
 
 /* Scroll reveal (components/scroll-reveal.tsx). Only elements below the fold
@@ -453,9 +450,8 @@ html.dont-click-active body {
   background-color: var(--egg-bg);
 }
 
-html.boring.dont-click-active {
-  background-color: rgb(
-    from var(--egg-bg) calc(0.2126 * r + 0.7152 * g + 0.0722 * b) calc(0.2126 * r + 0.7152 * g + 0.0722 * b)
-      calc(0.2126 * r + 0.7152 * g + 0.0722 * b)
-  );
+/* Precomputed grayscale of --egg-bg (sRGB luminance weights, matching
+   grayscale()) so the bars follow boring mode too. */
+html.boring {
+  --egg-bg: #9e9e9e;
 }
