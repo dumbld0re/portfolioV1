@@ -57,30 +57,26 @@ export function AsciiBackground({ opacity = 0.1, cellSize = 16, className }: Asc
     tile.style.backgroundImage = `url(${canvas.toDataURL()})`
   }, [cellSize])
 
-  // Safari 26 tints its bars from the background-color of fixed elements at
-  // the viewport edges, and this layer spans both. Left transparent, the tint
-  // came down to chance (often white), so the fixed shell carries the solid
-  // page background; the faded glyphs live in an inner layer, whose opacity
-  // and mask Safari doesn't read. Page content sits above it at z-10.
+  // Absolute rather than fixed, so the glyphs scroll with the page: Safari 26
+  // tints its bars from fixed elements at the viewport edges in place of the
+  // body background, and doesn't repaint that tint when their color changes,
+  // leaving the bars stuck on the previous theme. Without one it follows the
+  // body live. Page content sits above this layer at z-10.
   return (
     <div
+      ref={containerRef}
       aria-hidden="true"
-      className={cn("fixed inset-0 pointer-events-none print:hidden bg-background", className)}
+      className={cn("absolute inset-0 overflow-hidden pointer-events-none print:hidden text-foreground", className)}
+      style={{ opacity }}
     >
       <div
-        ref={containerRef}
-        className="absolute inset-0 overflow-hidden text-foreground [mask-image:radial-gradient(ellipse_130%_100%_at_50%_50%,black_40%,transparent_100%)]"
-        style={{ opacity }}
-      >
-        <div
-          ref={tileRef}
-          className="absolute motion-safe:animate-bg-drift"
-          style={{
-            inset: -TILE_SIZE,
-            backgroundSize: `${TILE_SIZE}px ${TILE_SIZE}px`,
-          }}
-        />
-      </div>
+        ref={tileRef}
+        className="absolute motion-safe:animate-bg-drift"
+        style={{
+          inset: -TILE_SIZE,
+          backgroundSize: `${TILE_SIZE}px ${TILE_SIZE}px`,
+        }}
+      />
     </div>
   )
 }
