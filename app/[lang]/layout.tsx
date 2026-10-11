@@ -1,8 +1,6 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
 import { notFound } from "next/navigation"
-import localFont from "next/font/local"
-import { Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 
 import { BoringClassSync } from "@/components/boring-toggle"
@@ -11,26 +9,10 @@ import { LanguageProvider } from "@/components/language-provider"
 import { ScrollReveal } from "@/components/scroll-reveal"
 import { ThemeColorSync } from "@/components/theme-color-sync"
 import { ThemeProvider } from "@/components/theme-provider"
+import { fontVariables } from "@/lib/fonts"
 import { DEFAULT_LANGUAGE, LANGUAGES, isLanguage, localizePath } from "@/lib/i18n"
 import { SITE_NAME, SITE_URL, baseOpenGraph, languageAlternates, shareImages, siteMeta } from "@/lib/seo"
 import "../globals.css"
-
-// The type system: Gambarino (an expressive display serif) for headlines,
-// Cabinet Grotesk (a variable grotesque) for body and UI, and Geist Mono for
-// the terminal chrome — file paths, tags, the email.
-const gambarino = localFont({
-  src: "../fonts/Gambarino-Regular.woff2",
-  variable: "--font-gambarino",
-  weight: "400",
-  display: "swap",
-})
-const cabinet = localFont({
-  src: "../fonts/CabinetGrotesk-Variable.woff2",
-  variable: "--font-cabinet",
-  weight: "100 900",
-  display: "swap",
-})
-const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" })
 
 export function generateStaticParams() {
   return LANGUAGES.map((lang) => ({ lang }))
@@ -108,7 +90,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
 
   return (
     <html lang={lang} suppressHydrationWarning className="scroll-smooth">
-      <body className={`${gambarino.variable} ${cabinet.variable} ${geistMono.variable} font-sans antialiased`}>
+      <body className={`${fontVariables} font-sans antialiased`}>
         <LanguageProvider language={lang}>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
             <ThemeColorSync />

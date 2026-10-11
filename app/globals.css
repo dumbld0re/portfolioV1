@@ -218,6 +218,13 @@ html.boring {
   --primary: #9d5c0d;
 }
 
+/* Library index (components/library/library-index.tsx): lines and group
+   headings carry view-transition-names, so re-sorting slides them into place. */
+::view-transition-group(*) {
+  animation-duration: 450ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 /* Markdown post bodies (components/sections/post-section.tsx), styled to
    match the site's typography without pulling in @tailwindcss/typography. */
 .post-prose {
