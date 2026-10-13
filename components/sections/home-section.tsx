@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { ArrowRight, MapPin } from "lucide-react"
@@ -71,8 +72,17 @@ export function HomeSection() {
           <p data-reveal className="font-serif text-2xl md:text-3xl leading-snug font-medium max-w-2xl text-balance">{t.intro}</p>
 
           <div data-reveal className="md:grid md:grid-cols-5 md:gap-8">
-            <div className="hidden md:block md:col-span-2" />
-            <div className="md:col-span-3 border-l border-border pl-6 text-muted-foreground leading-relaxed">
+            <figure className="mb-8 max-w-56 md:mb-0 md:max-w-none md:col-span-2">
+              <Image
+                src="/me.jpg"
+                alt={t.photoAlt}
+                width={640}
+                height={800}
+                sizes="(min-width: 768px) 320px, 224px"
+                className="aspect-[4/5] w-full rounded-sm border border-border object-cover saturate-[0.85]"
+              />
+            </figure>
+            <div className="md:col-span-3 md:self-end border-l border-border pl-6 text-muted-foreground leading-relaxed">
               <p>{t.description}</p>
             </div>
           </div>

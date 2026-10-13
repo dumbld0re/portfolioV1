@@ -12,6 +12,7 @@ export const homeContent: Record<
       status: string
       introLabel: string
       cta: string
+      photoAlt: string
     }
   }
 > = {
@@ -27,6 +28,7 @@ export const homeContent: Record<
       status: "status: offen für projekte",
       introLabel: "Einführung",
       cta: "Lass uns zusammenarbeiten",
+      photoAlt: "Porträt von Danny-Miguel, lächelnd auf einem Hocker vor einer grauen Wand",
     },
   },
   en: {
@@ -41,6 +43,7 @@ export const homeContent: Record<
       status: "status: open to work",
       introLabel: "Introduction",
       cta: "Let's work together",
+      photoAlt: "Portrait of Danny-Miguel smiling, sitting on a stool against a grey wall",
     },
   },
 }
