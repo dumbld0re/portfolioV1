@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { Download, Printer } from "lucide-react"
 
 import { cvContent } from "@/content/cv"
@@ -18,23 +19,34 @@ export function CvSection() {
             <span className="text-primary">005</span> / {t.label}
           </h1>
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-            <div className="space-y-3">
-              <p className="font-serif text-heading font-semibold tracking-tight">{t.name}</p>
-              <div className="flex flex-wrap gap-x-4 gap-y-1 font-mono text-sm text-muted-foreground">
-                <a href={`mailto:${t.email}`} className="transition-colors hover:text-foreground">
-                  {t.email}
-                </a>
-                <a href={`tel:${t.phone.replace(/\s+/g, "")}`} className="transition-colors hover:text-foreground">
-                  {t.phone}
-                </a>
-                <a
-                  href={`https://${t.website}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="transition-colors hover:text-foreground"
-                >
-                  {t.website}
-                </a>
+            <div className="flex items-end gap-5 md:gap-7">
+              <Image
+                src="/me.jpg"
+                alt={t.photoAlt}
+                width={400}
+                height={500}
+                priority
+                sizes="(min-width: 768px) 128px, 96px"
+                className="aspect-[4/5] w-24 shrink-0 rounded-sm border border-border object-cover saturate-[0.85] md:w-32 print:w-24"
+              />
+              <div className="min-w-0 space-y-3">
+                <p className="font-serif text-heading font-semibold tracking-tight">{t.name}</p>
+                <div className="flex flex-wrap gap-x-4 gap-y-1 font-mono text-sm text-muted-foreground">
+                  <a href={`mailto:${t.email}`} className="transition-colors hover:text-foreground">
+                    {t.email}
+                  </a>
+                  <a href={`tel:${t.phone.replace(/\s+/g, "")}`} className="transition-colors hover:text-foreground">
+                    {t.phone}
+                  </a>
+                  <a
+                    href={`https://${t.website}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="transition-colors hover:text-foreground"
+                  >
+                    {t.website}
+                  </a>
+                </div>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3 print:hidden">
