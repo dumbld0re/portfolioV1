@@ -11,7 +11,6 @@ type CvEntry = {
 type CvData = {
   label: string
   name: string
-  photoAlt: string
   phone: string
   email: string
   website: string
@@ -31,7 +30,6 @@ export const cvContent: Record<Language, CvData> = {
   de: {
     label: "Lebenslauf",
     name: "Danny-Miguel Mittelberger",
-    photoAlt: "Porträt von Danny-Miguel Mittelberger",
     phone: "+264 85 800 0433",
     email: "dannymiiguel@gmail.com",
     website: "dannymiguel.com",
@@ -114,7 +112,6 @@ export const cvContent: Record<Language, CvData> = {
   en: {
     label: "Curriculum Vitae",
     name: "Danny-Miguel Mittelberger",
-    photoAlt: "Portrait of Danny-Miguel Mittelberger",
     phone: "+264 85 800 0433",
     email: "dannymiiguel@gmail.com",
     website: "dannymiguel.com",

@@ -1,6 +1,5 @@
 "use client"
 
-import Image from "next/image"
 import { Download, Printer } from "lucide-react"
 
 import { cvContent } from "@/content/cv"
@@ -62,20 +61,9 @@ export function CvSection() {
           </div>
         </div>
 
-        <div className="flex flex-col-reverse gap-8 border-t border-border pt-8 md:flex-row md:items-start md:justify-between md:gap-12">
-          <div className="space-y-4">
-            <h2 className="font-mono text-label uppercase tracking-[0.3em] text-muted-foreground">{t.profileTitle}</h2>
-            <p className="text-muted-foreground leading-relaxed max-w-3xl">{t.profile}</p>
-          </div>
-          <Image
-            src="/me.jpg"
-            alt={t.photoAlt}
-            width={400}
-            height={500}
-            priority
-            sizes="(min-width: 768px) 160px, 128px"
-            className="aspect-[4/5] w-32 shrink-0 rounded-sm border border-border object-cover saturate-[0.85] md:w-40 print:w-32"
-          />
+        <div className="space-y-4 border-t border-border pt-8">
+          <h2 className="font-mono text-label uppercase tracking-[0.3em] text-muted-foreground">{t.profileTitle}</h2>
+          <p className="text-muted-foreground leading-relaxed max-w-3xl">{t.profile}</p>
         </div>
 
         <div className="grid gap-12 md:grid-cols-3 border-t border-border pt-8">
