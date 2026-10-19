@@ -65,7 +65,7 @@ export function HomeSection() {
       <section className="relative flex min-h-[calc(100svh-5.5rem)] flex-col px-6 md:px-12 lg:px-16 pt-8 md:pt-10 pb-8 overflow-hidden">
         <div className="mx-auto flex w-full max-w-[90rem] flex-1 flex-col">
           {/* The name, set as large as the viewport allows. */}
-          <h1 className="my-auto py-10 md:py-8 font-serif font-normal lowercase leading-[0.9] tracking-[-0.04em] text-[26vw] md:text-[clamp(3.25rem,15.2vw,17rem)]">
+          <h1 className="my-auto py-10 md:py-8 font-serif font-normal lowercase leading-[0.96] md:leading-[1.02] tracking-[-0.04em] text-[26vw] md:text-[clamp(3.25rem,15.2vw,17rem)]">
             {nameLines.map((line, li) => (
               <span
                 key={line}
@@ -84,7 +84,7 @@ export function HomeSection() {
                       {[...segment].map((char) => {
                         const i = charIndex++
                         return (
-                          <span key={i} className="inline-block overflow-hidden pb-[0.24em] -mb-[0.24em] align-bottom">
+                          <span key={i} className="inline-block overflow-hidden pb-[0.3em] -mb-[0.3em] align-bottom">
                             <span
                               className={cn("inline-block", boot && "motion-safe:animate-char-rise", char === "-" && "text-primary")}
                               style={boot ? { animationDelay: `${BOOT_SEQUENCE_MS.heroName + i * CHAR_STAGGER_MS}ms` } : undefined}
