@@ -4,6 +4,7 @@ import type React from "react"
 import { usePathname } from "next/navigation"
 
 import { AsciiBackground } from "@/components/ascii-background"
+import { BoringToggle } from "@/components/boring-toggle"
 import { DontClickLink } from "@/components/dont-click-link"
 import { Header } from "@/components/header"
 import { useLanguage } from "@/components/language-provider"
@@ -31,11 +32,14 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
         <Header />
         {children}
         {showFooter && (
-          <footer className="w-full px-6 py-6 text-center text-xs text-muted-foreground print:hidden space-y-1">
-            <p>{copy.footer}</p>
-            <DontClickLink className="block text-muted-foreground hover:text-foreground transition-colors">
-              {copy.dontClickHere}
-            </DontClickLink>
+          <footer className="w-full px-6 md:px-12 lg:px-16 pt-16 pb-8 print:hidden">
+            <div className="mx-auto max-w-[90rem] border-t border-border/60 pt-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between font-mono text-xs text-muted-foreground">
+              <p>{copy.footer}</p>
+              <DontClickLink className="w-fit transition-colors hover:text-foreground">{copy.dontClickHere}</DontClickLink>
+              <div className="md:hidden">
+                <BoringToggle />
+              </div>
+            </div>
           </footer>
         )}
       </div>

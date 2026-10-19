@@ -9,6 +9,7 @@ import { siteCopy } from "@/content/site"
 import { rememberLanguage, useLanguage } from "@/components/language-provider"
 import { Button } from "@/components/ui/button"
 import { BoringToggle } from "@/components/boring-toggle"
+import { RollText } from "@/components/roll-text"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { localizePath, stripLanguage } from "@/lib/i18n"
 import { hasBootPlayed, markBootPlayed } from "@/lib/motion"
@@ -40,7 +41,7 @@ export function Header() {
     <header className="relative md:sticky md:top-0 z-30 w-full px-6 py-4 md:py-6 md:px-12 lg:px-16 bg-background/80 backdrop-blur-sm border-b border-border/40 print:hidden">
       <nav
         className={cn(
-          "flex flex-col gap-3 md:flex-row md:items-center md:justify-between md:gap-4 max-w-7xl mx-auto",
+          "grid grid-cols-[1fr_auto] items-center gap-y-3 md:flex md:flex-row md:justify-between md:gap-4 max-w-[90rem] mx-auto",
           boot && "motion-safe:animate-reveal-up",
         )}
       >
@@ -54,37 +55,37 @@ export function Header() {
               _
             </span>
           </span>
-          <span className="text-muted-foreground/50" aria-hidden="true">
+          <span className="hidden sm:inline text-muted-foreground/50" aria-hidden="true">
             |
           </span>
-          <span className="truncate">{getFilePath()}</span>
+          <span className="hidden sm:inline truncate">{getFilePath()}</span>
         </Link>
 
-        <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-8">
+        <div className="contents md:flex md:flex-row md:items-center md:gap-8">
           {/* One row on phones too: scrolls sideways instead of wrapping. */}
-          <div className="-mx-6 flex gap-x-5 overflow-x-auto whitespace-nowrap px-6 py-1 [scrollbar-width:none] md:mx-0 md:gap-x-6 md:overflow-visible md:px-0">
+          <div className="col-span-2 row-start-2 -mx-6 flex gap-x-5 overflow-x-auto whitespace-nowrap px-6 py-1 [scrollbar-width:none] md:mx-0 md:gap-x-6 md:overflow-visible md:px-0">
             <Link href={localize("/#projects")} className={navLink}>
-              {labels.nav.projects}
+              <RollText>{labels.nav.projects}</RollText>
             </Link>
             <Link href={localize("/#experience")} className={navLink}>
-              {labels.nav.experience}
+              <RollText>{labels.nav.experience}</RollText>
             </Link>
             <Link href={localize("/#contact")} className={navLink}>
-              {labels.nav.contact}
+              <RollText>{labels.nav.contact}</RollText>
             </Link>
             <Link href={localize("/cv")} className={navLink} aria-current={pathname === "/cv" ? "page" : undefined}>
-              {labels.nav.cv}
+              <RollText>{labels.nav.cv}</RollText>
             </Link>
             <Link
               href={localize("/posts")}
               className={navLink}
               aria-current={pathname.startsWith("/posts") ? "page" : undefined}
             >
-              {labels.nav.posts}
+              <RollText>{labels.nav.posts}</RollText>
             </Link>
           </div>
 
-          <div className="flex items-center justify-between gap-6 md:gap-8">
+          <div className="col-start-2 row-start-1 flex items-center justify-end gap-6 md:gap-8">
             <div className="flex items-center gap-5 md:gap-6">
               <span className="hidden md:inline text-muted-foreground/50" aria-hidden="true">
                 |
@@ -101,11 +102,14 @@ export function Header() {
               >
                 {otherLanguage.toUpperCase()}
               </Link>
-              <BoringToggle />
+              {/* On phones it lives in the footer instead, keeping this row short. */}
+              <span className="hidden md:inline-flex">
+                <BoringToggle />
+              </span>
               <ThemeToggle />
             </div>
 
-            <div className="flex items-center gap-1 md:gap-3">
+            <div className="hidden md:flex items-center gap-3">
               <Button variant="ghost" size="icon" className={iconButton} asChild>
                 <a href="https://github.com/dumbld0re" target="_blank" rel="noreferrer">
                   <Github className="size-4" />

@@ -21,6 +21,7 @@ export type Project = {
 export const projectsContent: Record<
   Language,
   {
+    heading: string
     comingSoonLabel: string
     viewDemoLabel: string
     viewSiteLabel: string
@@ -31,6 +32,7 @@ export const projectsContent: Record<
   }
 > = {
   de: {
+    heading: "ausgewählte arbeiten",
     comingSoonLabel: "Demnächst",
     viewDemoLabel: "Demo ansehen",
     viewSiteLabel: "Website ansehen",
@@ -78,6 +80,7 @@ export const projectsContent: Record<
     ],
   },
   en: {
+    heading: "selected work",
     comingSoonLabel: "Coming soon",
     viewDemoLabel: "View demo",
     viewSiteLabel: "View site",

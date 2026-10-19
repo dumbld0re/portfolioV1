@@ -10,6 +10,9 @@ export const contactContent: Record<
     blurbAfter: string
     phone: string
     backToTop: string
+    writeLabel: string
+    elsewhereLabel: string
+    localTimeLabel: string
   }
 > = {
   de: {
@@ -18,8 +21,11 @@ export const contactContent: Record<
     blurbBefore: "hast du ein projekt im kopf oder möchtest einfach quatschen? schreib mir an",
     email: "dannymiiguel@gmail.com",
     blurbAfter: "— ich freue mich, von dir zu hören.",
-    phone: "+264 85 800 0433",
+    phone: "+264 81 821 0003",
     backToTop: "nach oben",
+    writeLabel: "Schreib mir",
+    elsewhereLabel: "Anderswo",
+    localTimeLabel: "Deine Ortszeit",
   },
   en: {
     title: "Contact",
@@ -27,7 +33,10 @@ export const contactContent: Record<
     blurbBefore: "got a project in mind, or just want to chat? drop me a line at",
     email: "dannymiiguel@gmail.com",
     blurbAfter: "— i'd love to hear from you.",
-    phone: "+264 85 800 0433",
+    phone: "+264 81 821 0003",
     backToTop: "back to top",
+    writeLabel: "Write",
+    elsewhereLabel: "Elsewhere",
+    localTimeLabel: "Your local time",
   },
 }

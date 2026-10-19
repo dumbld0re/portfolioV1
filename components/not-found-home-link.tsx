@@ -3,6 +3,7 @@
 import Link from "next/link"
 
 import { useLanguage } from "@/components/language-provider"
+import { RollText } from "@/components/roll-text"
 
 export function NotFoundHomeLink() {
   const { localize } = useLanguage()
@@ -10,9 +11,9 @@ export function NotFoundHomeLink() {
   return (
     <Link
       href={localize("/")}
-      className="inline-block font-mono text-sm uppercase tracking-[0.2em] text-primary transition-opacity hover:opacity-60"
+      className="inline-block font-mono text-sm uppercase tracking-[0.2em] text-primary"
     >
-      cd ~
+      <RollText>cd ~</RollText>
     </Link>
   )
 }

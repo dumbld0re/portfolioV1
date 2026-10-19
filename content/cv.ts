@@ -30,7 +30,7 @@ export const cvContent: Record<Language, CvData> = {
   de: {
     label: "Lebenslauf",
     name: "Danny-Miguel Mittelberger",
-    phone: "+264 85 800 0433",
+    phone: "+264 81 821 0003",
     email: "dannymiiguel@gmail.com",
     website: "dannymiguel.com",
     profileTitle: "Profil",
@@ -112,7 +112,7 @@ export const cvContent: Record<Language, CvData> = {
   en: {
     label: "Curriculum Vitae",
     name: "Danny-Miguel Mittelberger",
-    phone: "+264 85 800 0433",
+    phone: "+264 81 821 0003",
     email: "dannymiiguel@gmail.com",
     website: "dannymiguel.com",
     profileTitle: "Profile",
