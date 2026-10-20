@@ -1,8 +1,10 @@
 import type { Metadata } from "next"
+import { notFound } from "next/navigation"
 
 import { LayoutWrapper } from "@/components/layout-wrapper"
 import { PostsSection } from "@/components/sections/posts-section"
 import { siteCopy } from "@/content/site"
+import { SHOW_POSTS } from "@/lib/features"
 import { DEFAULT_LANGUAGE, isLanguage, localizePath } from "@/lib/i18n"
 import { getAllPosts } from "@/lib/posts"
 import { baseOpenGraph, languageAlternates, siteMeta } from "@/lib/seo"
@@ -20,6 +22,8 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/posts">): 
 }
 
 export default function PostsPage() {
+  if (!SHOW_POSTS) notFound()
+
   const posts = getAllPosts()
 
   return (

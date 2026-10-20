@@ -3,6 +3,7 @@ import { notFound } from "next/navigation"
 
 import { LayoutWrapper } from "@/components/layout-wrapper"
 import { PostSection } from "@/components/sections/post-section"
+import { SHOW_POSTS } from "@/lib/features"
 import { DEFAULT_LANGUAGE, isLanguage } from "@/lib/i18n"
 import { getAllPosts, getPostBySlug } from "@/lib/posts"
 import { SITE_NAME, SITE_URL, baseOpenGraph, jsonLdScript } from "@/lib/seo"
@@ -13,7 +14,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/posts/[slug]">): Promise<Metadata> {
   const { lang, slug } = await params
-  const post = getPostBySlug(slug)
+  const post = SHOW_POSTS ? getPostBySlug(slug) : null
   if (!post) return {}
 
   // Posts are written in English only, so the /de copy points search engines
@@ -37,7 +38,7 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/posts/[slu
 
 export default async function PostPage({ params }: PageProps<"/[lang]/posts/[slug]">) {
   const { slug } = await params
-  const post = getPostBySlug(slug)
+  const post = SHOW_POSTS ? getPostBySlug(slug) : null
 
   if (!post) notFound()
 

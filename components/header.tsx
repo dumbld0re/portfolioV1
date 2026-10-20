@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button"
 import { BoringToggle } from "@/components/boring-toggle"
 import { RollText } from "@/components/roll-text"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { SHOW_POSTS } from "@/lib/features"
 import { localizePath, stripLanguage } from "@/lib/i18n"
 import { hasBootPlayed, markBootPlayed } from "@/lib/motion"
 import { cn } from "@/lib/utils"
@@ -77,13 +78,15 @@ export function Header() {
             <Link href={localize("/cv")} className={navLink} aria-current={pathname === "/cv" ? "page" : undefined}>
               <RollText>{labels.nav.cv}</RollText>
             </Link>
-            <Link
-              href={localize("/posts")}
-              className={navLink}
-              aria-current={pathname.startsWith("/posts") ? "page" : undefined}
-            >
-              <RollText>{labels.nav.posts}</RollText>
-            </Link>
+            {SHOW_POSTS && (
+              <Link
+                href={localize("/posts")}
+                className={navLink}
+                aria-current={pathname.startsWith("/posts") ? "page" : undefined}
+              >
+                <RollText>{labels.nav.posts}</RollText>
+              </Link>
+            )}
           </div>
 
           {/* Phones: end of the links row. Desktop: first of the controls. */}
