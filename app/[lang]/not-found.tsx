@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 
 import { LayoutWrapper } from "@/components/layout-wrapper"
-import { NotFoundHomeLink } from "@/components/not-found-home-link"
+import { NotFoundHomeLink, NotFoundLabel } from "@/components/not-found-home-link"
 
 export const metadata: Metadata = {
   title: "404",
@@ -14,7 +14,7 @@ export default function NotFound() {
       <main className="flex-1 flex items-center justify-center px-6 py-12 md:py-16">
         <div className="text-center space-y-6">
           <h1 className="font-mono text-label uppercase tracking-[0.3em] text-muted-foreground">
-            <span className="text-primary">404</span> / not found
+            <span className="text-primary">404</span> / <NotFoundLabel />
           </h1>
           <p className="font-mono text-heading font-semibold tracking-tight">
             bash: no such file or directory

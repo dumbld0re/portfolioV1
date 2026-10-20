@@ -15,6 +15,7 @@ export const siteCopy: Record<
     boring: string
     boringLabel: string
     themeLabel: string
+    notFound: string
   }
 > = {
   de: {
@@ -30,6 +31,7 @@ export const siteCopy: Record<
     boring: "Langweilig",
     boringLabel: "Langweiligen Modus umschalten",
     themeLabel: "Farbschema wechseln",
+    notFound: "nicht gefunden",
   },
   en: {
     nav: {
@@ -44,5 +46,6 @@ export const siteCopy: Record<
     boring: "Boring",
     boringLabel: "Toggle boring mode",
     themeLabel: "Toggle theme",
+    notFound: "not found",
   },
 }

@@ -26,12 +26,6 @@ export function PostsSection({ posts }: { posts: PostMeta[] }) {
               <span className="text-primary">.</span>
             </p>
           </div>
-          <span
-            className="font-mono text-sm text-muted-foreground tabular-nums motion-safe:animate-reveal-up"
-            style={{ animationDelay: "500ms" }}
-          >
-            ({String(posts.length).padStart(2, "0")})
-          </span>
           <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-px origin-left bg-border motion-safe:animate-line-in" />
         </header>
 
