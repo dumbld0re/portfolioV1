@@ -32,7 +32,7 @@ export const projectsContent: Record<
   }
 > = {
   de: {
-    heading: "ausgewählte arbeiten",
+    heading: "ausgewählte projekte",
     comingSoonLabel: "Demnächst",
     viewDemoLabel: "Demo ansehen",
     viewSiteLabel: "Website ansehen",
@@ -47,7 +47,7 @@ export const projectsContent: Record<
         slug: "finance-tracker",
         title: "Finance Tracker",
         description:
-          "Eine Offline-first-Finanz-App für Einnahmen, Ausgaben und Sparziele.",
+          "Eine Finanz-App für Einnahmen, Ausgaben und Sparziele, die auch offline funktioniert – fürs Handy gemacht, aber auf allen Geräten synchron.",
         tech: ["React", "Vite", "Vercel Functions", "Upstash Redis"],
         demoHref: "https://financetracker-demo.vercel.app/",
         githubHref: "https://github.com/dumbld0re/financeApp",
@@ -56,11 +56,11 @@ export const projectsContent: Record<
       },
       {
         slug: "uni",
-        title: "uni — Nachhilfe- & Studiums-Ops-Suite",
+        title: "uni — Werkzeugkasten für Nachhilfe & Studium",
         tagline:
-          "Ein CLI, das aus einer Typst-Quelle sowohl ein Arbeitsblatt als auch den Lösungsschlüssel erzeugt.",
+          "Ein Kommandozeilen-Tool, das aus einer einzigen Typst-Datei das Arbeitsblatt und das passende Lösungsblatt erzeugt.",
         description:
-          "Ein typisiertes Python-CLI für meine Deutsch-Nachhilfe und mein Studium.",
+          "Ein typisiertes Python-CLI für meinen Deutsch-Nachhilfeunterricht und mein Studium.",
         tech: ["Python", "typer", "Typst", "pytest"],
         internalTool: true,
         status: "inDevelopment",
@@ -69,7 +69,7 @@ export const projectsContent: Record<
         slug: "ae",
         title: "æ design studio",
         description:
-          "Die Website meines Designstudios, von Grund auf ohne Templates gebaut.",
+          "Die Website meines Designstudios – von Grund auf selbst gebaut, ganz ohne Templates.",
         tech: ["Next.js", "TypeScript", "Canvas", "CSS"],
         demoHref: "https://aestudio.site/",
         demoKind: "site",
@@ -95,7 +95,7 @@ export const projectsContent: Record<
         slug: "finance-tracker",
         title: "Finance Tracker",
         description:
-          "An offline-first app for tracking income, expenses, and savings goals.",
+          "An offline-first app for tracking income, expenses, and savings goals – made for mobile, but syncs across devices.",
         tech: ["React", "Vite", "Vercel Functions", "Upstash Redis"],
         demoHref: "https://financetracker-demo.vercel.app/",
         githubHref: "https://github.com/dumbld0re/financeApp",

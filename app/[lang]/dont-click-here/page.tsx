@@ -3,7 +3,7 @@
 import { useLanguage } from "@/components/language-provider"
 
 const copy = {
-  de: "ich sagte doch, nicht klicken.",
+  de: "ich hab doch gesagt, nicht klicken.",
   en: "i said dont click here, silly.",
 }
 

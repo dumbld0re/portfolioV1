@@ -12,6 +12,9 @@ export const siteCopy: Record<
     }
     footer: string
     dontClickHere: string
+    boring: string
+    boringLabel: string
+    themeLabel: string
   }
 > = {
   de: {
@@ -22,8 +25,11 @@ export const siteCopy: Record<
       cv: "Lebenslauf",
       posts: "Beiträge",
     },
-    footer: "2086© (so i dont forget to ever change this)",
-    dontClickHere: "nicht klicken",
+    footer: "2086© (damit ich das nie wieder ändern muss)",
+    dontClickHere: "bloß nicht klicken",
+    boring: "Langweilig",
+    boringLabel: "Langweiligen Modus umschalten",
+    themeLabel: "Farbschema wechseln",
   },
   en: {
     nav: {
@@ -35,5 +41,8 @@ export const siteCopy: Record<
     },
     footer: "2086© (so i dont forget to ever change this)",
     dontClickHere: "dont click here",
+    boring: "Boring",
+    boringLabel: "Toggle boring mode",
+    themeLabel: "Toggle theme",
   },
 }

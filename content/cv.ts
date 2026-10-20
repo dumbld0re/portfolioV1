@@ -35,14 +35,14 @@ export const cvContent: Record<Language, CvData> = {
     website: "dannymiguel.com",
     profileTitle: "Profil",
     profile:
-      "Student der quantitativen Finanzwissenschaften mit Erfahrung im Deutschunterricht, in der Robotik-Ausbildung und in der administrativen Unterstützung. Geschickt darin, komplexe Konzepte klar zu erklären, mich an unterschiedliche Lernstile anzupassen und mit vielfältigen Gruppen zu arbeiten. Starke analytische, organisatorische und kommunikative Fähigkeiten mit einer strukturierten und zuverlässigen Herangehensweise an Problemlösungen.",
+      "Student der Quantitative Finance mit Erfahrung im Deutschunterricht, in der Robotik-Ausbildung und in der Verwaltung. Ich erkläre komplexe Sachverhalte verständlich, stelle mich auf unterschiedliche Lernstile ein und arbeite gern mit ganz unterschiedlichen Gruppen. Analytisch, gut organisiert und kommunikationsstark – mit einer strukturierten, zuverlässigen Arbeitsweise.",
     educationTitle: "Ausbildung & Zertifikate",
     education: [
       {
         title: "University of Namibia (UNAM)",
         detail: "Bachelor of Science in Quantitative Finance",
         place: "Windhoek, NA",
-        period: "Heute",
+        period: "Laufend",
       },
       {
         title: "Eran Academy",
@@ -66,33 +66,34 @@ export const cvContent: Record<Language, CvData> = {
     experienceTitle: "Erfahrung",
     experience: [
       {
-        title: "German Tutor (A1–B1)",
+        title: "Deutschlehrer (A1–B1)",
         org: "Fluent Academy",
         orgHref: "https://fluentacademy.co/#",
         period: "Dez 2025 – Heute",
         bullets: [
-          "Unterrichte Deutsch für Lernende von Niveau A1 bis B1 in strukturiertem Einzel- und Kleingruppenunterricht.",
-          "Erstelle Unterrichtspläne, erkläre Grammatikkonzepte klar und verständlich und passe die Lehrmethoden an unterschiedliche Lernstile an.",
-          "Unterstütze Lernende beim Aufbau von Sprech-, Hör-, Lese- und Schreibfähigkeiten und verfolge ihren Fortschritt.",
+          "Deutschunterricht für Lernende von A1 bis B1, strukturiert im Einzel- und Kleingruppenunterricht.",
+          "Unterrichtsplanung, verständliche Erklärung von Grammatik und Anpassung der Methoden an unterschiedliche Lernstile.",
+          "Förderung von Sprechen, Hören, Lesen und Schreiben sowie Begleitung des Lernfortschritts.",
         ],
       },
       {
-        title: "Robotics Intern",
+        title: "Praktikant Robotik",
         org: "MindsInAction",
+        orgHref: "https://mindsinaction.com.na/",
         period: "Mai 2025 – Aug 2025",
         bullets: [
-          "Lernende in Robotik und Programmier-Grundlagen gecoacht und Erklärungen an individuelle Lernniveaus angepasst.",
-          "Schüler mit LEGO Mindstorms und NAO-Robotern angeleitet und strukturiertes Unterrichten sowie Einzelbetreuung gefestigt.",
-          "Wissensvermittlung in Workshops unterstützt und Klarheit in der Kommunikation gestärkt.",
+          "Coaching und Mentoring von Lernenden in Robotik und Programmiergrundlagen, abgestimmt auf das jeweilige Lernniveau.",
+          "Anleitung von Schülerinnen und Schülern mit LEGO Mindstorms und NAO-Robotern – im strukturierten Unterricht und in der Einzelbetreuung.",
+          "Unterstützung bei Workshops und verständliche Vermittlung technischer Inhalte.",
         ],
       },
       {
-        title: "Administrative & Accounting Assistant",
+        title: "Assistent Verwaltung & Buchhaltung",
         org: "PyroNam",
         period: "Jun 2024 – Dez 2024",
         bullets: [
-          "Effektiv mit Mitarbeitenden und Kundschaft kommuniziert, um Informationen einzuholen und Unterlagen zu erklären.",
-          "Detailgenauigkeit entwickelt – eine Kernkompetenz für strukturierte Aufgaben und Informationsmanagement.",
+          "Kommunikation mit Mitarbeitenden und Kundschaft, um Informationen einzuholen und Unterlagen zu erläutern.",
+          "Sorgfältige, detailgenaue Arbeit bei strukturierten Aufgaben und in der Datenpflege.",
         ],
       },
     ],
@@ -103,7 +104,7 @@ export const cvContent: Record<Language, CvData> = {
         name: "Vermittlung",
         items: "Coaching, Mentoring, Unterrichtsplanung, Grammatikvermittlung, Erklärkompetenz, Gruppenkommunikation, strukturierte Anleitung",
       },
-      { name: "Technisch", items: "Java, Python, HTML/CSS, Git, Docker, VS Code, Linux, Sage Pastel" },
+      { name: "Technik", items: "Java, Python, HTML/CSS, Git, Docker, VS Code, Linux, Sage Pastel" },
       { name: "Office", items: "Microsoft Excel, Word, PowerPoint, Outlook" },
     ],
     exportLabel: "Als PDF exportieren",
@@ -161,6 +162,7 @@ export const cvContent: Record<Language, CvData> = {
       {
         title: "Robotics Intern",
         org: "MindsInAction",
+        orgHref: "https://mindsinaction.com.na/",
         period: "May 2025 – Aug 2025",
         bullets: [
           "Coached and mentored learners in robotics and basic programming, effectively adapting teaching explanations to individual learning levels and styles.",

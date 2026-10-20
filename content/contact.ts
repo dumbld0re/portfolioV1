@@ -18,13 +18,13 @@ export const contactContent: Record<
   de: {
     title: "Kontakt",
     heading: "lass uns etwas bauen.",
-    blurbBefore: "hast du ein projekt im kopf oder möchtest einfach quatschen? schreib mir an",
+    blurbBefore: "hast du ein projekt im kopf oder willst einfach quatschen? schreib mir unter",
     email: "dannymiiguel@gmail.com",
     blurbAfter: "— ich freue mich, von dir zu hören.",
     phone: "+264 81 821 0003",
     backToTop: "nach oben",
     writeLabel: "Schreib mir",
-    elsewhereLabel: "Anderswo",
+    elsewhereLabel: "Im Netz",
     localTimeLabel: "Deine Ortszeit",
   },
   en: {

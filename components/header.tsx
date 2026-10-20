@@ -41,7 +41,7 @@ export function Header() {
     <header className="relative md:sticky md:top-0 z-30 w-full px-6 py-4 md:py-6 md:px-12 lg:px-16 bg-background/80 backdrop-blur-sm border-b border-border/40 print:hidden">
       <nav
         className={cn(
-          "grid grid-cols-[1fr_auto] items-center gap-y-3 md:flex md:flex-row md:justify-between md:gap-4 max-w-[90rem] mx-auto",
+          "grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-5 gap-y-3 md:flex md:flex-row md:justify-between md:gap-4 max-w-[90rem] mx-auto",
           boot && "motion-safe:animate-reveal-up",
         )}
       >
@@ -63,7 +63,7 @@ export function Header() {
 
         <div className="contents md:flex md:flex-row md:items-center md:gap-8">
           {/* One row on phones too: scrolls sideways instead of wrapping. */}
-          <div className="col-span-2 row-start-2 -mx-6 flex gap-x-5 overflow-x-auto whitespace-nowrap px-6 py-1 [scrollbar-width:none] md:mx-0 md:gap-x-6 md:overflow-visible md:px-0">
+          <div className="col-start-1 row-start-2 -ml-6 flex gap-x-5 overflow-x-auto whitespace-nowrap pl-6 py-1 [scrollbar-width:none] md:ml-0 md:gap-x-6 md:overflow-visible md:pl-0">
             <Link href={localize("/#projects")} className={navLink}>
               <RollText>{labels.nav.projects}</RollText>
             </Link>
@@ -85,23 +85,27 @@ export function Header() {
             </Link>
           </div>
 
+          {/* Phones: end of the links row. Desktop: first of the controls. */}
+          <div className="col-start-2 row-start-2 flex items-center md:gap-6">
+            <span className="hidden md:inline text-muted-foreground/50" aria-hidden="true">
+              |
+            </span>
+            <Link
+              href={localizePath(otherLanguage, pathname)}
+              onClick={() => rememberLanguage(otherLanguage)}
+              // A prefetch would run before the click stores the cookie, and
+              // proxy.ts could answer it with a redirect back to this language.
+              prefetch={false}
+              hrefLang={otherLanguage}
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors font-mono"
+              aria-label={otherLanguage === "en" ? "EN — switch to English" : "DE — auf Deutsch wechseln"}
+            >
+              {otherLanguage.toUpperCase()}
+            </Link>
+          </div>
+
           <div className="col-start-2 row-start-1 flex items-center justify-end gap-6 md:gap-8">
             <div className="flex items-center gap-5 md:gap-6">
-              <span className="hidden md:inline text-muted-foreground/50" aria-hidden="true">
-                |
-              </span>
-              <Link
-                href={localizePath(otherLanguage, pathname)}
-                onClick={() => rememberLanguage(otherLanguage)}
-                // A prefetch would run before the click stores the cookie, and
-                // proxy.ts could answer it with a redirect back to this language.
-                prefetch={false}
-                hrefLang={otherLanguage}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors font-mono"
-                aria-label={otherLanguage === "en" ? "EN — switch to English" : "DE — auf Deutsch wechseln"}
-              >
-                {otherLanguage.toUpperCase()}
-              </Link>
               {/* On phones it lives in the footer instead, keeping this row short. */}
               <span className="hidden md:inline-flex">
                 <BoringToggle />

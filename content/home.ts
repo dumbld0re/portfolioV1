@@ -22,10 +22,10 @@ export const homeContent: Record<
       intro:
         "Ich baue schnelle, saubere Web-Interfaces für kleine Unternehmen und Privatpersonen – daneben studiere ich Quantitative Finance an der University of Namibia (UNAM).",
       description:
-        "Als Freelancer bin ich derzeit für neue Projekte verfügbar – mit einer Schwäche für Linux und alles, was im Terminal läuft.",
+        "Nebenbei arbeite ich als Freelancer – mit einer Schwäche für Linux und alles, was im Terminal läuft.",
       location: "Windhoek, Namibia",
       status: "status: offen für projekte",
-      introLabel: "Einführung",
+      introLabel: "Über mich",
       cta: "Lass uns zusammenarbeiten",
     },
   },

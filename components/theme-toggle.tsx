@@ -4,6 +4,8 @@ import { useState, useSyncExternalStore } from "react"
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 
+import { siteCopy } from "@/content/site"
+import { useLanguageOrDefault } from "@/components/language-provider"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
@@ -11,6 +13,7 @@ const emptySubscribe = () => () => {}
 
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme()
+  const labels = siteCopy[useLanguageOrDefault()]
   // Theme is unknown until mounted; render a fixed icon on the server to
   // avoid a hydration mismatch.
   const mounted = useSyncExternalStore(
@@ -31,7 +34,7 @@ export function ThemeToggle() {
         setSwitched(true)
         setTheme(resolvedTheme === "dark" ? "light" : "dark")
       }}
-      aria-label="Toggle theme"
+      aria-label={labels.themeLabel}
     >
       {/* Keyed so the icon remounts and spins in on every switch. */}
       {mounted && resolvedTheme === "light" ? (

@@ -12,7 +12,6 @@ export function ProjectsSection() {
   const { language } = useLanguage()
   const labels = siteCopy[language]
   const t = projectsContent[language]
-  const shipped = t.projects.filter((project) => !project.comingSoon)
 
   const pill =
     "group/btn inline-flex items-center gap-2 rounded-full border px-4 py-2 font-mono text-label uppercase tracking-[0.2em] transition-colors duration-300"
@@ -30,9 +29,6 @@ export function ProjectsSection() {
               {t.heading}
             </p>
           </div>
-          <span className="font-mono text-sm text-muted-foreground tabular-nums">
-            ({String(shipped.length).padStart(2, "0")})
-          </span>
         </div>
 
         <ol>
