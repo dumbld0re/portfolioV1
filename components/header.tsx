@@ -27,8 +27,9 @@ export function Header() {
   }, [])
 
   const getFilePath = () => {
-    if (pathname === "/cv") return "/home/danny-miguel/cv"
-    if (pathname.startsWith("/posts")) return "/home/danny-miguel/posts"
+    // Folder names follow the nav labels, so the path reads in the page language.
+    if (pathname === "/cv") return `/home/danny-miguel/${labels.nav.cv.toLowerCase()}`
+    if (pathname.startsWith("/posts")) return `/home/danny-miguel/${labels.nav.posts.toLowerCase()}`
     return "/home/danny-miguel/"
   }
 
@@ -86,7 +87,7 @@ export function Header() {
           </div>
 
           {/* Phones: end of the links row. Desktop: first of the controls. */}
-          <div className="col-start-2 row-start-2 flex items-center md:gap-6">
+          <div className="col-start-2 row-start-2 flex items-center justify-end md:gap-6">
             <span className="hidden md:inline text-muted-foreground/50" aria-hidden="true">
               |
             </span>
@@ -97,7 +98,8 @@ export function Header() {
               // proxy.ts could answer it with a redirect back to this language.
               prefetch={false}
               hrefLang={otherLanguage}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors font-mono"
+              // Phones: a bordered button matching the theme toggle above it, so it reads as tappable.
+              className="inline-flex size-8 items-center justify-center rounded-full border border-border font-mono text-xs text-foreground transition-colors hover:border-foreground active:bg-muted md:size-auto md:rounded-none md:border-0 md:text-sm md:text-muted-foreground md:hover:text-foreground"
               aria-label={otherLanguage === "en" ? "EN — switch to English" : "DE — auf Deutsch wechseln"}
             >
               {otherLanguage.toUpperCase()}

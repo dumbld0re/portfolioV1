@@ -91,7 +91,7 @@ export function ProjectsSection() {
                         <div className="md:col-span-6 md:pl-4 space-y-2">
                           {project.slug && (
                             <p className="font-mono text-xs text-muted-foreground">
-                              <span className="text-primary">~/projects/</span>
+                              <span className="text-primary">~/{labels.nav.projects.toLowerCase()}/</span>
                               {project.slug}
                             </p>
                           )}
