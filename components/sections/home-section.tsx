@@ -8,7 +8,6 @@ import { homeContent } from "@/content/home"
 import { useLanguage } from "@/components/language-provider"
 import { Magnetic } from "@/components/magnetic"
 import { RollText } from "@/components/roll-text"
-import { ScrollWords } from "@/components/scroll-words"
 import { BOOT_SEQUENCE_MS, hasBootPlayed, markBootPlayed } from "@/lib/motion"
 import { cn } from "@/lib/utils"
 
@@ -119,18 +118,17 @@ export function HomeSection() {
       </section>
 
       <section id="intro" className="scroll-mt-20 px-6 md:px-12 lg:px-16 py-28 md:py-44">
-        <div className="mx-auto max-w-[90rem] grid gap-10 md:grid-cols-12">
-          <h2 data-reveal className="md:col-span-3 font-mono text-label uppercase tracking-[0.3em] text-muted-foreground md:pt-4">
+        <div data-reveal className="mx-auto max-w-[90rem] grid gap-10 md:grid-cols-12">
+          <h2 className="md:col-span-3 font-mono text-label uppercase tracking-[0.3em] text-muted-foreground md:pt-4">
             <span className="text-primary">001</span> / {t.introLabel}
           </h2>
 
           <div className="md:col-span-9 space-y-16">
-            <ScrollWords
-              text={t.intro}
-              className="font-serif text-[clamp(1.875rem,1rem+2.8vw,4.25rem)] leading-[1.08] tracking-[-0.02em]"
-            />
+            <p className="font-serif text-[clamp(1.875rem,1rem+2.8vw,4.25rem)] leading-[1.08] tracking-[-0.02em] text-balance">
+              {t.intro}
+            </p>
 
-            <div data-reveal className="grid gap-8 md:grid-cols-9">
+            <div className="grid gap-8 md:grid-cols-9">
               <p className="md:col-span-5 md:col-start-5 border-l border-primary/60 pl-6 text-muted-foreground leading-relaxed text-lg">
                 {t.description}
               </p>

@@ -9,7 +9,9 @@ const gambarino = localFont({
   src: "../app/fonts/Gambarino-Regular.woff2",
   variable: "--font-gambarino",
   weight: "400",
-  display: "swap",
+  // Headlines wait for the real face instead of flashing a fallback serif
+  // and snapping to Gambarino; the hero name is too big for that to pass unseen.
+  display: "block",
 })
 const cabinet = localFont({
   src: "../app/fonts/CabinetGrotesk-Variable.woff2",

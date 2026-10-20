@@ -18,8 +18,9 @@ export function ProjectsSection() {
 
   return (
     <section id="projects" className="scroll-mt-20 px-6 md:px-12 lg:px-16 py-24 md:py-36">
-      <div className="mx-auto max-w-[90rem]">
-        <div data-reveal className="relative flex items-end justify-between gap-6 pb-6">
+      {/* The whole section fades in at once rather than row by row. */}
+      <div data-reveal className="mx-auto max-w-[90rem]">
+        <div className="relative flex items-end justify-between gap-6 pb-6">
           <span aria-hidden="true" className="line-draw absolute inset-x-0 bottom-0 h-px bg-border" />
           <div className="space-y-6">
             <h2 className="font-mono text-label uppercase tracking-[0.3em] text-muted-foreground">
@@ -39,7 +40,6 @@ export function ProjectsSection() {
               return (
                 <li
                   key={i}
-                  data-reveal
                   className="grid grid-cols-[3rem_1fr] md:grid-cols-12 items-baseline gap-x-6 border-b border-dashed border-border py-8 md:py-10 text-muted-foreground/60"
                 >
                   <span className="font-mono text-sm md:col-span-1">{number}</span>
@@ -54,7 +54,7 @@ export function ProjectsSection() {
             }
 
             return (
-              <li key={i} data-reveal className="group relative border-b border-border/60">
+              <li key={i} className="group relative border-b border-border/60">
                 {/* Wipe-in fill behind the row on hover. */}
                 <span
                   aria-hidden="true"

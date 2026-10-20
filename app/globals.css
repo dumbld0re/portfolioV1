@@ -163,6 +163,9 @@ html {
   /* Safari tints its status bar and overscroll area from the root background. */
   background-color: var(--background);
   transition: filter 300ms ease-out;
+  /* Keep room for the scrollbar on short pages too, so moving between a short
+     and a long page doesn't shift the layout sideways. */
+  scrollbar-gutter: stable;
 }
 
 /* Boring mode greys the rendered page, but browsers tint their bars from the

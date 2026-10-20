@@ -12,17 +12,17 @@ export function ExperienceSection() {
 
   return (
     <section id="experience" className="scroll-mt-20 px-6 md:px-12 lg:px-16 py-24 md:py-36">
-      <div className="mx-auto max-w-[90rem] grid gap-14 md:grid-cols-12 md:gap-x-6">
+      <div data-reveal className="mx-auto max-w-[90rem] grid gap-14 md:grid-cols-12 md:gap-x-6">
         {/* Sticky column: label, title and the skills list ride along. */}
         <aside className="md:col-span-4 md:sticky md:top-32 md:self-start space-y-10">
-          <h2 data-reveal className="font-mono text-label uppercase tracking-[0.3em] text-muted-foreground">
+          <h2 className="font-mono text-label uppercase tracking-[0.3em] text-muted-foreground">
             <span className="text-primary">003</span> / {t.title}
           </h2>
-          <p data-reveal className="font-serif lowercase text-[clamp(2.75rem,1.5rem+4vw,6rem)] leading-[0.9] tracking-[-0.03em]">
+          <p className="font-serif lowercase text-[clamp(2.75rem,1.5rem+4vw,6rem)] leading-[0.9] tracking-[-0.03em]">
             {t.title}
             <span className="text-primary">.</span>
           </p>
-          <div data-reveal className="space-y-4">
+          <div className="space-y-4">
             <h3 className="font-mono text-label uppercase tracking-[0.3em] text-muted-foreground">{t.skills.title}</h3>
             <ul className="flex flex-wrap gap-x-4 gap-y-2 font-mono text-sm">
               {t.skills.items.map((item) => (
@@ -41,7 +41,6 @@ export function ExperienceSection() {
           {t.experiences.map((exp, index) => (
             <li
               key={exp.company + index}
-              data-reveal
               className="group relative grid grid-cols-[2.5rem_1fr] md:grid-cols-8 gap-x-6 gap-y-2 py-10"
             >
               <span aria-hidden="true" className="line-draw absolute inset-x-0 bottom-0 h-px bg-border/60" />

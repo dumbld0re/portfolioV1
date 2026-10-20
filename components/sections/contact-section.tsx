@@ -25,20 +25,19 @@ export function ContactSection() {
 
   return (
     <section id="contact" className="contact-footer scroll-mt-20 overflow-hidden px-6 md:px-12 lg:px-16 pt-24 pb-10 md:pt-36">
-      <div className="mx-auto max-w-[90rem]">
+      <div data-reveal className="mx-auto max-w-[90rem]">
         <h2 className={colLabel}>
           <span className="text-primary">004</span> / {t.title}
         </h2>
 
         <p
-          data-reveal
           className="mt-10 font-serif lowercase leading-[0.85] tracking-[-0.04em] text-[clamp(3.5rem,11.5vw,13rem)] text-balance"
         >
           {t.heading.replace(/\.$/, "")}
           <span className="text-primary">.</span>
         </p>
 
-        <div data-reveal className="mt-14 md:mt-20 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div className="mt-14 md:mt-20 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <p className="max-w-md text-lg leading-relaxed text-muted-foreground">
             {t.blurbBefore}
           </p>
@@ -53,7 +52,7 @@ export function ContactSection() {
           </a>
         </div>
 
-        <div data-reveal className="relative mt-20 md:mt-28 grid grid-cols-2 gap-10 pt-8 md:grid-cols-4">
+        <div className="relative mt-20 md:mt-28 grid grid-cols-2 gap-10 pt-8 md:grid-cols-4">
           <span aria-hidden="true" className="line-draw absolute inset-x-0 top-0 h-px bg-border" />
           <div className="space-y-4">
             <h3 className={colLabel}>{t.writeLabel}</h3>
