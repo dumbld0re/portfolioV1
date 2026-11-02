@@ -33,19 +33,22 @@ export function Header() {
     { href: "/#projects", label: labels.nav.projects },
     { href: "/#experience", label: labels.nav.experience },
     { href: "/#contact", label: labels.nav.contact },
-    { href: "/cv", label: labels.nav.cv, current: pathname === "/cv" },
+    // "Lebenslauf" is too long for the one-row phone bar; "cv" reads in both languages.
+    { href: "/cv", label: labels.nav.cv, short: "cv", current: pathname === "/cv" },
     ...(SHOW_POSTS ? [{ href: "/posts", label: labels.nav.posts, current: pathname.startsWith("/posts") }] : []),
   ]
 
   return (
-    <header className="relative z-30 w-full px-6 md:px-12 pt-7 pb-4 md:pt-12 print:hidden">
+    <header className="relative z-30 w-full px-6 md:px-12 pt-5 pb-4 md:pt-12 print:hidden">
       <nav
         className={cn(
-          "mx-auto flex max-w-[90rem] flex-wrap items-center justify-end gap-x-5 gap-y-3 font-mono text-sm md:gap-x-8 md:text-base",
+          "mx-auto flex max-w-[90rem] items-center gap-x-4 font-mono text-[13px] md:justify-end md:gap-x-8 md:text-base",
           boot && "motion-safe:animate-reveal-up",
         )}
       >
-
+        {/* One row on every width: on narrow phones the links scroll sideways
+            under the language and theme controls instead of wrapping. */}
+        <div className="-my-2 flex min-w-0 flex-1 gap-x-3.5 overflow-x-auto py-2 whitespace-nowrap [scrollbar-width:none] md:flex-none md:gap-x-8 md:overflow-visible">
         {links.map((link) => (
           <Link
             key={link.href}
@@ -53,12 +56,20 @@ export function Header() {
             className={navLink}
             aria-current={link.current ? "page" : undefined}
           >
-            {link.label}
+            {"short" in link && link.short ? (
+              <>
+                <span className="md:hidden">{link.short}</span>
+                <span className="hidden md:inline">{link.label}</span>
+              </>
+            ) : (
+              link.label
+            )}
           </Link>
         ))}
+        </div>
 
-        <span className="flex items-center gap-x-3">
-          <span className="text-muted-foreground/40" aria-hidden="true">
+        <span className="flex shrink-0 items-center gap-x-3">
+          <span className="hidden text-muted-foreground/40 md:inline" aria-hidden="true">
             /
           </span>
           <Link

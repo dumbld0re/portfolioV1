@@ -19,7 +19,7 @@ export function ContactSection() {
     <section id="contact" className="scroll-mt-10 px-6 md:px-12 pt-24 pb-10 md:pt-32 lg:pb-16">
       <div data-reveal className={column}>
         <h2 className={sectionLabel}>
-          <span className="text-primary">003</span> / {t.title}
+          {t.title}
         </h2>
 
         <p className="mt-6 font-serif text-5xl lowercase leading-tight tracking-[-0.02em] text-balance md:text-7xl">

@@ -16,7 +16,7 @@ export function ExperienceSection() {
     <section id="experience" className="scroll-mt-10 px-6 md:px-12 py-24 md:py-32">
       <div data-reveal className={column}>
         <h2 className={sectionLabel}>
-          <span className="text-primary">002</span> / {t.title}
+          {t.title}
         </h2>
         <p className="mt-6 font-serif text-5xl lowercase leading-tight tracking-[-0.02em] md:text-7xl">
           {t.title}

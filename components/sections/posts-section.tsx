@@ -19,7 +19,7 @@ export function PostsSection({ posts }: { posts: PostMeta[] }) {
         <header className="relative flex items-end justify-between gap-6 pb-12 md:pb-16">
           <div className="space-y-8">
             <h1 className="font-mono text-label uppercase tracking-[0.3em] text-muted-foreground motion-safe:animate-reveal-up">
-              <span className="text-primary">006</span> / {t.label}
+              {t.label}
             </h1>
             <p className="font-serif lowercase leading-[0.85] tracking-[-0.04em] text-[clamp(4rem,1rem+14vw,15rem)]">
               <SplitChars text={t.label} delay={150} />

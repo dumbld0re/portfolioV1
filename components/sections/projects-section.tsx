@@ -21,19 +21,16 @@ export function ProjectsSection() {
     <section id="projects" className="scroll-mt-10 px-6 md:px-12 py-24 md:py-32">
       <div data-reveal className={column}>
         <h2 className={sectionLabel}>
-          <span className="text-primary">001</span> / {labels.nav.projects}
+          {labels.nav.projects}
         </h2>
         <p className="mt-6 font-serif text-5xl leading-tight tracking-[-0.02em] md:text-7xl">{t.heading}</p>
 
         <div className="mt-14 lg:grid lg:grid-cols-[minmax(0,48rem)_minmax(0,1fr)] lg:gap-16 xl:gap-24">
         <ol className={`${measure} space-y-16`}>
           {t.projects.map((project, i) => {
-            const number = String(i + 1).padStart(2, "0")
-
             if (project.comingSoon) {
               return (
-                <li key={i} {...bind(i)} className={cn("flex items-baseline gap-5 text-muted-foreground/60", dim(i))}>
-                  <span className="w-8 shrink-0 font-mono text-sm">{number}</span>
+                <li key={i} {...bind(i)} className={cn("text-muted-foreground/60", dim(i))}>
                   <span className="font-serif text-3xl lowercase md:text-4xl">
                     {t.comingSoonLabel}
                     <span className="text-primary motion-safe:animate-caret-blink" aria-hidden="true">
@@ -45,16 +42,8 @@ export function ProjectsSection() {
             }
 
             return (
-              <li key={i} {...bind(i)} className={cn("group flex items-baseline gap-5", dim(i))}>
-                <span
-                  className={cn(
-                    "w-8 shrink-0 font-mono text-sm text-muted-foreground transition-colors group-hover:text-primary",
-                    i === active && "lg:text-primary",
-                  )}
-                >
-                  {number}
-                </span>
-                <div className="min-w-0 space-y-3">
+              <li key={i} {...bind(i)} className={dim(i)}>
+                <div className="space-y-3">
                   <h3 className="font-serif text-3xl leading-snug tracking-[-0.01em] md:text-4xl">{project.title}</h3>
 
                   {(project.status || project.internalTool) && (
@@ -97,8 +86,6 @@ export function ProjectsSection() {
           <div className="sticky top-24">
             <ProjectPreview
               project={t.projects[active]}
-              index={active}
-              total={t.projects.length}
               folder={labels.nav.projects.toLowerCase()}
               comingSoonLabel={t.comingSoonLabel}
             />

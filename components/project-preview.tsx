@@ -9,14 +9,10 @@ import { GlyphImage } from "@/components/glyph-image"
 // drawn in dots (or as a terminal session for tools without a UI).
 export function ProjectPreview({
   project,
-  index,
-  total,
   folder,
   comingSoonLabel,
 }: {
   project: Project
-  index: number
-  total: number
   /** "projects" / "projekte", for the ~/<folder>/<slug> path. */
   folder: string
   comingSoonLabel: string
@@ -29,9 +25,6 @@ export function ProjectPreview({
         <span className="truncate">
           <span className="text-primary">~/{folder}/</span>
           {project.slug ?? "…"}
-        </span>
-        <span className="tabular-nums">
-          {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
         </span>
       </figcaption>
 

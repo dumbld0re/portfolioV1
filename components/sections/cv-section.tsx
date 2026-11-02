@@ -38,7 +38,7 @@ export function CvSection() {
         <header className="space-y-10 pb-12 md:pb-16 print:space-y-3 print:pb-5">
           <div className="flex flex-wrap items-center justify-between gap-6">
             <h1 className="font-mono text-label uppercase tracking-[0.3em] text-muted-foreground motion-safe:animate-reveal-up">
-              <span className="text-primary">005</span> / {t.label}
+              {t.label}
             </h1>
             <div className="flex flex-wrap gap-3 print:hidden motion-safe:animate-reveal-up" style={{ animationDelay: "500ms" }}>
               <Magnetic>

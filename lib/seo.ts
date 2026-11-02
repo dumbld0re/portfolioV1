@@ -71,11 +71,18 @@ export function jsonLdScript(data: object) {
   return { __html: JSON.stringify(data).replace(/</g, "\\u003c") }
 }
 
-const SHARE_IMAGE_ALT = "danny-miguel — developer and quantitative finance student in Windhoek, Namibia"
+const SHARE_IMAGE_ALT =
+  "Danny-Miguel Mittelberger — I freelance here and there, with a soft spot for Linux and everything that runs in a terminal."
+
+// Bump the version when the card changes: X, iMessage and friends cache share
+// images by URL, so a new query string makes them fetch the new one.
+const SHARE_IMAGE_VERSION = 2
 
 export const shareImages = {
-  openGraph: [{ url: "/opengraph-image.png", width: 1200, height: 630, alt: SHARE_IMAGE_ALT }],
-  twitter: [{ url: "/twitter-image.png", width: 1200, height: 630, alt: SHARE_IMAGE_ALT }],
+  openGraph: [
+    { url: `/opengraph-image.png?v=${SHARE_IMAGE_VERSION}`, width: 1200, height: 630, alt: SHARE_IMAGE_ALT },
+  ],
+  twitter: [{ url: `/twitter-image.png?v=${SHARE_IMAGE_VERSION}`, width: 1200, height: 630, alt: SHARE_IMAGE_ALT }],
 }
 
 // Next merges metadata shallowly, so a page that sets its own openGraph drops
