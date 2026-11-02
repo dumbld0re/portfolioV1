@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata, Viewport } from "next"
 import { notFound } from "next/navigation"
 import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 import { BoringClassSync } from "@/components/boring-toggle"
 import { CustomCursor } from "@/components/custom-cursor"
@@ -99,6 +100,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
             <ScrollReveal />
           </ThemeProvider>
           <Analytics />
+          <SpeedInsights />
         </LanguageProvider>
         <CustomCursor />
       </body>

@@ -3,19 +3,17 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
-import { FileText, Github, Mail } from "lucide-react"
 
 import { siteCopy } from "@/content/site"
 import { rememberLanguage, useLanguage } from "@/components/language-provider"
-import { Button } from "@/components/ui/button"
-import { BoringToggle } from "@/components/boring-toggle"
-import { RollText } from "@/components/roll-text"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { SHOW_POSTS } from "@/lib/features"
 import { localizePath, stripLanguage } from "@/lib/i18n"
 import { hasBootPlayed, markBootPlayed } from "@/lib/motion"
 import { cn } from "@/lib/utils"
 
+// A quiet row of lowercase links on the right edge of the home frame. It scrolls away with the page;
+// the boring toggle and friends live in the corners (components/corner-controls.tsx).
 export function Header() {
   const { language, localize } = useLanguage()
   const pathname = stripLanguage(usePathname())
@@ -27,119 +25,56 @@ export function Header() {
     markBootPlayed()
   }, [])
 
-  const getFilePath = () => {
-    // Folder names follow the nav labels, so the path reads in the page language.
-    if (pathname === "/cv") return `/home/danny-miguel/${labels.nav.cv.toLowerCase()}`
-    if (pathname.startsWith("/posts")) return `/home/danny-miguel/${labels.nav.posts.toLowerCase()}`
-    return "/home/danny-miguel/"
-  }
-
   // Underline sweeps in from the left on hover and stays under the current page.
   const navLink =
-    "relative text-sm text-muted-foreground transition-colors hover:text-foreground after:absolute after:inset-x-0 after:-bottom-1 after:h-px after:origin-left after:scale-x-0 after:bg-primary after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100 aria-[current=page]:text-foreground aria-[current=page]:after:scale-x-100"
-  const iconButton = "size-8 md:size-9 text-muted-foreground hover:text-foreground"
+    "relative lowercase text-muted-foreground transition-colors hover:text-foreground after:absolute after:inset-x-0 after:-bottom-1 after:h-px after:origin-left after:scale-x-0 after:bg-primary after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100 aria-[current=page]:text-foreground aria-[current=page]:after:scale-x-100"
+
+  const links = [
+    { href: "/#projects", label: labels.nav.projects },
+    { href: "/#experience", label: labels.nav.experience },
+    { href: "/#contact", label: labels.nav.contact },
+    { href: "/cv", label: labels.nav.cv, current: pathname === "/cv" },
+    ...(SHOW_POSTS ? [{ href: "/posts", label: labels.nav.posts, current: pathname.startsWith("/posts") }] : []),
+  ]
 
   return (
-    <header className="relative md:sticky md:top-0 z-30 w-full px-6 py-4 md:py-6 md:px-12 lg:px-16 bg-background/80 backdrop-blur-sm border-b border-border/40 print:hidden">
+    <header className="relative z-30 w-full px-6 md:px-12 pt-7 pb-4 md:pt-12 print:hidden">
       <nav
         className={cn(
-          "grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-5 gap-y-3 md:flex md:flex-row md:justify-between md:gap-4 max-w-[90rem] mx-auto",
+          "mx-auto flex max-w-[90rem] flex-wrap items-center justify-end gap-x-5 gap-y-3 font-mono text-sm md:gap-x-8 md:text-base",
           boot && "motion-safe:animate-reveal-up",
         )}
       >
-        <Link
-          href={localize("/")}
-          className="font-mono text-sm md:text-base text-foreground/80 hover:text-foreground transition-colors flex items-center gap-3 min-w-0"
-        >
-          <span className="font-bold text-base md:text-lg whitespace-nowrap">
-            dm
-            <span className="text-primary motion-safe:animate-caret-blink" aria-hidden="true">
-              _
-            </span>
+
+        {links.map((link) => (
+          <Link
+            key={link.href}
+            href={localize(link.href)}
+            className={navLink}
+            aria-current={link.current ? "page" : undefined}
+          >
+            {link.label}
+          </Link>
+        ))}
+
+        <span className="flex items-center gap-x-3">
+          <span className="text-muted-foreground/40" aria-hidden="true">
+            /
           </span>
-          <span className="hidden sm:inline text-muted-foreground/50" aria-hidden="true">
-            |
-          </span>
-          <span className="hidden sm:inline truncate">{getFilePath()}</span>
-        </Link>
-
-        <div className="contents md:flex md:flex-row md:items-center md:gap-8">
-          {/* One row on phones too: scrolls sideways instead of wrapping. */}
-          <div className="col-start-1 row-start-2 -ml-6 flex gap-x-5 overflow-x-auto whitespace-nowrap pl-6 py-1 [scrollbar-width:none] md:ml-0 md:gap-x-6 md:overflow-visible md:pl-0">
-            <Link href={localize("/#projects")} className={navLink}>
-              <RollText>{labels.nav.projects}</RollText>
-            </Link>
-            <Link href={localize("/#experience")} className={navLink}>
-              <RollText>{labels.nav.experience}</RollText>
-            </Link>
-            <Link href={localize("/#contact")} className={navLink}>
-              <RollText>{labels.nav.contact}</RollText>
-            </Link>
-            <Link href={localize("/cv")} className={navLink} aria-current={pathname === "/cv" ? "page" : undefined}>
-              <RollText>{labels.nav.cv}</RollText>
-            </Link>
-            {SHOW_POSTS && (
-              <Link
-                href={localize("/posts")}
-                className={navLink}
-                aria-current={pathname.startsWith("/posts") ? "page" : undefined}
-              >
-                <RollText>{labels.nav.posts}</RollText>
-              </Link>
-            )}
-          </div>
-
-          {/* Phones: end of the links row. Desktop: first of the controls. */}
-          <div className="col-start-2 row-start-2 flex items-center justify-end md:gap-6">
-            <span className="hidden md:inline text-muted-foreground/50" aria-hidden="true">
-              |
-            </span>
-            <Link
-              href={localizePath(otherLanguage, pathname)}
-              onClick={() => rememberLanguage(otherLanguage)}
-              // A prefetch would run before the click stores the cookie, and
-              // proxy.ts could answer it with a redirect back to this language.
-              prefetch={false}
-              hrefLang={otherLanguage}
-              // Phones: a bordered button matching the theme toggle above it, so it reads as tappable.
-              className="inline-flex size-8 items-center justify-center rounded-full border border-border font-mono text-xs text-foreground transition-colors hover:border-foreground active:bg-muted md:size-auto md:rounded-none md:border-0 md:text-sm md:text-muted-foreground md:hover:text-foreground"
-              aria-label={otherLanguage === "en" ? "EN — switch to English" : "DE — auf Deutsch wechseln"}
-            >
-              {otherLanguage.toUpperCase()}
-            </Link>
-          </div>
-
-          <div className="col-start-2 row-start-1 flex items-center justify-end gap-6 md:gap-8">
-            <div className="flex items-center gap-5 md:gap-6">
-              {/* On phones it lives in the footer instead, keeping this row short. */}
-              <span className="hidden md:inline-flex">
-                <BoringToggle />
-              </span>
-              <ThemeToggle />
-            </div>
-
-            <div className="hidden md:flex items-center gap-3">
-              <Button variant="ghost" size="icon" className={iconButton} asChild>
-                <a href="https://github.com/dumbld0re" target="_blank" rel="noreferrer">
-                  <Github className="size-4" />
-                  <span className="sr-only">GitHub</span>
-                </a>
-              </Button>
-              <Button variant="ghost" size="icon" className={iconButton} asChild>
-                <a href="mailto:dannymiiguel@gmail.com">
-                  <Mail className="size-4" />
-                  <span className="sr-only">E-Mail</span>
-                </a>
-              </Button>
-              <Button variant="ghost" size="icon" className={iconButton} asChild>
-                <a href="/cv.pdf" download>
-                  <FileText className="size-4" />
-                  <span className="sr-only">Download {labels.nav.cv}</span>
-                </a>
-              </Button>
-            </div>
-          </div>
-        </div>
+          <Link
+            href={localizePath(otherLanguage, pathname)}
+            onClick={() => rememberLanguage(otherLanguage)}
+            // A prefetch would run before the click stores the cookie, and
+            // proxy.ts could answer it with a redirect back to this language.
+            prefetch={false}
+            hrefLang={otherLanguage}
+            className={navLink}
+            aria-label={otherLanguage === "en" ? "EN — switch to English" : "DE — auf Deutsch wechseln"}
+          >
+            {otherLanguage}
+          </Link>
+          <ThemeToggle />
+        </span>
       </nav>
     </header>
   )

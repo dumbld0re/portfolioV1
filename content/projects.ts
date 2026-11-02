@@ -2,7 +2,14 @@ import type { Language } from "@/lib/i18n"
 
 export type ProjectStatus = "inDevelopment" | "inUse"
 
+export type ProjectPreview =
+  /** A screenshot in public/, redrawn as dots beside the list. */
+  | { kind: "image"; src: string }
+  /** For tools without a UI: a short terminal session. */
+  | { kind: "terminal"; lines: string[] }
+
 export type Project = {
+  preview?: ProjectPreview
   /** Rendered as a terminal-style path header: ~/projects/<slug> */
   slug?: string
   title: string
@@ -17,6 +24,15 @@ export type Project = {
   internalTool?: boolean
   status?: ProjectStatus
 }
+
+// Illustrative only — swap in a real session from the CLI.
+const UNI_SESSION = [
+  "$ uni build worksheets/praeteritum.typ",
+  "  compiling student version …",
+  "  ✓ praeteritum.pdf",
+  "  compiling answer key …",
+  "  ✓ praeteritum-loesungen.pdf",
+]
 
 export const projectsContent: Record<
   Language,
@@ -51,6 +67,7 @@ export const projectsContent: Record<
         tech: ["React", "Vite", "Vercel Functions", "Upstash Redis"],
         demoHref: "https://financetracker-demo.vercel.app/",
         githubHref: "https://github.com/dumbld0re/financeApp",
+        preview: { kind: "image", src: "/projects/finance-tracker.webp" },
         internalTool: true,
         status: "inUse",
       },
@@ -62,6 +79,7 @@ export const projectsContent: Record<
         description:
           "Ein typisiertes Python-CLI für meinen Deutsch-Nachhilfeunterricht und mein Studium.",
         tech: ["Python", "typer", "Typst", "pytest"],
+        preview: { kind: "terminal", lines: UNI_SESSION },
         internalTool: true,
         status: "inDevelopment",
       },
@@ -74,6 +92,7 @@ export const projectsContent: Record<
         demoHref: "https://aestudio.site/",
         demoKind: "site",
         githubHref: "https://github.com/dumbld0re/ae",
+        preview: { kind: "image", src: "/projects/ae.webp" },
         status: "inUse",
       },
       { title: "", description: "", tech: [], comingSoon: true },
@@ -99,6 +118,7 @@ export const projectsContent: Record<
         tech: ["React", "Vite", "Vercel Functions", "Upstash Redis"],
         demoHref: "https://financetracker-demo.vercel.app/",
         githubHref: "https://github.com/dumbld0re/financeApp",
+        preview: { kind: "image", src: "/projects/finance-tracker.webp" },
         internalTool: true,
         status: "inUse",
       },
@@ -110,6 +130,7 @@ export const projectsContent: Record<
         description:
           "A typed Python CLI for my German tutoring and university coursework.",
         tech: ["Python", "typer", "Typst", "pytest"],
+        preview: { kind: "terminal", lines: UNI_SESSION },
         internalTool: true,
         status: "inDevelopment",
       },
@@ -122,6 +143,7 @@ export const projectsContent: Record<
         demoHref: "https://aestudio.site/",
         demoKind: "site",
         githubHref: "https://github.com/dumbld0re/ae",
+        preview: { kind: "image", src: "/projects/ae.webp" },
         status: "inUse",
       },
       { title: "", description: "", tech: [], comingSoon: true },

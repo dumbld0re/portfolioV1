@@ -16,6 +16,11 @@ export const siteCopy: Record<
     boringLabel: string
     themeLabel: string
     notFound: string
+    sayHello: string
+    on: string
+    off: string
+    pauseAnimation: string
+    playAnimation: string
   }
 > = {
   de: {
@@ -32,6 +37,11 @@ export const siteCopy: Record<
     boringLabel: "Langweiligen Modus umschalten",
     themeLabel: "Farbschema wechseln",
     notFound: "nicht gefunden",
+    sayHello: "sag hallo",
+    on: "an",
+    off: "aus",
+    pauseAnimation: "animation anhalten",
+    playAnimation: "animation abspielen",
   },
   en: {
     nav: {
@@ -47,5 +57,10 @@ export const siteCopy: Record<
     boringLabel: "Toggle boring mode",
     themeLabel: "Toggle theme",
     notFound: "not found",
+    sayHello: "say hello",
+    on: "on",
+    off: "off",
+    pauseAnimation: "pause animation",
+    playAnimation: "play animation",
   },
 }

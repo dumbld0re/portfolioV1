@@ -80,7 +80,7 @@
 
 @theme inline {
   --font-sans: var(--font-cabinet), ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-gambarino), ui-serif, Georgia, serif;
+  --font-serif: var(--font-geist-serif-triangle), ui-serif, Georgia, serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
   --text-display: clamp(2.5rem, 1.5rem + 3.5vw, 6rem);
   --text-display--line-height: 1.05;
@@ -141,8 +141,8 @@
   }
   body {
     @apply bg-background text-foreground;
-    /* Gambarino ships a single (400) weight and no italic — never synthesize a
-       faux bold/italic from it; render the real weight instead. */
+    /* Geist Serif Triangle ships a single (400) weight and no italic — never
+       synthesize a faux bold/italic from it; render the real weight instead. */
     font-synthesis: none;
   }
   /* One icon system: every lucide glyph shares a lighter, uniform stroke so
@@ -239,31 +239,11 @@ html.boring {
   }
 }
 
-/* Two-tone contact footer (components/sections/contact-section.tsx): a darker
-   surface that flips with the theme. Overriding the base color tokens on the
-   element re-tints every Tailwind color utility used inside it, so the section
-   stays legible in both light and dark. */
-.contact-footer {
-  --background: #1d2021;
-  --foreground: #fbf1c7;
-  --card: #32302f;
-  --muted-foreground: #a89984;
-  --border: #3c3836;
-  --primary: #fabd2f;
-  background-color: var(--background);
-  color: var(--foreground);
-}
-
-/* In dark mode the page is dark, so the footer inverts to a warm light panel —
-   the two-tone always flips against whatever the rest of the page is. */
-.dark .contact-footer {
-  --background: #fbf1c7;
-  --foreground: #282828;
-  --card: #f2e5bc;
-  /* Both darkened from the gruvbox defaults to clear WCAG AA (4.5:1) on the cream panel. */
-  --muted-foreground: #665c54;
-  --border: #d5c4a1;
-  --primary: #9d5c0d;
+/* "pause animation" corner control (components/corner-controls.tsx) freezes
+   the drifting dot background and the blinking carets. */
+html.paused .bg-drift-layer,
+html.paused [class*="animate-caret-blink"] {
+  animation-play-state: paused;
 }
 
 /* Library index (components/library/library-index.tsx): lines and group

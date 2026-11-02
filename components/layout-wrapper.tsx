@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation"
 
 import { AsciiBackground } from "@/components/ascii-background"
 import { BoringToggle } from "@/components/boring-toggle"
+import { CornerControls } from "@/components/corner-controls"
 import { DontClickLink } from "@/components/dont-click-link"
 import { Header } from "@/components/header"
 import { useLanguage } from "@/components/language-provider"
@@ -31,12 +32,13 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
       <div className="relative z-10 flex flex-col min-h-screen">
         <Header />
         {children}
+        <CornerControls />
         {showFooter && (
-          <footer className="w-full px-6 md:px-12 lg:px-16 pt-16 pb-8 print:hidden">
+          <footer className="w-full px-6 md:px-12 pt-16 pb-8 lg:pb-16 print:hidden">
             <div className="mx-auto max-w-[90rem] border-t border-border/60 pt-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between font-mono text-xs text-muted-foreground">
               <p>{copy.footer}</p>
               <DontClickLink className="w-fit transition-colors hover:text-foreground">{copy.dontClickHere}</DontClickLink>
-              <div className="md:hidden">
+              <div className="lg:hidden">
                 <BoringToggle />
               </div>
             </div>

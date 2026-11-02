@@ -71,7 +71,7 @@ export function AsciiBackground({ opacity = 0.1, cellSize = 16, className }: Asc
     >
       <div
         ref={tileRef}
-        className="absolute motion-safe:animate-bg-drift"
+        className="bg-drift-layer absolute motion-safe:animate-bg-drift"
         style={{
           inset: -TILE_SIZE,
           backgroundSize: `${TILE_SIZE}px ${TILE_SIZE}px`,

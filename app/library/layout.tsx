@@ -1,6 +1,7 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
 import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 import { BoringClassSync } from "@/components/boring-toggle"
 import { CustomCursor } from "@/components/custom-cursor"
@@ -75,6 +76,7 @@ export default function LibraryLayout({ children }: { children: React.ReactNode 
           <ScrollReveal />
         </ThemeProvider>
         <Analytics />
+        <SpeedInsights />
         <CustomCursor />
       </body>
     </html>
