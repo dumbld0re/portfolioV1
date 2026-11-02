@@ -1,15 +1,29 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { ArrowUpRight } from "lucide-react"
 
 import { homeContent } from "@/content/home"
 import { useLanguage } from "@/components/language-provider"
 import { BOOT_SEQUENCE_MS, hasBootPlayed, markBootPlayed } from "@/lib/motion"
 import { SocialLinks } from "@/components/social-links"
-import { column } from "@/lib/styles"
+import { column, inlineLink } from "@/lib/styles"
 import { cn } from "@/lib/utils"
 
 const CHAR_STAGGER_MS = 30
+
+// On hover the arrow flies off to the top right and a fresh one slides in
+// from the bottom left, as if the link had just been sent somewhere.
+function OutArrow() {
+  const arrow =
+    "absolute inset-0 size-full transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none"
+  return (
+    <span aria-hidden="true" className="relative ml-1 inline-block size-[0.8em] overflow-hidden align-[-0.05em] text-primary">
+      <ArrowUpRight className={`${arrow} group-hover/out:translate-x-full group-hover/out:-translate-y-full group-focus-visible/out:translate-x-full group-focus-visible/out:-translate-y-full`} />
+      <ArrowUpRight className={`${arrow} -translate-x-full translate-y-full delay-75 group-hover/out:translate-x-0 group-hover/out:translate-y-0 group-focus-visible/out:translate-x-0 group-focus-visible/out:translate-y-0`} />
+    </span>
+  )
+}
 
 export function HomeSection() {
   const { language } = useLanguage()
@@ -63,6 +77,22 @@ export function HomeSection() {
 
       <div className={cn("mt-12 max-w-2xl space-y-5", reveal)} style={delay(BOOT_SEQUENCE_MS.heroSubtitle)}>
         <p className="text-xl leading-relaxed text-foreground/90 text-pretty md:text-2xl">{t.intro}</p>
+        <p className="text-xl leading-relaxed text-foreground/90 text-pretty md:text-2xl">
+          {t.now.map((part, i) =>
+            typeof part === "string" ? (
+              part
+            ) : part.href ? (
+              <a key={i} href={part.href} target="_blank" rel="noreferrer" className="group/out whitespace-nowrap text-foreground">
+                <span className={inlineLink}>{part.label}</span>
+                <OutArrow />
+              </a>
+            ) : (
+              <span key={i} className="text-foreground">
+                {part.label}
+              </span>
+            ),
+          )}
+        </p>
         <p className="text-lg leading-relaxed text-muted-foreground text-pretty md:text-xl">{t.description}</p>
       </div>
 

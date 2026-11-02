@@ -413,3 +413,38 @@ html.paused [class*="animate-caret-blink"] {
     transform: rotate(-90deg) scale(0.5);
   }
 }
+
+/* Handwriting (components/handwritten.tsx): each stroke is hidden behind its
+   own dash gap, then the dash slides in along the path, in writing order. */
+.handwritten path {
+  stroke-dasharray: 1 2;
+  stroke-dashoffset: 1;
+}
+
+.handwritten[data-write] path {
+  animation-name: hw-write;
+  animation-timing-function: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+  animation-fill-mode: both;
+}
+
+@keyframes hw-write {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Motion paused or reduced: it is simply written. */
+html.paused .handwritten path {
+  animation: none;
+  stroke-dashoffset: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .handwritten path {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}

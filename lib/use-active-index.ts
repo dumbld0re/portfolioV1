@@ -3,26 +3,49 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 
 // Which item of a list is "current": the one crossing the middle of the
-// viewport while scrolling, or whichever the pointer or focus is on. Feeds the
-// sticky panels beside the projects and experience lists.
+// viewport, or whichever the pointer or focus is on. Feeds the sticky
+// timeline beside the experience list.
+//
+// Measured from the items' positions on every scroll frame rather than with
+// an IntersectionObserver band, so a fast scroll (or a jump to an anchor)
+// can't skip over items and leave a stale one lit.
 export function useActiveIndex(count: number) {
   const [active, setActive] = useState(0)
   const nodes = useRef<(HTMLElement | null)[]>([])
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue
-          const index = nodes.current.indexOf(entry.target as HTMLElement)
-          if (index >= 0) setActive(index)
+    let frame = 0
+
+    const measure = () => {
+      frame = 0
+      const middle = window.innerHeight / 2
+      let best = -1
+      let bestDistance = Infinity
+      nodes.current.slice(0, count).forEach((node, i) => {
+        if (!node) return
+        const r = node.getBoundingClientRect()
+        // Inside the item: it's the one. Otherwise, the nearest edge wins.
+        const distance = r.top <= middle && r.bottom >= middle ? 0 : Math.min(Math.abs(r.top - middle), Math.abs(r.bottom - middle))
+        if (distance < bestDistance) {
+          bestDistance = distance
+          best = i
         }
-      },
-      // A thin band across the middle of the screen.
-      { rootMargin: "-45% 0px -45% 0px" },
-    )
-    nodes.current.slice(0, count).forEach((node) => node && observer.observe(node))
-    return () => observer.disconnect()
+      })
+      if (best >= 0) setActive(best)
+    }
+
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(measure)
+    }
+
+    frame = requestAnimationFrame(measure)
+    window.addEventListener("scroll", onScroll, { passive: true })
+    window.addEventListener("resize", onScroll)
+    return () => {
+      window.removeEventListener("scroll", onScroll)
+      window.removeEventListener("resize", onScroll)
+      cancelAnimationFrame(frame)
+    }
   }, [count])
 
   const register = useCallback(

@@ -25,7 +25,6 @@ export function AsciiBackground({ opacity = 0.1, cellSize = 16, className }: Asc
     const tile = tileRef.current
     if (!container || !tile) return
 
-    const color = getComputedStyle(container).color
     const dpr = Math.min(window.devicePixelRatio || 1, 2)
     const canvas = document.createElement("canvas")
     canvas.width = TILE_SIZE * dpr
@@ -34,7 +33,10 @@ export function AsciiBackground({ opacity = 0.1, cellSize = 16, className }: Asc
     if (!ctx) return
 
     ctx.scale(dpr, dpr)
-    ctx.fillStyle = color
+    // Drawn as a mask, not in color: the layer itself is filled with the
+    // theme's text color, so the dots follow light/dark switches live instead
+    // of keeping whatever color the page had when it loaded.
+    ctx.fillStyle = "#fff"
     ctx.textAlign = "center"
     ctx.textBaseline = "middle"
 
@@ -54,7 +56,9 @@ export function AsciiBackground({ opacity = 0.1, cellSize = 16, className }: Asc
     // Direct DOM mutation via ref, not React state — this is a one-time
     // imperative canvas draw, not an external value to keep in sync, so it
     // doesn't need (or want) a second render pass.
-    tile.style.backgroundImage = `url(${canvas.toDataURL()})`
+    const mask = `url(${canvas.toDataURL()})`
+    tile.style.maskImage = mask
+    tile.style.webkitMaskImage = mask
   }, [cellSize])
 
   // Absolute rather than fixed, so the glyphs scroll with the page: Safari 26
@@ -74,7 +78,11 @@ export function AsciiBackground({ opacity = 0.1, cellSize = 16, className }: Asc
         className="bg-drift-layer absolute motion-safe:animate-bg-drift"
         style={{
           inset: -TILE_SIZE,
-          backgroundSize: `${TILE_SIZE}px ${TILE_SIZE}px`,
+          backgroundColor: "currentColor",
+          maskSize: `${TILE_SIZE}px ${TILE_SIZE}px`,
+          WebkitMaskSize: `${TILE_SIZE}px ${TILE_SIZE}px`,
+          maskRepeat: "repeat",
+          WebkitMaskRepeat: "repeat",
         }}
       />
     </div>

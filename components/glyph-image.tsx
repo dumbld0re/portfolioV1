@@ -122,7 +122,9 @@ export function GlyphImage({ src, alt, className }: { src: string; alt: string; 
     const render = (animate: boolean) => {
       layout()
       cancelAnimationFrame(raf)
-      if (animate && !reducedMotion) {
+      // "pause animation" (html.paused) skips the resolve, like reduced motion.
+      const paused = document.documentElement.classList.contains("paused")
+      if (animate && !reducedMotion && !paused) {
         start = 0
         raf = requestAnimationFrame(tick)
       } else {

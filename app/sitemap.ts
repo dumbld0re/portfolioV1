@@ -21,7 +21,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     ...localized("/", { changeFrequency: "monthly", priority: 1 }),
-    ...localized("/cv", { changeFrequency: "monthly", priority: 0.8 }),
     ...(SHOW_POSTS ? localized("/posts", { lastModified: latestPost, changeFrequency: "weekly", priority: 0.7 }) : []),
     // Posts are English-only; the /de copies canonicalize to these URLs.
     ...posts.map((post) => ({

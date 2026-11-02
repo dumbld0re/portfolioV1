@@ -23,6 +23,13 @@ export const experienceContent: Record<
     title: "Erfahrung",
     experiences: [
       {
+        role: "Koordinator Digitale Verwaltung",
+        company: "Oratores Novi",
+        period: "Seit Okt. 2026",
+        description:
+          "Teil des Executive Teams. Ich baue die digitalen Abläufe auf: Ablage, Anmeldungen und Zertifikate für Veranstaltungen, Datenbanken.",
+      },
+      {
         role: "Deutsch-Nachhilfelehrer",
         company: "Fluent Academy",
         companyHref: "https://fluentacademy.co/",
@@ -57,6 +64,13 @@ export const experienceContent: Record<
   en: {
     title: "Experience",
     experiences: [
+      {
+        role: "Digital Administration Coordinator",
+        company: "Oratores Novi",
+        period: "Oct 2026 - Present",
+        description:
+          "On the executive team. I set up the digital side of things: filing, event sign-ups and certificates, and the databases behind them.",
+      },
       {
         role: "German Tutor",
         company: "Fluent Academy",

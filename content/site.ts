@@ -10,6 +10,8 @@ export const siteCopy: Record<
       cv: string
       posts: string
     }
+    cvDownload: string
+    cvOpen: string
     footer: string
     dontClickHere: string
     boring: string
@@ -31,6 +33,8 @@ export const siteCopy: Record<
       cv: "Lebenslauf",
       posts: "Beiträge",
     },
+    cvDownload: "pdf herunterladen",
+    cvOpen: "im browser ansehen",
     footer: "2086© (damit ich das nie wieder ändern muss)",
     dontClickHere: "bloß nicht klicken",
     boring: "Langweilig",
@@ -51,6 +55,8 @@ export const siteCopy: Record<
       cv: "CV",
       posts: "Posts",
     },
+    cvDownload: "download pdf",
+    cvOpen: "view in browser",
     footer: "2086© (so i dont forget to ever change this)",
     dontClickHere: "dont click here",
     boring: "Boring",

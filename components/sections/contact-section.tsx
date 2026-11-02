@@ -2,9 +2,11 @@
 
 
 import { contactContent } from "@/content/contact"
+import { sayHiToMe } from "@/content/handwriting"
 import { siteCopy } from "@/content/site"
 import { BoringToggle } from "@/components/boring-toggle"
 import { DontClickLink } from "@/components/dont-click-link"
+import { Handwritten } from "@/components/handwritten"
 import { useLanguage } from "@/components/language-provider"
 import { LocalClock } from "@/components/local-clock"
 import { SocialLinks } from "@/components/social-links"
@@ -22,16 +24,25 @@ export function ContactSection() {
           {t.title}
         </h2>
 
-        <p className="mt-6 font-serif text-5xl lowercase leading-tight tracking-[-0.02em] text-balance md:text-7xl">
-          {t.heading.replace(/\.$/, "")}
-          <span className="text-primary">.</span>
-        </p>
+        {/* The set heading, with "say hi to me" scribbled over it by hand. */}
+        <div className="relative mt-6 mb-16 w-fit md:mb-20">
+          <p className="font-serif text-5xl lowercase leading-tight tracking-[-0.02em] text-balance text-foreground/35 md:text-7xl">
+            {t.heading.replace(/\.$/, "")}
+            <span className="text-primary/60">.</span>
+          </p>
+          <Handwritten
+            writing={sayHiToMe}
+            label="say hi to me"
+            delay={250}
+            className="pointer-events-none absolute left-[12%] top-[-55%] w-[min(30rem,72vw)] -rotate-6 text-primary"
+          />
+        </div>
 
         <p className="mt-8 max-w-2xl text-xl leading-relaxed md:text-2xl text-muted-foreground">
           {t.blurbBefore}{" "}
           <a href={`mailto:${t.email}`} className={`${inlineLink} text-foreground`}>
             {t.email}
-          </a>{" "}
+          </a>
           {t.blurbAfter}
         </p>
 

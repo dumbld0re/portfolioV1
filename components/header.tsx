@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
 
 import { siteCopy } from "@/content/site"
+import { CvMenu } from "@/components/cv-menu"
 import { rememberLanguage, useLanguage } from "@/components/language-provider"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { SHOW_POSTS } from "@/lib/features"
@@ -33,8 +34,6 @@ export function Header() {
     { href: "/#projects", label: labels.nav.projects },
     { href: "/#experience", label: labels.nav.experience },
     { href: "/#contact", label: labels.nav.contact },
-    // "Lebenslauf" is too long for the one-row phone bar; "cv" reads in both languages.
-    { href: "/cv", label: labels.nav.cv, short: "cv", current: pathname === "/cv" },
     ...(SHOW_POSTS ? [{ href: "/posts", label: labels.nav.posts, current: pathname.startsWith("/posts") }] : []),
   ]
 
@@ -56,16 +55,14 @@ export function Header() {
             className={navLink}
             aria-current={link.current ? "page" : undefined}
           >
-            {"short" in link && link.short ? (
-              <>
-                <span className="md:hidden">{link.short}</span>
-                <span className="hidden md:inline">{link.label}</span>
-              </>
-            ) : (
-              link.label
-            )}
+            {link.label}
           </Link>
         ))}
+        {/* "Lebenslauf" is too long for the one-row phone bar; "cv" reads in both languages. */}
+        <CvMenu className={cn(navLink, "cursor-pointer aria-expanded:text-foreground aria-expanded:after:scale-x-100")}>
+          <span className="md:hidden">cv</span>
+          <span className="hidden md:inline">{labels.nav.cv}</span>
+        </CvMenu>
         </div>
 
         <span className="flex shrink-0 items-center gap-x-3">

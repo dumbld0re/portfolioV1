@@ -17,10 +17,10 @@ export const contactContent: Record<
 > = {
   de: {
     title: "Kontakt",
-    heading: "lass uns etwas bauen.",
-    blurbBefore: "hast du ein projekt im kopf oder willst einfach quatschen? schreib mir unter",
+    heading: "sag hallo.",
+    blurbBefore: "Egal ob du eine Idee hast, eine Frage, oder einfach reden willst, schreib mir an",
     email: "dannymiiguel@gmail.com",
-    blurbAfter: "— ich freue mich, von dir zu hören.",
+    blurbAfter: ". Gern auch ganz formlos.",
     phone: "+264 81 821 0003",
     backToTop: "nach oben",
     writeLabel: "Schreib mir",
@@ -29,10 +29,10 @@ export const contactContent: Record<
   },
   en: {
     title: "Contact",
-    heading: "let's build something.",
-    blurbBefore: "got a project in mind, or just want to chat? drop me a line at",
+    heading: "say hi.",
+    blurbBefore: "Whether you have an idea, a question, or just want to talk, write to me at",
     email: "dannymiiguel@gmail.com",
-    blurbAfter: "— i'd love to hear from you.",
+    blurbAfter: ". No need to be formal.",
     phone: "+264 81 821 0003",
     backToTop: "back to top",
     writeLabel: "Write",

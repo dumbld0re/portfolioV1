@@ -89,7 +89,7 @@ export const projectsContent: Record<
         description:
           "Die Website meines Designstudios – von Grund auf selbst gebaut, ganz ohne Templates.",
         tech: ["Next.js", "TypeScript", "Canvas", "CSS"],
-        demoHref: "https://aestudio.site/",
+        demoHref: "https://www.aestudio.site/",
         demoKind: "site",
         githubHref: "https://github.com/dumbld0re/ae",
         preview: { kind: "image", src: "/projects/ae.webp" },
@@ -140,7 +140,7 @@ export const projectsContent: Record<
         description:
           "The site for my design studio, built from scratch with no templates.",
         tech: ["Next.js", "TypeScript", "Canvas", "CSS"],
-        demoHref: "https://aestudio.site/",
+        demoHref: "https://www.aestudio.site/",
         demoKind: "site",
         githubHref: "https://github.com/dumbld0re/ae",
         preview: { kind: "image", src: "/projects/ae.webp" },

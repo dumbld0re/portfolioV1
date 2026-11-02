@@ -1,10 +1,10 @@
 "use client"
 
-import Link from "next/link"
 import { FileText, Mail } from "lucide-react"
 
 import { contactContent } from "@/content/contact"
 import { siteCopy } from "@/content/site"
+import { CvMenu } from "@/components/cv-menu"
 import { useLanguage } from "@/components/language-provider"
 import { X_URL } from "@/lib/styles"
 import { cn } from "@/lib/utils"
@@ -32,7 +32,7 @@ export type SocialKey = "github" | "email" | "cv" | "whatsapp" | "x"
 // A row of icon-only links. Each carries an aria-label and a title, so the
 // name still shows on hover and reaches screen readers.
 export function SocialLinks({ items, className }: { items: SocialKey[]; className?: string }) {
-  const { language, localize } = useLanguage()
+  const { language } = useLanguage()
   const contact = contactContent[language]
   const cv = siteCopy[language].nav.cv
 
@@ -75,9 +75,9 @@ export function SocialLinks({ items, className }: { items: SocialKey[]; classNam
         )
       case "cv":
         return (
-          <Link href={localize("/cv")} className={link} aria-label={cv} title={cv}>
+          <CvMenu className={cn(link, "cursor-pointer aria-expanded:text-primary")} label={cv}>
             <FileText className={icon} />
-          </Link>
+          </CvMenu>
         )
     }
   }
