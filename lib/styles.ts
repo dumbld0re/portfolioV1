@@ -13,5 +13,5 @@ export const measure = "max-w-3xl"
 /** Section marker: `001 / LABEL`. */
 export const sectionLabel = "font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground md:text-[13px]"
 
-/** Placeholder until the real handle is in: swap for https://x.com/<handle>. */
-export const X_URL = "https://x.com/"
+/** X (Twitter) profile, linked from the hero and contact icon rows. */
+export const X_URL = "https://x.com/dannymiiiguel"
