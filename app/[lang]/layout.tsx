@@ -56,22 +56,14 @@ export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Prom
     },
     // title/description are left out so each page's own values carry through.
     twitter: { card: "summary_large_image", images: shareImages.twitter },
+    // One amber tile works on light and dark tab bars alike. The ?v= busts
+    // browsers' stubborn favicon caches when the mark changes.
     icons: {
       icon: [
-        {
-          url: "/icon-light-32x32.png",
-          media: "(prefers-color-scheme: light)",
-        },
-        {
-          url: "/icon-dark-32x32.png",
-          media: "(prefers-color-scheme: dark)",
-        },
-        {
-          url: "/icon.svg",
-          type: "image/svg+xml",
-        },
+        { url: "/icon.svg?v=3", type: "image/svg+xml" },
+        { url: "/icon-light-32x32.png?v=3", sizes: "32x32", type: "image/png" },
       ],
-      apple: "/apple-icon.png",
+      apple: "/apple-icon.png?v=3",
     },
   }
 }
