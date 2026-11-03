@@ -7,6 +7,7 @@ import { siteCopy } from "@/content/site"
 import { BoringToggle } from "@/components/boring-toggle"
 import { DontClickLink } from "@/components/dont-click-link"
 import { Handwritten } from "@/components/handwritten"
+import { LastUpdated } from "@/components/last-updated"
 import { useLanguage } from "@/components/language-provider"
 import { LocalClock } from "@/components/local-clock"
 import { SocialLinks } from "@/components/social-links"
@@ -54,6 +55,7 @@ export function ContactSection() {
 
         <div className="mt-24 flex flex-col gap-3 border-t border-border/60 pt-6 font-mono text-sm text-muted-foreground md:flex-row md:items-center md:justify-between">
           <p>{copy.footer}</p>
+          <LastUpdated />
           <DontClickLink className="w-fit transition-colors hover:text-foreground">{copy.dontClickHere}</DontClickLink>
           <div className="mt-2 lg:hidden">
             <BoringToggle />

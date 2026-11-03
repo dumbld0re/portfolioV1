@@ -1,5 +1,20 @@
+import { execSync } from "node:child_process"
+
+// The footer's "last updated" date: the day of the latest commit, or the build
+// day when git history isn't available.
+function lastUpdated() {
+  try {
+    return execSync("git log -1 --format=%cs", { stdio: ["ignore", "pipe", "ignore"] }).toString().trim()
+  } catch {
+    return new Date().toISOString().slice(0, 10)
+  }
+}
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  env: {
+    LAST_UPDATED: lastUpdated(),
+  },
   // Metadata is static here, so always render it in <head> instead of streaming it
   // into <body> — some crawlers and Lighthouse only read tags inside <head>.
   htmlLimitedBots: /.*/,

@@ -9,6 +9,7 @@ import { BoringToggle } from "@/components/boring-toggle"
 import { CornerControls } from "@/components/corner-controls"
 import { DontClickLink } from "@/components/dont-click-link"
 import { Header } from "@/components/header"
+import { LastUpdated } from "@/components/last-updated"
 import { useLanguage } from "@/components/language-provider"
 import { siteCopy } from "@/content/site"
 import { stripLanguage } from "@/lib/i18n"
@@ -44,6 +45,7 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
           <footer className="w-full px-6 md:px-12 pt-16 pb-8 lg:pb-16 print:hidden">
             <div className="mx-auto max-w-[90rem] border-t border-border/60 pt-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between font-mono text-xs text-muted-foreground">
               <p>{copy.footer}</p>
+              <LastUpdated />
               <DontClickLink className="w-fit transition-colors hover:text-foreground">{copy.dontClickHere}</DontClickLink>
               <div className="lg:hidden">
                 <BoringToggle />
