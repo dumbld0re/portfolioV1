@@ -70,15 +70,12 @@ export function ProjectPreview({
   project,
   folder,
   room,
-  max = Infinity,
 }: {
   project: Project
   /** "projects" / "projekte", for the ~/<folder>/<slug> path. */
   folder: string
-  /** Free space for the cards; null until measured (then all show). */
+  /** Free space for the cards; null shows them all. */
   room: Room | null
-  /** At most this many wide screens, whatever the room. */
-  max?: number
 }) {
   const preview = project.preview
   const base = `~/${folder}/${project.slug ?? "…"}`
@@ -102,7 +99,7 @@ export function ProjectPreview({
   }
 
   const tall = preview.screens.some((s) => s.height > s.width)
-  const screens = tall ? preview.screens : preview.screens.slice(0, Math.min(max, stackedCount(preview.screens, room)))
+  const screens = tall ? preview.screens : preview.screens.slice(0, stackedCount(preview.screens, room))
   const several = screens.length > 1
   // Narrow cards side by side only name their screen, relative to the project.
   const path = (screen: Screen) =>
