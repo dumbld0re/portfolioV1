@@ -90,9 +90,12 @@ export function ProjectsSection() {
     <section id="projects" className="scroll-mt-10 px-6 md:px-12 py-24 md:py-32">
       <div data-reveal className={column}>
         <h2 className={sectionLabel}>{labels.nav.projects}</h2>
-        <p className="mt-6 font-serif text-5xl leading-tight tracking-[-0.02em] md:text-7xl">{t.heading}</p>
+        <p className="mt-6 font-serif text-5xl lowercase leading-tight tracking-[-0.02em] md:text-7xl">
+          {t.heading}
+          <span className="text-primary">.</span>
+        </p>
 
-        <div className="mt-14 lg:grid lg:grid-cols-[minmax(0,48rem)_minmax(0,1fr)] lg:gap-16 xl:gap-24">
+        <div className="mt-14 lg:grid lg:grid-cols-[minmax(0,48rem)_minmax(18rem,1fr)] lg:gap-16 xl:gap-24">
           <ol
             ref={list}
             className={`${measure} space-y-16`}
@@ -115,6 +118,12 @@ export function ProjectsSection() {
                 {project.tagline && <p className="text-lg text-foreground/85 leading-relaxed">{project.tagline}</p>}
                 <p className="text-lg leading-relaxed text-muted-foreground">{project.description}</p>
                 <p className="font-mono text-sm text-muted-foreground/80">{project.tech.join(" · ")}</p>
+
+                {/* Phones, tablets and touch screens have no hover card, so the
+                    screens sit right in the list (one desktop screen at most). */}
+                <div className="max-w-md pt-3 pb-1 [@media(min-width:1024px)_and_(hover:hover)]:hidden">
+                  <ProjectPreview project={project} folder={labels.nav.projects.toLowerCase()} room={null} max={1} />
+                </div>
 
                 {(project.demoHref || project.githubHref) && (
                   <p className="flex flex-wrap gap-x-3 pt-1 font-mono text-base text-muted-foreground">

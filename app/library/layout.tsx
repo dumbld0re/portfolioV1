@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 
 import { BoringClassSync } from "@/components/boring-toggle"
+import { BORING_SCRIPT } from "@/lib/boring-store"
 import { CustomCursor } from "@/components/custom-cursor"
 import { ScrollReveal } from "@/components/scroll-reveal"
 import { ThemeColorSync } from "@/components/theme-color-sync"
@@ -60,13 +61,17 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#282828" },
+    { media: "(prefers-color-scheme: dark)", color: "#1a1a1a" },
   ],
 }
 
 export default function LibraryLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning className="scroll-smooth">
+      <head>
+        {/* Boring mode is stored in the browser; apply it before the first paint. */}
+        <script dangerouslySetInnerHTML={{ __html: BORING_SCRIPT }} />
+      </head>
       <body className={`${fontVariables} font-sans antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <ThemeColorSync />

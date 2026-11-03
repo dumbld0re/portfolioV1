@@ -11,7 +11,7 @@ export default function DontClickHerePage() {
   const { language } = useLanguage()
 
   return (
-    <main className="min-h-screen flex items-center justify-center px-6 text-center bg-background text-foreground font-mono text-sm">
+    <main className="site min-h-screen flex items-center justify-center px-6 text-center bg-background text-foreground font-mono text-sm">
       <p>{copy[language]}</p>
     </main>
   )

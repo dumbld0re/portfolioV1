@@ -9,7 +9,7 @@ import { libraryCopy } from "@/content/library-topics"
 // the portfolio, with the library header and a plain footer.
 export function LibraryShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="relative min-h-screen flex flex-col bg-background">
+    <div className="site relative min-h-screen flex flex-col bg-background">
       <AsciiBackground />
       <div className="relative z-10 flex flex-col min-h-screen">
         <GhostName text={libraryCopy.ghost} />

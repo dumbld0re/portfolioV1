@@ -1,7 +1,8 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useSyncExternalStore } from "react"
 
+import { getServerSnapshot, getSnapshot, subscribe } from "@/lib/boring-store"
 import { useMediaQuery } from "@/lib/use-media-query"
 
 const SCALE_LERP = 0.25
@@ -14,7 +15,8 @@ export function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null)
   const finePointer = useMediaQuery("(pointer: fine)")
   const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)")
-  const enabled = finePointer && !reducedMotion
+  const boring = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot) !== "off"
+  const enabled = finePointer && !reducedMotion && !boring
 
   useEffect(() => {
     if (!enabled) return

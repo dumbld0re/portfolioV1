@@ -8,19 +8,25 @@ import { cn } from "@/lib/utils"
 import { getServerSnapshot, getSnapshot, setBoring, subscribe } from "@/lib/boring-store"
 
 // Mounted in the root layout rather than inside the toggle, so boring mode also
-// applies on pages without the header (dont-click-here) and on direct loads.
+// applies on pages without the header (dont-click-here). The inline head script
+// sets the same classes before the first paint; this keeps them in sync after.
 export function BoringClassSync() {
-  const boring = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
+  const mode = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
 
   useEffect(() => {
-    document.documentElement.classList.toggle("boring", boring)
-  }, [boring])
+    // Read the store itself: while hydrating, `mode` is briefly the server's
+    // "off", and acting on that would flash the styled site for a frame.
+    const current = getSnapshot()
+    const root = document.documentElement
+    root.classList.toggle("boring", current !== "off")
+    root.classList.toggle("boring-plain", current === "plain")
+  }, [mode])
 
   return null
 }
 
 export function BoringToggle() {
-  const boring = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
+  const boring = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot) !== "off"
   const labels = siteCopy[useLanguageOrDefault()]
 
   return (
@@ -30,9 +36,9 @@ export function BoringToggle() {
       aria-checked={boring}
       aria-label={labels.boringLabel}
       onClick={() => setBoring(!boring)}
-      className="inline-flex items-center gap-2 font-mono text-sm text-muted-foreground transition-colors hover:text-foreground"
+      className="-my-3 inline-flex items-center gap-2 py-3 font-mono text-sm text-muted-foreground transition-colors hover:text-foreground"
     >
-      <span>{labels.boring}</span>
+      <span className="lowercase">{labels.boring}</span>
       <span
         className={cn(
           "relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-border transition-colors duration-200",

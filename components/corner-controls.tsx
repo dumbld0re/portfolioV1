@@ -25,7 +25,7 @@ const control = "text-muted-foreground transition-colors hover:text-foreground"
 // cover the content.
 export function CornerControls() {
   const labels = siteCopy[useLanguageOrDefault()]
-  const boring = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
+  const boring = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot) !== "off"
   const [paused, setPaused] = useState(false)
 
   useEffect(() => {

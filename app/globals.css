@@ -43,39 +43,41 @@
 }
 
 .dark {
-  --background: #282828;
-  --foreground: #ebdbb2;
-  --card: #32302f;
-  --card-foreground: #ebdbb2;
-  --popover: #32302f;
-  --popover-foreground: #ebdbb2;
+  /* Neutral greys with white text; amber stays the one warm accent. The
+     gruvbox brights below are kept for chart and topic colors. */
+  --background: #1a1a1a;
+  --foreground: #ffffff;
+  --card: #222222;
+  --card-foreground: #ffffff;
+  --popover: #222222;
+  --popover-foreground: #ffffff;
   --primary: #d79921;
-  --primary-foreground: #282828;
-  --secondary: #3c3836;
-  --secondary-foreground: #ebdbb2;
-  --muted: #3c3836;
-  --muted-foreground: #a89984;
-  --accent: #3c3836;
-  --accent-foreground: #ebdbb2;
+  --primary-foreground: #1a1a1a;
+  --secondary: #2a2a2a;
+  --secondary-foreground: #ffffff;
+  --muted: #2a2a2a;
+  --muted-foreground: #a3a3a3;
+  --accent: #2a2a2a;
+  --accent-foreground: #ffffff;
   --destructive: #cc241d;
-  --destructive-foreground: #fbf1c7;
-  --border: #504945;
-  --input: #504945;
-  --ring: #928374;
+  --destructive-foreground: #ffffff;
+  --border: #383838;
+  --input: #383838;
+  --ring: #737373;
   --accent-green: #b8bb26;
   --chart-1: #fb4934;
   --chart-2: #b8bb26;
   --chart-3: #fabd2f;
   --chart-4: #83a598;
   --chart-5: #d3869b;
-  --sidebar: #32302f;
-  --sidebar-foreground: #ebdbb2;
+  --sidebar: #222222;
+  --sidebar-foreground: #ffffff;
   --sidebar-primary: #d79921;
-  --sidebar-primary-foreground: #282828;
-  --sidebar-accent: #3c3836;
-  --sidebar-accent-foreground: #ebdbb2;
-  --sidebar-border: #504945;
-  --sidebar-ring: #928374;
+  --sidebar-primary-foreground: #1a1a1a;
+  --sidebar-accent: #2a2a2a;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #383838;
+  --sidebar-ring: #737373;
 }
 
 @theme inline {
@@ -168,11 +170,61 @@ html {
   scrollbar-gutter: stable;
 }
 
-/* Boring mode greys the rendered page, but browsers tint their bars from the
-   computed colors of the root and body, which a filter doesn't touch. The
-   theme backgrounds are already neutral grey, so they need no stand-in. */
-html.boring {
-  filter: grayscale(1);
+/* Boring mode (lib/boring-store.ts). The home page swaps to its own boring
+   document (components/boring/*); the styled site beside it stays hidden. */
+html.boring .fancy-only {
+  display: none !important;
+}
+
+html.boring-plain,
+html.boring-plain body {
+  background: #ffffff !important;
+  color-scheme: light !important;
+}
+
+/* Plain: a document with no author styles at all. The root starts from
+   initial values (so nothing inherits from the site's body), and everything
+   inside reverts to the browser's built-in stylesheet. */
+.plain-doc {
+  all: initial;
+  display: block;
+  margin: 8px;
+  color: #000000;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 16px;
+  color-scheme: light !important;
+}
+
+.plain-doc * {
+  all: revert;
+}
+
+/* Every other page (and the library) in plain mode: the same idea, laid over
+   the styled layout instead of replacing it. */
+html.boring-plain .site,
+html.boring-plain .site * {
+  font-family: "Times New Roman", Times, serif !important;
+  color: #000000 !important;
+  background: transparent !important;
+  border-color: #808080 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+  backdrop-filter: none !important;
+  animation: none !important;
+  transition: none !important;
+}
+
+html.boring-plain .site a {
+  color: #0000ee !important;
+  text-decoration: underline !important;
+}
+
+/* Decoration (ghost words, dots, icons, the background) has no place in a
+   plain document. */
+html.boring-plain .site [aria-hidden="true"] {
+  display: none !important;
 }
 
 /* components/roll-text.tsx: the copy waits one line below, and hovering the
@@ -269,7 +321,7 @@ html.paused [class*="animate-caret-blink"] {
 .post-prose h3 {
   font-family: var(--font-serif);
   color: var(--foreground);
-  font-weight: 600;
+  font-weight: 400;
   letter-spacing: -0.01em;
   margin-top: 2em;
 }
@@ -321,10 +373,10 @@ html.paused [class*="animate-caret-blink"] {
 .post-prose blockquote {
   border-left: 2px solid var(--primary);
   padding-left: 1em;
-  font-style: italic;
+  color: var(--foreground);
 }
 
-/* The CV page prints via window.print() — swap to ink-friendly tokens. */
+/* Printing a page: swap to ink-friendly tokens. */
 @media print {
   :root,
   .dark {

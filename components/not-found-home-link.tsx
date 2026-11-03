@@ -12,7 +12,7 @@ export function NotFoundHomeLink() {
   return (
     <Link
       href={localize("/")}
-      className="inline-block font-mono text-sm uppercase tracking-[0.2em] text-primary"
+      className="inline-block py-3 -my-3 text-foreground transition-colors hover:text-primary"
     >
       <RollText>cd ~</RollText>
     </Link>

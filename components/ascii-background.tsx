@@ -11,12 +11,12 @@ const GLYPHS = [".", "·", "•"]
 const GLYPH_DENSITY = 0.4
 
 interface AsciiBackgroundProps {
-  opacity?: number
   cellSize?: number
   className?: string
 }
 
-export function AsciiBackground({ opacity = 0.1, cellSize = 16, className }: AsciiBackgroundProps) {
+// Faint on white (15%); stronger in dark mode (20%), where the same dots read weaker.
+export function AsciiBackground({ cellSize = 16, className }: AsciiBackgroundProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const tileRef = useRef<HTMLDivElement>(null)
 
@@ -70,8 +70,10 @@ export function AsciiBackground({ opacity = 0.1, cellSize = 16, className }: Asc
     <div
       ref={containerRef}
       aria-hidden="true"
-      className={cn("absolute inset-0 overflow-hidden pointer-events-none print:hidden text-foreground", className)}
-      style={{ opacity }}
+      className={cn(
+        "absolute inset-0 overflow-hidden pointer-events-none print:hidden text-foreground opacity-15 dark:opacity-20",
+        className,
+      )}
     >
       <div
         ref={tileRef}

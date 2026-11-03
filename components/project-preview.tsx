@@ -70,12 +70,15 @@ export function ProjectPreview({
   project,
   folder,
   room,
+  max = Infinity,
 }: {
   project: Project
   /** "projects" / "projekte", for the ~/<folder>/<slug> path. */
   folder: string
   /** Free space for the cards; null until measured (then all show). */
   room: Room | null
+  /** At most this many wide screens, whatever the room. */
+  max?: number
 }) {
   const preview = project.preview
   const base = `~/${folder}/${project.slug ?? "…"}`
@@ -83,7 +86,7 @@ export function ProjectPreview({
   if (preview.kind === "terminal") {
     return (
       <Window path={base}>
-        <pre className="flex aspect-[4/3] flex-col justify-center gap-1.5 overflow-hidden px-8 font-mono text-sm leading-relaxed text-muted-foreground">
+        <pre className="flex aspect-[4/3] flex-col justify-center gap-1.5 overflow-hidden px-5 font-mono text-[11px] leading-relaxed text-muted-foreground min-[400px]:text-xs sm:px-8 sm:text-sm">
           {preview.lines.map((line, i) => (
             <span key={i} className={line.startsWith("$") ? "text-foreground" : line.includes("✓") ? "text-primary" : undefined}>
               {line}
@@ -99,11 +102,11 @@ export function ProjectPreview({
   }
 
   const tall = preview.screens.some((s) => s.height > s.width)
-  const screens = tall ? preview.screens : preview.screens.slice(0, stackedCount(preview.screens, room))
+  const screens = tall ? preview.screens : preview.screens.slice(0, Math.min(max, stackedCount(preview.screens, room)))
   const several = screens.length > 1
-  // Several narrow cards side by side drop the ~/folder prefix to fit.
+  // Narrow cards side by side only name their screen, relative to the project.
   const path = (screen: Screen) =>
-    screen.name ? (tall && several ? `${project.slug ?? "…"}/${screen.name}` : `${base}/${screen.name}`) : base
+    screen.name ? (tall && several ? `./${screen.name}` : `${base}/${screen.name}`) : base
 
   if (tall) {
     return (

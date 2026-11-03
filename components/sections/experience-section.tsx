@@ -84,7 +84,7 @@ export function ExperienceSection() {
           <span className="text-primary">.</span>
         </p>
 
-        <div className="mt-14 flex flex-col gap-14 lg:grid lg:grid-cols-[minmax(0,48rem)_minmax(0,1fr)] lg:gap-16 xl:gap-24">
+        <div className="mt-14 flex flex-col gap-14 lg:grid lg:grid-cols-[minmax(0,48rem)_minmax(18rem,1fr)] lg:gap-16 xl:gap-24">
           <div className={`${measure} space-y-16`}>
             {current.length > 0 && group(t.current, current, 0)}
             {past.length > 0 && group(t.past, past, current.length, true)}

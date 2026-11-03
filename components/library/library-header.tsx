@@ -27,7 +27,7 @@ export function LibraryHeader() {
           <span className="truncate">/home/danny-miguel/library</span>
         </Link>
 
-        <div className="flex items-center gap-5 md:gap-6">
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 md:gap-x-6">
           <a
             href={SITE_URL}
             className="group inline-flex items-center gap-1 font-mono text-sm text-muted-foreground hover:text-foreground transition-colors"

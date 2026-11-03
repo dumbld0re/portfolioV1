@@ -61,11 +61,11 @@ export function IndexLine({
         aria-controls={panelId}
         onClick={onToggle}
         className={cn(
-          "group flex w-full items-baseline gap-3 md:gap-4 py-3 text-left outline-none transition-colors focus-visible:bg-card/80",
+          "group flex w-full items-baseline gap-2.5 sm:gap-3 md:gap-4 py-3 text-left outline-none transition-colors focus-visible:bg-card/80",
           highlighted && "bg-card/80",
         )}
       >
-        <span className="w-14 shrink-0 font-mono text-xs md:text-sm text-muted-foreground tabular-nums">
+        <span className="w-12 sm:w-14 shrink-0 font-mono text-xs md:text-sm text-muted-foreground tabular-nums">
           {/* Mixed toward the text color: some gruvbox chart hues (the yellows)
               are too faint for small text on the white light-mode page. */}
           <span style={{ color: `color-mix(in oklab, ${topic.color} 70%, var(--foreground))` }}>{code}</span>.{number}
@@ -89,7 +89,8 @@ export function IndexLine({
 
         <span
           aria-hidden="true"
-          className="min-w-6 flex-1 overflow-hidden whitespace-nowrap font-mono text-xs text-muted-foreground/40 select-none"
+          // On narrow phones the dots give way so the title keeps its width.
+          className="min-w-0 flex-1 overflow-hidden whitespace-nowrap font-mono text-xs text-muted-foreground/40 select-none max-sm:invisible sm:min-w-6"
         >
           {leader(entry.slug)}
         </span>

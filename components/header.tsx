@@ -27,8 +27,10 @@ export function Header() {
   }, [])
 
   // Underline sweeps in from the left on hover and stays under the current page.
+  // On phones each link gets a taller (and the short ones a wider) invisible
+  // tap area; the negative margins keep the visible spacing the same.
   const navLink =
-    "relative lowercase text-muted-foreground transition-colors hover:text-foreground after:absolute after:inset-x-0 after:-bottom-1 after:h-px after:origin-left after:scale-x-0 after:bg-primary after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100 aria-[current=page]:text-foreground aria-[current=page]:after:scale-x-100"
+    "relative -my-3 py-3 md:my-0 md:py-0 lowercase text-muted-foreground transition-colors hover:text-foreground after:absolute after:inset-x-0 after:bottom-2 md:after:-bottom-1 after:h-px after:origin-left after:scale-x-0 after:bg-primary after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100 aria-[current=page]:text-foreground aria-[current=page]:after:scale-x-100"
 
   const links = [
     { href: "/#projects", label: labels.nav.projects },
@@ -47,7 +49,7 @@ export function Header() {
       >
         {/* One row on every width: on narrow phones the links scroll sideways
             under the language and theme controls instead of wrapping. */}
-        <div className="-my-2 flex min-w-0 flex-1 gap-x-3.5 overflow-x-auto py-2 whitespace-nowrap [scrollbar-width:none] md:flex-none md:gap-x-8 md:overflow-visible">
+        <div className="-my-3 flex min-w-0 flex-1 gap-x-3.5 overflow-x-auto py-3 whitespace-nowrap [scrollbar-width:none] md:-my-2 md:flex-none md:gap-x-8 md:overflow-visible md:py-2">
         {links.map((link) => (
           <Link
             key={link.href}
@@ -59,7 +61,7 @@ export function Header() {
           </Link>
         ))}
         {/* "Lebenslauf" is too long for the one-row phone bar; "cv" reads in both languages. */}
-        <CvMenu className={cn(navLink, "cursor-pointer aria-expanded:text-foreground aria-expanded:after:scale-x-100")}>
+        <CvMenu className={cn(navLink, "-mx-2 cursor-pointer px-2 after:inset-x-2 aria-expanded:text-foreground aria-expanded:after:scale-x-100 md:mx-0 md:px-0 md:after:inset-x-0")}>
           <span className="md:hidden">cv</span>
           <span className="hidden md:inline">{labels.nav.cv}</span>
         </CvMenu>
@@ -76,7 +78,7 @@ export function Header() {
             // proxy.ts could answer it with a redirect back to this language.
             prefetch={false}
             hrefLang={otherLanguage}
-            className={navLink}
+            className={cn(navLink, "-mx-2 px-2 after:inset-x-2 md:mx-0 md:px-0 md:after:inset-x-0")}
             aria-label={otherLanguage === "en" ? "EN — switch to English" : "DE — auf Deutsch wechseln"}
           >
             {otherLanguage}
