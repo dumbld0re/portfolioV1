@@ -11,3 +11,33 @@ export function formatPostDate(date: string, language: Language) {
     timeZone: "UTC",
   }).format(parsed)
 }
+
+const locale = (language: Language) => (language === "de" ? "de-DE" : "en-GB")
+
+/** "2026-10" -> "Oct 2026" / "Okt. 2026"; a bare year stays as it is. */
+export function formatMonth(value: string, language: Language) {
+  const [year, month] = value.split("-").map(Number)
+  if (!month) return String(year)
+  return new Intl.DateTimeFormat(locale(language), { month: "short", year: "numeric", timeZone: "UTC" }).format(
+    new Date(Date.UTC(year, month - 1, 1)),
+  )
+}
+
+/** A role's dates: "Oct 2026 – now", "2024 – 2025", or just "2025". */
+export function formatPeriod(start: string, end: string | undefined, language: Language, present: string) {
+  if (end === start) return formatMonth(start, language)
+  return `${formatMonth(start, language)} – ${end ? formatMonth(end, language) : present}`
+}
+
+// Months counted from year 0, for drawing roles on a time axis. A bare year
+// covers the whole year: it starts in January and ends after December.
+export function monthStart(value: string) {
+  const [year, month] = value.split("-").map(Number)
+  return year * 12 + (month ? month - 1 : 0)
+}
+
+/** Exclusive: the first month after the role. */
+export function monthEnd(value: string) {
+  const [year, month] = value.split("-").map(Number)
+  return year * 12 + (month ? month : 12)
+}

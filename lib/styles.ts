@@ -10,7 +10,7 @@ export const column = "mx-auto w-full max-w-[90rem]"
 /** Comfortable reading width for lists and paragraphs inside the frame. */
 export const measure = "max-w-3xl"
 
-/** Section marker: `001 / LABEL`. */
+/** Small mono marker above each section heading, e.g. EXPERIENCE. */
 export const sectionLabel = "font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground md:text-[13px]"
 
 /** X (Twitter) profile, linked from the hero and contact icon rows. */

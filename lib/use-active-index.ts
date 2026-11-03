@@ -3,8 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 
 // Which item of a list is "current": the one crossing the middle of the
-// viewport, or whichever the pointer or focus is on. Feeds the sticky
-// timeline beside the experience list.
+// viewport, or whichever the pointer or focus is on. Feeds the overlap
+// chart beside the experience list.
 //
 // Measured from the items' positions on every scroll frame rather than with
 // an IntersectionObserver band, so a fast scroll (or a jump to an anchor)

@@ -2,14 +2,27 @@ import type { Language } from "@/lib/i18n"
 
 export type ProjectStatus = "inDevelopment" | "inUse"
 
+/** A screenshot in public/. Width and height are the file's pixel size. */
+export type Screen = {
+  src: string
+  width: number
+  height: number
+  /** Names the screen in its card's path: ~/projects/<slug>/<name>. */
+  name?: string
+}
+
 export type ProjectPreview =
-  /** A screenshot in public/, redrawn as dots beside the list. */
-  | { kind: "image"; src: string }
+  /**
+   * One card per screen, each shown whole at its own shape. Phone captures
+   * stand side by side; wide ones stack, and the later ones only show when
+   * there is room for them on screen.
+   */
+  | { kind: "screens"; screens: Screen[] }
   /** For tools without a UI: a short terminal session. */
   | { kind: "terminal"; lines: string[] }
 
 export type Project = {
-  preview?: ProjectPreview
+  preview: ProjectPreview
   /** Rendered as a terminal-style path header: ~/projects/<slug> */
   slug?: string
   title: string
@@ -20,10 +33,12 @@ export type Project = {
   /** Which label the demoHref button uses. Defaults to "demo". */
   demoKind?: "demo" | "site"
   githubHref?: string
-  comingSoon?: boolean
   internalTool?: boolean
   status?: ProjectStatus
 }
+
+// Personal and engineering work only. All web design and client work (sites,
+// case studies) lives on aestudio, which the "æ design studio" entry links to.
 
 // Illustrative only — swap in a real session from the CLI.
 const UNI_SESSION = [
@@ -38,7 +53,6 @@ export const projectsContent: Record<
   Language,
   {
     heading: string
-    comingSoonLabel: string
     viewDemoLabel: string
     viewSiteLabel: string
     viewSourceLabel: string
@@ -49,7 +63,6 @@ export const projectsContent: Record<
 > = {
   de: {
     heading: "ausgewählte projekte",
-    comingSoonLabel: "Demnächst",
     viewDemoLabel: "Demo ansehen",
     viewSiteLabel: "Website ansehen",
     viewSourceLabel: "Quellcode",
@@ -67,7 +80,13 @@ export const projectsContent: Record<
         tech: ["React", "Vite", "Vercel Functions", "Upstash Redis"],
         demoHref: "https://financetracker-demo.vercel.app/",
         githubHref: "https://github.com/dumbld0re/financeApp",
-        preview: { kind: "image", src: "/projects/finance-tracker.webp" },
+        preview: {
+          kind: "screens",
+          screens: [
+            { src: "/projects/finance-tracker-home.webp", width: 1170, height: 2532, name: "home" },
+            { src: "/projects/finance-tracker-insights.webp", width: 1170, height: 2532, name: "insights" },
+          ],
+        },
         internalTool: true,
         status: "inUse",
       },
@@ -87,20 +106,24 @@ export const projectsContent: Record<
         slug: "ae",
         title: "æ design studio",
         description:
-          "Die Website meines Designstudios – von Grund auf selbst gebaut, ganz ohne Templates.",
+          "Mein Designstudio, die Website dazu habe ich von Grund auf selbst gebaut. Alle meine Webdesign- und Kundenprojekte, samt Case Studies, findest du dort.",
         tech: ["Next.js", "TypeScript", "Canvas", "CSS"],
         demoHref: "https://www.aestudio.site/",
         demoKind: "site",
         githubHref: "https://github.com/dumbld0re/ae",
-        preview: { kind: "image", src: "/projects/ae.webp" },
+        preview: {
+          kind: "screens",
+          screens: [
+            { src: "/projects/ae-home.webp", width: 2880, height: 1800, name: "home" },
+            { src: "/projects/ae-contact.webp", width: 2880, height: 1800, name: "contact" },
+          ],
+        },
         status: "inUse",
       },
-      { title: "", description: "", tech: [], comingSoon: true },
     ],
   },
   en: {
     heading: "selected work",
-    comingSoonLabel: "Coming soon",
     viewDemoLabel: "View demo",
     viewSiteLabel: "View site",
     viewSourceLabel: "View source",
@@ -118,7 +141,13 @@ export const projectsContent: Record<
         tech: ["React", "Vite", "Vercel Functions", "Upstash Redis"],
         demoHref: "https://financetracker-demo.vercel.app/",
         githubHref: "https://github.com/dumbld0re/financeApp",
-        preview: { kind: "image", src: "/projects/finance-tracker.webp" },
+        preview: {
+          kind: "screens",
+          screens: [
+            { src: "/projects/finance-tracker-home.webp", width: 1170, height: 2532, name: "home" },
+            { src: "/projects/finance-tracker-insights.webp", width: 1170, height: 2532, name: "insights" },
+          ],
+        },
         internalTool: true,
         status: "inUse",
       },
@@ -138,15 +167,20 @@ export const projectsContent: Record<
         slug: "ae",
         title: "æ design studio",
         description:
-          "The site for my design studio, built from scratch with no templates.",
+          "My design studio, and its site, built from scratch. All my web design and client work, case studies included, lives there.",
         tech: ["Next.js", "TypeScript", "Canvas", "CSS"],
         demoHref: "https://www.aestudio.site/",
         demoKind: "site",
         githubHref: "https://github.com/dumbld0re/ae",
-        preview: { kind: "image", src: "/projects/ae.webp" },
+        preview: {
+          kind: "screens",
+          screens: [
+            { src: "/projects/ae-home.webp", width: 2880, height: 1800, name: "home" },
+            { src: "/projects/ae-contact.webp", width: 2880, height: 1800, name: "contact" },
+          ],
+        },
         status: "inUse",
       },
-      { title: "", description: "", tech: [], comingSoon: true },
     ],
   },
 }
