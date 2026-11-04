@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Prom
   return {
     metadataBase: new URL(SITE_URL),
     title: {
-      default: `${SITE_NAME} — ${meta.tagline}`,
+      default: SITE_NAME,
       template: `%s — ${SITE_NAME}`,
     },
     description: meta.description,
