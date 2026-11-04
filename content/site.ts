@@ -14,6 +14,7 @@ export const siteCopy: Record<
     cvOpen: string
     footer: string
     lastUpdated: string
+    visitors: string
     dontClickHere: string
     boring: string
     boringLabel: string
@@ -38,6 +39,7 @@ export const siteCopy: Record<
     cvOpen: "im browser ansehen",
     footer: "2086© (damit ich das nie wieder ändern muss)",
     lastUpdated: "zuletzt aktualisiert",
+    visitors: "besucher",
     dontClickHere: "bloß nicht klicken",
     boring: "Langweilig",
     boringLabel: "Langweiligen Modus umschalten",
@@ -61,6 +63,7 @@ export const siteCopy: Record<
     cvOpen: "view in browser",
     footer: "2086© (so i dont forget to ever change this)",
     lastUpdated: "last updated",
+    visitors: "visitors",
     dontClickHere: "dont click here",
     boring: "Boring",
     boringLabel: "Toggle boring mode",

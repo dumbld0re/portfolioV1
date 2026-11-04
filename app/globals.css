@@ -432,6 +432,50 @@ html.paused [class*="animate-caret-blink"] {
   }
 }
 
+/* Footer view counter eye (components/view-count.tsx): the lid squeezes to a
+   hairline to blink, the iris glances side to side between blinks. */
+.eye-mark-lid,
+.eye-mark-iris {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .eye-mark-lid {
+    animation: eye-blink 7s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  }
+
+  .eye-mark-iris {
+    animation: eye-glance 7s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  }
+}
+
+html.paused .eye-mark-lid,
+html.paused .eye-mark-iris {
+  animation: none;
+}
+
+@keyframes eye-blink {
+  0%, 44%, 49%, 90%, 93.5%, 97%, 100% {
+    transform: scaleY(1);
+  }
+  46.5%, 91.75%, 95.25% {
+    transform: scaleY(0.06);
+  }
+}
+
+@keyframes eye-glance {
+  0%, 8%, 34%, 60%, 86%, 100% {
+    transform: translateX(0);
+  }
+  13%, 29% {
+    transform: translateX(-2.6px);
+  }
+  65%, 81% {
+    transform: translateX(2.6px);
+  }
+}
+
 /* Hero name (components/sections/home-section.tsx): each letter rises out of
    its own clipping box. */
 @keyframes char-rise {

@@ -68,8 +68,8 @@ function preferredLanguage(request: NextRequest) {
 }
 
 export const config = {
-  // Skip Next internals and anything with a file extension (public assets like
+  // Skip API routes, Next internals and anything with a file extension (public assets like
   // cv.pdf, icons and the share images) — except the metadata routes, which the
   // library host rewrites to its own.
-  matcher: ["/((?!_next/|_vercel/|.*\\.[^/]+$).*)", "/robots.txt", "/sitemap.xml"],
+  matcher: ["/((?!api/|_next/|_vercel/|.*\\.[^/]+$).*)", "/robots.txt", "/sitemap.xml"],
 }

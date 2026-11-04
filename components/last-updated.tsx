@@ -3,6 +3,7 @@
 import { useLanguage } from "@/components/language-provider"
 import { siteCopy } from "@/content/site"
 import { formatPostDate } from "@/lib/format-date"
+import { ViewCount } from "@/components/view-count"
 
 /** "last updated 3 november 2026": the date is stamped at build time in next.config.mjs. */
 export function LastUpdated({ className }: { className?: string }) {
@@ -12,6 +13,7 @@ export function LastUpdated({ className }: { className?: string }) {
   return (
     <p className={className}>
       {siteCopy[language].lastUpdated} <time dateTime={date}>{formatPostDate(date, language).toLowerCase()}</time>
+      <ViewCount />
     </p>
   )
 }

@@ -7,3 +7,5 @@ node_modules/
 tsconfig.tsbuildinfo
 FinalCV.pdf
 myCV.pdf
+.vercel
+.env*
