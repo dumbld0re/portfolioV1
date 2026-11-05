@@ -1,5 +1,13 @@
 import type { Language } from "@/lib/i18n"
 
+/** 90 → "1h 30m" (or "1 std 30 min"), whichever side of me it is. */
+function span(minutes: number, hourUnit: string, minuteUnit: string) {
+  const a = Math.abs(minutes)
+  const h = Math.floor(a / 60)
+  const m = a % 60
+  return [h && `${h}${hourUnit}`, m && `${m}${minuteUnit}`].filter(Boolean).join(" ")
+}
+
 export const contactContent: Record<
   Language,
   {
@@ -12,7 +20,17 @@ export const contactContent: Record<
     backToTop: string
     writeLabel: string
     elsewhereLabel: string
-    localTimeLabel: string
+    time: {
+      mine: string
+      yours: string
+      same: string
+      /** The visitor's offset minus mine, in minutes (never 0). */
+      gap: (minutes: number) => string
+      /** Past 22:00 my time, before midnight. */
+      lateEvening: string
+      /** After midnight, before morning. */
+      lateNight: string
+    }
   }
 > = {
   de: {
@@ -25,7 +43,14 @@ export const contactContent: Record<
     backToTop: "nach oben",
     writeLabel: "Schreib mir",
     elsewhereLabel: "Im Netz",
-    localTimeLabel: "Deine Ortszeit",
+    time: {
+      mine: "meine zeit gerade",
+      yours: "deine zeit gerade",
+      same: "wir sind in derselben zeitzone",
+      gap: (m) => `${span(m, " std", " min")} ${m > 0 ? "voraus" : "hinterher"}`,
+      lateEvening: "hier ist es nach 22 uhr, ich antworte dir morgen",
+      lateNight: "hier ist es mitten in der nacht, ich antworte dir morgen früh",
+    },
   },
   en: {
     title: "Contact",
@@ -37,6 +62,13 @@ export const contactContent: Record<
     backToTop: "back to top",
     writeLabel: "Write",
     elsewhereLabel: "Elsewhere",
-    localTimeLabel: "Your local time",
+    time: {
+      mine: "my time currently",
+      yours: "your time currently",
+      same: "we're in the same timezone",
+      gap: (m) => `${span(m, "h", "m")} ${m > 0 ? "ahead" : "behind"}`,
+      lateEvening: "it's past 10pm here, i'll reply tomorrow",
+      lateNight: "it's the middle of the night here, i'll reply in the morning",
+    },
   },
 }

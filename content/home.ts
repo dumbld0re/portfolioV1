@@ -13,7 +13,8 @@ export const homeContent: Record<
       now: RichText
       description: string
       location: string
-      status: string
+      /** The small line above the name. */
+      currently: string
       introLabel: string
       cta: string
     }
@@ -37,7 +38,7 @@ export const homeContent: Record<
       description:
         "Daneben studiere ich Quantitative Finance an der UNAM und bastle so lange an meinem Linux-Setup, bis irgendwas kaputtgeht.",
       location: "Windhoek, Namibia",
-      status: "status: offen für projekte",
+      currently: "gerade in namibia, windhoek",
       introLabel: "Über mich",
       cta: "Lass uns zusammenarbeiten",
     },
@@ -60,7 +61,7 @@ export const homeContent: Record<
       description:
         "On the side I study quantitative finance at UNAM and tinker with my Linux setup until something breaks.",
       location: "Windhoek, Namibia",
-      status: "status: open to work",
+      currently: "currently in namibia, windhoek",
       introLabel: "Introduction",
       cta: "Let's work together",
     },

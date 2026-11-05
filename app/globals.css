@@ -523,6 +523,11 @@ html.paused .eye-mark-iris {
   animation-fill-mode: both;
 }
 
+/* The underlines are flicked, not written: they start fast and ease out. */
+.handwritten[data-write] path.handwritten-underline {
+  animation-timing-function: cubic-bezier(0.3, 0.6, 0.4, 1);
+}
+
 @keyframes hw-write {
   from {
     stroke-dashoffset: 1;

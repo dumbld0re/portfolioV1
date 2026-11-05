@@ -46,7 +46,7 @@ export function HomeSection() {
         className={cn("font-mono text-sm text-muted-foreground", reveal)}
         style={delay(BOOT_SEQUENCE_MS.heroName - 100)}
       >
-        {t.location.toLowerCase()} <span className="text-muted-foreground/40">·</span> {t.status}
+        {t.currently}
       </p>
 
       {/* One name per line; each letter rises out of its own clipping box. */}

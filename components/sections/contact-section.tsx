@@ -9,8 +9,8 @@ import { DontClickLink } from "@/components/dont-click-link"
 import { Handwritten } from "@/components/handwritten"
 import { LastUpdated } from "@/components/last-updated"
 import { useLanguage } from "@/components/language-provider"
-import { LocalClock } from "@/components/local-clock"
 import { SocialLinks } from "@/components/social-links"
+import { TimeStatus } from "@/components/time-status"
 import { column, inlineLink, sectionLabel } from "@/lib/styles"
 
 export function ContactSection() {
@@ -49,9 +49,7 @@ export function ContactSection() {
 
         <SocialLinks items={["whatsapp", "github", "cv", "x"]} className="mt-8" />
 
-        <p className="mt-8 font-mono text-sm text-muted-foreground">
-          {t.localTimeLabel.toLowerCase()}: <LocalClock className="text-foreground/80" showPlace />
-        </p>
+        <TimeStatus className="mt-8 space-y-1 font-mono text-sm text-muted-foreground" />
 
         <div className="mt-24 flex flex-col gap-3 border-t border-border/60 pt-6 font-mono text-sm text-muted-foreground md:flex-row md:items-center md:justify-between">
           <p>{copy.footer}</p>

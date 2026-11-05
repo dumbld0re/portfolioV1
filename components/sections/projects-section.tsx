@@ -120,8 +120,8 @@ export function ProjectsSection() {
                 <p className="font-mono text-sm text-muted-foreground/80">{project.tech.join(" · ")}</p>
 
                 {/* Phones, tablets and touch screens have no hover card, so the
-                    screens sit right in the list. */}
-                <div className="max-w-md pt-3 pb-1 [@media(min-width:1024px)_and_(hover:hover)]:hidden">
+                    screens sit right in the list, centred under the text. */}
+                <div className="mx-auto max-w-md pt-3 pb-1 [&>*]:mx-auto [@media(min-width:1024px)_and_(hover:hover)]:hidden">
                   <ProjectPreview project={project} folder={labels.nav.projects.toLowerCase()} room={null} />
                 </div>
 
