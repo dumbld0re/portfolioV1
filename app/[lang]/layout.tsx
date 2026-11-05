@@ -9,6 +9,7 @@ import { BORING_SCRIPT } from "@/lib/boring-store"
 import { CustomCursor } from "@/components/custom-cursor"
 import { LanguageProvider } from "@/components/language-provider"
 import { ScrollReveal } from "@/components/scroll-reveal"
+import { SmoothScroll } from "@/components/smooth-scroll"
 import { ThemeColorSync } from "@/components/theme-color-sync"
 import { ThemeProvider } from "@/components/theme-provider"
 import { fontVariables } from "@/lib/fonts"
@@ -95,6 +96,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
             <BoringClassSync />
             {children}
             <ScrollReveal />
+            <SmoothScroll />
           </ThemeProvider>
           <Analytics />
           <SpeedInsights />

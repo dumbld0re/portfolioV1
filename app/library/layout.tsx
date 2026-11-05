@@ -7,6 +7,7 @@ import { BoringClassSync } from "@/components/boring-toggle"
 import { BORING_SCRIPT } from "@/lib/boring-store"
 import { CustomCursor } from "@/components/custom-cursor"
 import { ScrollReveal } from "@/components/scroll-reveal"
+import { SmoothScroll } from "@/components/smooth-scroll"
 import { ThemeColorSync } from "@/components/theme-color-sync"
 import { ThemeProvider } from "@/components/theme-provider"
 import { libraryCopy } from "@/content/library-topics"
@@ -78,6 +79,7 @@ export default function LibraryLayout({ children }: { children: React.ReactNode 
           <BoringClassSync />
           {children}
           <ScrollReveal />
+          <SmoothScroll />
         </ThemeProvider>
         <Analytics />
         <SpeedInsights />

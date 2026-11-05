@@ -10,6 +10,7 @@ import { libraryTopics, type TopicId } from "@/content/library-topics"
 import { SORTS, filterEntries, groupEntries, parseQuery, setToken } from "@/lib/library-query"
 import type { LibraryEntry } from "@/lib/library-types"
 import { cn } from "@/lib/utils"
+import { scrollPage } from "@/lib/scroll"
 
 const SORT_LABELS = { "a-z": "a–z", date: "date", length: "length", topic: "topic" } as const
 
@@ -53,7 +54,7 @@ export function LibraryIndex({ entries, now }: { entries: LibraryEntry[]; now: s
   // A ledger glyph opens its entry, clearing a filter that would hide it.
   const selectFromLedger = (entry: LibraryEntry) => {
     flushSync(() => setUrl({ open: entry.callNumber, ...(matches.has(entry.slug) ? {} : { query: "" }) }))
-    document.getElementById(entry.callNumber)?.scrollIntoView({ behavior: "smooth", block: "start" })
+    scrollPage(document.getElementById(entry.callNumber))
   }
 
   const toggleTopic = (topic: TopicId) =>

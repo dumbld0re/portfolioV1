@@ -544,3 +544,23 @@ html.paused .handwritten path {
     stroke-dashoffset: 0;
   }
 }
+
+/* smooth scroll (components/smooth-scroll.tsx, lenis). lenis moves the page
+   itself every frame; the native smooth behaviour (.scroll-smooth on <html>)
+   would animate each of those moves again, so it's off while lenis runs */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+html.lenis {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+.lenis [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
