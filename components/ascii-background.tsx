@@ -59,6 +59,8 @@ export function AsciiBackground({ cellSize = 16, className }: AsciiBackgroundPro
     const mask = `url(${canvas.toDataURL()})`
     tile.style.maskImage = mask
     tile.style.webkitMaskImage = mask
+    // Only now that the mask exists may the layer show (see the style below).
+    tile.style.opacity = "1"
   }, [cellSize])
 
   // Absolute rather than fixed, so the glyphs scroll with the page: Safari 26
@@ -77,7 +79,7 @@ export function AsciiBackground({ cellSize = 16, className }: AsciiBackgroundPro
     >
       <div
         ref={tileRef}
-        className="bg-drift-layer absolute motion-safe:animate-bg-drift"
+        className="bg-drift-layer absolute motion-safe:animate-bg-drift motion-safe:transition-opacity motion-safe:duration-700"
         style={{
           inset: -TILE_SIZE,
           backgroundColor: "currentColor",
@@ -85,6 +87,10 @@ export function AsciiBackground({ cellSize = 16, className }: AsciiBackgroundPro
           WebkitMaskSize: `${TILE_SIZE}px ${TILE_SIZE}px`,
           maskRepeat: "repeat",
           WebkitMaskRepeat: "repeat",
+          // Hidden until the effect has drawn the mask: unmasked, this layer is
+          // a solid sheet of the text color at 15–20%, which tinted the whole
+          // page grey for the first second or two of every load.
+          opacity: 0,
         }}
       />
     </div>

@@ -6,6 +6,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 
 import { BoringClassSync } from "@/components/boring-toggle"
 import { BORING_SCRIPT } from "@/lib/boring-store"
+import { THEME_SCRIPT } from "@/lib/theme-script"
 import { CustomCursor } from "@/components/custom-cursor"
 import { LanguageProvider } from "@/components/language-provider"
 import { ScrollReveal } from "@/components/scroll-reveal"
@@ -86,6 +87,9 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
   return (
     <html lang={lang} suppressHydrationWarning className="scroll-smooth">
       <head>
+        {/* The theme, before the first paint (next-themes' own script is in <body>,
+            so dark mode could flash one white frame). */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
         {/* Boring mode is stored in the browser; apply it before the first paint. */}
         <script dangerouslySetInnerHTML={{ __html: BORING_SCRIPT }} />
       </head>
