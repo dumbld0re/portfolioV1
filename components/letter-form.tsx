@@ -41,6 +41,8 @@ export function LetterDialog() {
         setRound((r) => r + 1)
       }
       dialog.showModal()
+      // put the custom cursor back above the dialog (components/custom-cursor.tsx)
+      window.dispatchEvent(new Event("cursor:raise"))
     }
     window.addEventListener(OPEN_EVENT, open)
     return () => window.removeEventListener(OPEN_EVENT, open)

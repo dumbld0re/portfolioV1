@@ -25,6 +25,18 @@ export function CustomCursor() {
 
     document.documentElement.classList.add("custom-cursor-active")
 
+    // The cursor lives in the browser's top layer (a manual popover), so it
+    // also draws over modal dialogs. A dialog opened later lands above it, so
+    // "cursor:raise" re-shows it to put it back on top (see openLetter).
+    const raise = () => {
+      try {
+        if (cursor.matches(":popover-open")) cursor.hidePopover()
+        cursor.showPopover()
+      } catch {}
+    }
+    raise()
+    window.addEventListener("cursor:raise", raise)
+
     let x = -100
     let y = -100
     let targetScale = 1
@@ -93,6 +105,7 @@ export function CustomCursor() {
       window.removeEventListener("mousedown", onDown)
       window.removeEventListener("mouseup", onUp)
       document.documentElement.removeEventListener("mouseleave", onLeave)
+      window.removeEventListener("cursor:raise", raise)
       if (raf) cancelAnimationFrame(raf)
     }
   }, [enabled])
@@ -103,7 +116,8 @@ export function CustomCursor() {
     <div
       ref={cursorRef}
       aria-hidden="true"
-      className="fixed left-0 top-0 z-[9999] pointer-events-none print:hidden mix-blend-difference opacity-0 transition-opacity duration-150 will-change-transform origin-top-left"
+      popover="manual"
+      className="fixed inset-auto left-0 top-0 m-0 overflow-visible border-0 bg-transparent p-0 z-[9999] pointer-events-none print:hidden mix-blend-difference opacity-0 transition-opacity duration-150 will-change-transform origin-top-left"
     >
       {/* A symmetric notched arrowhead, tilted 25° like a system pointer, with
           softened corners. Its tip sits at (1.5,1.5) in the viewBox (1.4px
