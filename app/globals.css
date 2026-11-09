@@ -569,3 +569,25 @@ html.lenis {
 .lenis [data-lenis-prevent] {
   overscroll-behavior: contain;
 }
+
+/* the contact letter (components/letter-form.tsx): it rises in, the page
+   behind dims */
+@media (prefers-reduced-motion: no-preference) {
+  .letter-dialog[open] {
+    animation: letter-in 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .letter-dialog[open]::backdrop {
+    animation: letter-fade 0.3s ease;
+  }
+}
+@keyframes letter-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.98);
+  }
+}
+@keyframes letter-fade {
+  from {
+    opacity: 0;
+  }
+}

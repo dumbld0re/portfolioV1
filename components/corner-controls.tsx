@@ -4,6 +4,7 @@ import { useEffect, useState, useSyncExternalStore } from "react"
 
 import { siteCopy } from "@/content/site"
 import { useLanguageOrDefault } from "@/components/language-provider"
+import { openLetter } from "@/components/letter-form"
 import { getServerSnapshot, getSnapshot, setBoring, subscribe } from "@/lib/boring-store"
 
 const PAUSE_KEY = "paused"
@@ -49,13 +50,13 @@ export function CornerControls() {
   return (
     <>
       <div className={`${corner} left-3`}>
-        <a href="mailto:dannymiiguel@gmail.com" className={control}>
+        <button type="button" onClick={openLetter} aria-haspopup="dialog" className={control}>
           {labels.sayHello}
           <span className="text-primary" aria-hidden="true">
             {" "}
             ↗
           </span>
-        </a>
+        </button>
       </div>
       <div className={`${corner} right-3`}>
         <button

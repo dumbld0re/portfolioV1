@@ -5,6 +5,7 @@ import { FileText, Mail } from "lucide-react"
 import { contactContent } from "@/content/contact"
 import { siteCopy } from "@/content/site"
 import { CvMenu } from "@/components/cv-menu"
+import { openLetter } from "@/components/letter-form"
 import { useLanguage } from "@/components/language-provider"
 import { X_URL } from "@/lib/styles"
 import { cn } from "@/lib/utils"
@@ -69,9 +70,9 @@ export function SocialLinks({ items, className }: { items: SocialKey[]; classNam
         )
       case "email":
         return (
-          <a href={`mailto:${contact.email}`} className={link} aria-label="E-Mail" title="E-Mail">
+          <button type="button" onClick={openLetter} aria-haspopup="dialog" className={cn(link, "cursor-pointer")} aria-label="E-Mail" title="E-Mail">
             <Mail className={icon} />
-          </a>
+          </button>
         )
       case "cv":
         return (

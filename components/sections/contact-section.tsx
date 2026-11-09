@@ -8,6 +8,7 @@ import { BoringToggle } from "@/components/boring-toggle"
 import { DontClickLink } from "@/components/dont-click-link"
 import { Handwritten } from "@/components/handwritten"
 import { LastUpdated } from "@/components/last-updated"
+import { openLetter } from "@/components/letter-form"
 import { useLanguage } from "@/components/language-provider"
 import { SocialLinks } from "@/components/social-links"
 import { TimeStatus } from "@/components/time-status"
@@ -41,7 +42,18 @@ export function ContactSection() {
 
         <p className="mt-8 max-w-2xl text-xl leading-relaxed md:text-2xl text-muted-foreground">
           {t.blurbBefore}{" "}
-          <a href={`mailto:${t.email}`} className={`${inlineLink} text-foreground`}>
+          {/* opens the letter; the real mailto stays as the href for
+              no-js, middle-click and copy-link */}
+          <a
+            href={`mailto:${t.email}`}
+            onClick={(e) => {
+              if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return
+              e.preventDefault()
+              openLetter()
+            }}
+            aria-haspopup="dialog"
+            className={`${inlineLink} text-foreground`}
+          >
             {t.email}
           </a>
           {t.blurbAfter}

@@ -20,6 +20,24 @@ export const contactContent: Record<
     backToTop: string
     writeLabel: string
     elsewhereLabel: string
+    form: {
+      greeting: string
+      messageLabel: string
+      messagePlaceholder: string
+      emailLabel: string
+      emailPlaceholder: string
+      send: string
+      sending: string
+      sent: string
+      sentNote: (email: string) => string
+      again: string
+      close: string
+      needMessage: string
+      needEmail: string
+      badEmail: string
+      failed: string
+      failedLink: string
+    }
     time: {
       mine: string
       yours: string
@@ -43,6 +61,24 @@ export const contactContent: Record<
     backToTop: "nach oben",
     writeLabel: "Schreib mir",
     elsewhereLabel: "Im Netz",
+    form: {
+      greeting: "Hallo Danny-Miguel",
+      messageLabel: "Nachricht",
+      messagePlaceholder: "Ich mag deine Arbeit. Lass uns zusammen etwas bauen.",
+      emailLabel: "Deine E-Mail",
+      emailPlaceholder: "du@beispiel.de",
+      send: "Senden",
+      sending: "Wird gesendet…",
+      sent: "Angekommen.",
+      sentNote: (email) => `Danke! Ich antworte dir an ${email}, meistens innerhalb eines Tages.`,
+      again: "Noch eine schreiben",
+      close: "Schließen",
+      needMessage: "Schreib mir zuerst ein paar Worte.",
+      needEmail: "Deine E-Mail, bitte, damit ich antworten kann.",
+      badEmail: "Die E-Mail sieht nicht ganz richtig aus.",
+      failed: "Das hat nicht geklappt.",
+      failedLink: "Per Mail-App senden",
+    },
     time: {
       mine: "meine zeit gerade",
       yours: "deine zeit gerade",
@@ -62,6 +98,24 @@ export const contactContent: Record<
     backToTop: "back to top",
     writeLabel: "Write",
     elsewhereLabel: "Elsewhere",
+    form: {
+      greeting: "Hello Danny-Miguel",
+      messageLabel: "Message",
+      messagePlaceholder: "Love your work. Let’s build something together.",
+      emailLabel: "Your email",
+      emailPlaceholder: "you@example.com",
+      send: "Send",
+      sending: "Sending…",
+      sent: "Delivered.",
+      sentNote: (email) => `Thanks! I’ll reply to ${email}, usually within a day.`,
+      again: "Write another",
+      close: "Close",
+      needMessage: "Write me a few words first.",
+      needEmail: "Your email, please, so I can reply.",
+      badEmail: "That email doesn’t look quite right.",
+      failed: "That didn’t go through.",
+      failedLink: "Send it from your mail app",
+    },
     time: {
       mine: "my time currently",
       yours: "your time currently",
