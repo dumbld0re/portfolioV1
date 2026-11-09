@@ -7,21 +7,23 @@ import { siteCopy } from "@/content/site"
 import { useLanguage } from "@/components/language-provider"
 import { ProjectPreview, type Room } from "@/components/project-preview"
 import { column, inlineLink, measure, sectionLabel } from "@/lib/styles"
+import { useActiveIndex } from "@/lib/use-active-index"
 import { cn } from "@/lib/utils"
 
-/** Where the sticky cards sit (top-24), the gap kept above the screen's bottom edge, and the column's cap (max-w-[32rem]). */
+/** Where the sticky cards sit (top-24), the gap kept above the screen's bottom edge (clear of the corner controls), and the column's cap (max-w-[32rem]). */
 const CARD_TOP = 96
-const CARD_EDGE = 24
+const CARD_EDGE = 64
 const CARD_MAX = 512
 
 export function ProjectsSection() {
   const { language } = useLanguage()
   const labels = siteCopy[language]
   const t = projectsContent[language]
-  // The card shows while a project is hovered or focused. `shown` keeps the
-  // last one, so the card still has something in it while it fades out.
+  // The card beside the list always shows a project: the hovered or focused
+  // one, otherwise whichever is passing the middle of the screen.
   const [hovered, setHovered] = useState<number | null>(null)
-  const [shown, setShown] = useState(0)
+  const { active, bind: bindActive } = useActiveIndex(t.projects.length)
+  const shown = hovered ?? active
   const list = useRef<HTMLOListElement>(null)
   const lane = useRef<HTMLElement>(null)
   // The space the cards have right now: from their sticky top down to the
@@ -36,16 +38,36 @@ export function ProjectsSection() {
     const height = Math.round((Math.min(window.innerHeight - CARD_EDGE, box.bottom) - Math.max(CARD_TOP, box.top)) / 8) * 8
     setRoom((prev) => (prev && prev.width === width && prev.height === height ? prev : { width, height }))
   }, [])
-  const select = (i: number | null) => {
+  const select = (i: number) => {
     setHovered(i)
-    if (i !== null) setShown(i)
     measureRoom()
   }
   const bind = (i: number) => ({
+    ...bindActive(i),
     "data-project": i,
     onMouseEnter: () => select(i),
     onFocus: () => select(i),
   })
+
+  // The other projects' screenshots are fetched as the section comes near,
+  // so the first hover on each shows its card at once.
+  useEffect(() => {
+    const node = list.current
+    if (!node) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return
+        observer.disconnect()
+        for (const project of t.projects) {
+          if (project.preview.kind !== "screens") continue
+          for (const screen of project.preview.screens) new Image().src = screen.src
+        }
+      },
+      { rootMargin: "600px 0px" },
+    )
+    observer.observe(node)
+    return () => observer.disconnect()
+  }, [t.projects])
 
   // When the page scrolls under a still mouse, browsers update hover late (or
   // only on the next move). Re-check what's under the pointer on each scroll
@@ -65,13 +87,13 @@ export function ProjectsSection() {
       // Keyboard focus inside the list keeps its own selection.
       if (list.current.contains(document.activeElement)) return
       const item = document.elementFromPoint(x, y)?.closest<HTMLElement>("[data-project]")
-      const index = item && list.current.contains(item) ? Number(item.dataset.project) : null
-      setHovered(index)
-      if (index !== null) setShown(index)
+      setHovered(item && list.current.contains(item) ? Number(item.dataset.project) : null)
     }
     const onScroll = () => {
       if (!frame) frame = requestAnimationFrame(check)
     }
+    // The card is there from the start, so measure its room straight away.
+    onScroll()
     window.addEventListener("pointermove", onMove, { passive: true })
     window.addEventListener("scroll", onScroll, { passive: true })
     window.addEventListener("resize", onScroll)
@@ -148,17 +170,10 @@ export function ProjectsSection() {
             ))}
           </ol>
 
-          {/* Wide screens with a mouse: the hovered project's card, pinned in
-              the free column. It rises in softly and fades between projects
-              (just fades with motion paused or reduced). */}
+          {/* Wide screens with a mouse: the current project's card, pinned in
+              the free column, fading between projects. */}
           <aside ref={lane} aria-hidden="true" className="hidden lg:block">
-            <div
-              className={cn(
-                "pointer-events-none sticky top-24 hidden max-w-[32rem] transition duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] [@media(hover:hover)]:block",
-                hovered === null ? "translate-y-3 opacity-0" : "translate-y-0 opacity-100",
-                "motion-reduce:translate-y-0 [html.paused_&]:translate-y-0",
-              )}
-            >
+            <div className="pointer-events-none sticky top-24 hidden max-w-[32rem] [@media(hover:hover)]:block">
               <div key={shown} className="motion-safe:animate-page-fade">
                 <ProjectPreview project={t.projects[shown]} folder={labels.nav.projects.toLowerCase()} room={room} />
               </div>

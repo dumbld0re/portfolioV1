@@ -1,8 +1,12 @@
+import { createHash } from "node:crypto"
 import { NextResponse, type NextRequest } from "next/server"
+
+import { BOT, redis, redisReady } from "@/lib/redis"
 
 // All-time visitor count, kept in Upstash Redis. Each device is counted once:
 // the first visit increments the counter and leaves a long-lived cookie, later
-// visits from that browser only read the number.
+// visits from that browser only read the number. Dropping the cookie doesn't
+// help either: an address only counts once a day.
 //
 // The counter only started on 4 November 2026, so it is shown on top of the
 // 149 visitors Vercel Analytics had recorded by then (the last 30 days).
@@ -11,36 +15,25 @@ const KEY = "views"
 const START = 149
 const COOKIE = "counted"
 const TEN_YEARS = 60 * 60 * 24 * 365 * 10
-const BOT = /bot|crawl|spider|slurp|preview|headless|lighthouse|facebookexternalhit|embedly|curl|wget/i
+const ONE_DAY = 60 * 60 * 24
 
-const url = process.env.KV_REST_API_URL ?? process.env.UPSTASH_REDIS_REST_URL
-const token = process.env.KV_REST_API_TOKEN ?? process.env.UPSTASH_REDIS_REST_TOKEN
-
-// Local dev counts in memory, so testing never touches the live number.
-const devStore = process.env.NODE_ENV === "development"
-let devViews = 0
-
-async function redis(command: string[]): Promise<number> {
-  if (devStore) return command[0] === "INCR" ? ++devViews : devViews
-  const res = await fetch(url!, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${token}` },
-    body: JSON.stringify(command),
-    cache: "no-store",
-  })
-  if (!res.ok) throw new Error(`redis ${res.status}`)
-  const { result } = (await res.json()) as { result: string | number | null }
-  return Number(result ?? 0)
+// The address itself is never stored: only a hash that changes daily and
+// expires after a day.
+function addressKey(request: NextRequest) {
+  const address = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown"
+  const day = new Date().toISOString().slice(0, 10)
+  return `seen:${createHash("sha256").update(`${day}:${address}`).digest("hex").slice(0, 32)}`
 }
 
 export async function POST(request: NextRequest) {
-  if (!devStore && (!url || !token)) return NextResponse.json({ views: null }, { status: 503 })
+  if (!redisReady) return NextResponse.json({ views: null }, { status: 503 })
 
   const seen = request.cookies.has(COOKIE)
   const bot = BOT.test(request.headers.get("user-agent") ?? "")
 
   try {
-    const views = await redis(seen || bot ? ["GET", KEY] : ["INCR", KEY])
+    const fresh = !seen && !bot && (await redis(["SET", addressKey(request), "1", "NX", "EX", String(ONE_DAY)])) === "OK"
+    const views = Number((await redis(fresh ? ["INCR", KEY] : ["GET", KEY])) ?? 0)
     const response = NextResponse.json({ views: START + views }, { headers: { "Cache-Control": "no-store" } })
     if (!seen && !bot) {
       response.cookies.set(COOKIE, "1", {

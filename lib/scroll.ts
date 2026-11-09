@@ -9,6 +9,13 @@ export const setLenis = (l: Lenis | null) => {
   active = l
 }
 
+/** Holds the page still behind a modal, and lets it go again. */
+export function lockScroll(locked: boolean) {
+  if (locked) active?.stop()
+  else active?.start()
+  document.documentElement.style.overflow = locked ? "hidden" : ""
+}
+
 export function scrollPage(target: number | HTMLElement | null | undefined, offset = 0) {
   if (target == null) return
   const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches

@@ -7,10 +7,12 @@ import { useMediaQuery } from "@/lib/use-media-query"
 
 const SCALE_LERP = 0.25
 const INTERACTIVE = "a, button, [role=button], input, textarea, select, label"
+const TEXT_FIELD = "textarea, input:not([type=checkbox], [type=radio], [type=button], [type=submit])"
 
 // A plain pointer, just sharper: a single triangle whose tip is the hotspot.
 // It tracks the mouse 1:1 (no trailing), and only its size eases — a touch
-// larger over anything clickable, a touch smaller while pressed.
+// larger over anything clickable, a touch smaller while pressed. Over a field
+// you can type in, it becomes a text bar.
 export function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null)
   const finePointer = useMediaQuery("(pointer: fine)")
@@ -76,7 +78,9 @@ export function CustomCursor() {
         cursor.style.opacity = "1"
       }
       const target = event.target as Element | null
-      hovering = Boolean(target?.closest?.(INTERACTIVE))
+      const typing = Boolean(target?.closest?.(TEXT_FIELD))
+      cursor.toggleAttribute("data-text", typing)
+      hovering = !typing && Boolean(target?.closest?.(INTERACTIVE))
       render()
       update()
     }
@@ -117,12 +121,18 @@ export function CustomCursor() {
       ref={cursorRef}
       aria-hidden="true"
       popover="manual"
-      className="fixed inset-auto left-0 top-0 m-0 overflow-visible border-0 bg-transparent p-0 z-[9999] pointer-events-none print:hidden mix-blend-difference opacity-0 transition-opacity duration-150 will-change-transform origin-top-left"
+      className="group fixed inset-auto left-0 top-0 m-0 overflow-visible border-0 bg-transparent p-0 z-[9999] pointer-events-none print:hidden mix-blend-difference opacity-0 transition-opacity duration-150 will-change-transform origin-top-left"
     >
       {/* A symmetric notched arrowhead, tilted 25° like a system pointer, with
           softened corners. Its tip sits at (1.5,1.5) in the viewBox (1.4px
           at this size), so the offsets land it exactly on the pointer. */}
-      <svg width="18" height="23" viewBox="0 0 19 24" className="-ml-[1.4px] -mt-[1.4px] block" fill="white">
+      <svg
+        width="18"
+        height="23"
+        viewBox="0 0 19 24"
+        className="-ml-[1.4px] -mt-[1.4px] block transition-opacity duration-100 group-data-[text]:opacity-0"
+        fill="white"
+      >
         <path
           d="M1.5 1.5 L16.78 15.34 L7.42 14.19 L2.28 22.1 Z"
           stroke="white"
@@ -130,6 +140,8 @@ export function CustomCursor() {
           strokeLinejoin="round"
         />
       </svg>
+      {/* The text bar, centred on the pointer. */}
+      <span className="absolute left-0 top-0 block h-[22px] w-0.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white opacity-0 transition-opacity duration-100 group-data-[text]:opacity-100" />
     </div>
   )
 }

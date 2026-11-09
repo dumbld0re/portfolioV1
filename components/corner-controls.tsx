@@ -6,6 +6,7 @@ import { siteCopy } from "@/content/site"
 import { useLanguageOrDefault } from "@/components/language-provider"
 import { openLetter } from "@/components/letter-form"
 import { getServerSnapshot, getSnapshot, setBoring, subscribe } from "@/lib/boring-store"
+import { cn } from "@/lib/utils"
 
 const PAUSE_KEY = "paused"
 
@@ -28,6 +29,22 @@ export function CornerControls() {
   const labels = siteCopy[useLanguageOrDefault()]
   const boring = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot) !== "off"
   const [paused, setPaused] = useState(false)
+  // The hero has its own email icon in this corner of the screen, so "say
+  // hello" only comes in once that row has scrolled away. Hidden until the
+  // page has been checked, so it never flashes over the hero on load.
+  const [hello, setHello] = useState(false)
+
+  useEffect(() => {
+    const links = document.querySelector("[data-hero-links]")
+    if (!links) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setHello(true)
+      return
+    }
+    const observer = new IntersectionObserver(([entry]) => setHello(!entry.isIntersecting))
+    observer.observe(links)
+    return () => observer.disconnect()
+  }, [])
 
   useEffect(() => {
     // Restoring a stored preference after hydration, not deriving state.
@@ -49,7 +66,10 @@ export function CornerControls() {
 
   return (
     <>
-      <div className={`${corner} left-3`}>
+      <div
+        className={cn(corner, "left-3 transition-opacity duration-300", !hello && "pointer-events-none opacity-0")}
+        inert={!hello}
+      >
         <button type="button" onClick={openLetter} aria-haspopup="dialog" className={control}>
           {labels.sayHello}
           <span className="text-primary" aria-hidden="true">

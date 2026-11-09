@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { ArrowUpRight } from "lucide-react"
 
 import { homeContent } from "@/content/home"
+import { HeroPiece } from "@/components/hero-piece"
 import { useLanguage } from "@/components/language-provider"
 import { BOOT_SEQUENCE_MS, hasBootPlayed, markBootPlayed } from "@/lib/motion"
 import { SocialLinks } from "@/components/social-links"
@@ -40,8 +41,17 @@ export function HomeSection() {
   let charIndex = 0
 
   return (
-    <section className="flex min-h-[calc(100svh-5rem)] flex-col justify-center px-6 md:px-12 py-20">
-      <div className={column}>
+    // Gaps and the name scale with the screen's height as well as its width,
+    // so the whole hero (icons included) fits on a laptop screen.
+    <section className="flex min-h-[calc(100svh-5rem)] flex-col justify-center px-6 md:px-12 py-[clamp(2rem,5svh,5rem)]">
+      <div className={cn(column, "relative")}>
+      {/* The free side of the wide hero: the cursor, large, in dots. */}
+      <HeroPiece
+        className={cn(
+          "absolute right-0 top-1/2 hidden w-[min(34vw,64svh,34rem)] -translate-y-1/2 xl:[@media(hover:hover)]:block",
+          boot && "motion-safe:animate-page-fade",
+        )}
+      />
       <p
         className={cn("font-mono text-sm text-muted-foreground", reveal)}
         style={delay(BOOT_SEQUENCE_MS.heroName - 100)}
@@ -50,9 +60,11 @@ export function HomeSection() {
       </p>
 
       {/* One name per line; each letter rises out of its own clipping box. */}
-      <h1 className="mt-8 font-serif font-normal lowercase leading-[1.02] tracking-[-0.02em] text-[clamp(3.25rem,1rem+8.5vw,8.5rem)]">
+      <h1 className="mt-[clamp(1.25rem,3.5svh,2rem)] font-serif font-normal lowercase leading-[1.02] tracking-[-0.02em] text-[min(clamp(3.25rem,1rem+8.5vw,8.5rem),14svh)]">
+        {/* Screen readers get the name whole, not letter by letter. */}
+        <span className="sr-only">{t.name}</span>
         {t.name.split(/\s+/).map((line, li, lines) => (
-          <span key={line} className="block">
+          <span key={line} aria-hidden="true" className="block">
             {[...line].map((char) => {
               const i = charIndex++
               return (
@@ -75,9 +87,9 @@ export function HomeSection() {
         ))}
       </h1>
 
-      <div className={cn("mt-12 max-w-2xl space-y-5", reveal)} style={delay(BOOT_SEQUENCE_MS.heroSubtitle)}>
-        <p className="text-xl leading-relaxed text-foreground/90 text-pretty md:text-2xl">{t.intro}</p>
-        <p className="text-xl leading-relaxed text-foreground/90 text-pretty md:text-2xl">
+      <div className={cn("mt-[clamp(1.5rem,5svh,3rem)] max-w-2xl space-y-5", reveal)} style={delay(BOOT_SEQUENCE_MS.heroSubtitle)}>
+        <p className="text-xl leading-relaxed text-foreground/90 text-pretty md:text-2xl short:text-xl!">{t.intro}</p>
+        <p className="text-xl leading-relaxed text-foreground/90 text-pretty md:text-2xl short:text-xl!">
           {t.now.map((part, i) =>
             typeof part === "string" ? (
               part
@@ -93,11 +105,14 @@ export function HomeSection() {
             ),
           )}
         </p>
-        <p className="text-lg leading-relaxed text-muted-foreground text-pretty md:text-xl">{t.description}</p>
+        <p className="text-lg leading-relaxed text-muted-foreground text-pretty md:text-xl short:text-lg!">{t.description}</p>
       </div>
 
       <div className={reveal} style={delay(BOOT_SEQUENCE_MS.heroMeta)}>
-        <SocialLinks items={["github", "email", "cv", "x"]} className="mt-12" />
+        {/* data-hero-links: the corner's "say hello" waits until this row has scrolled away. */}
+        <div data-hero-links className="mt-[clamp(1.5rem,5svh,3rem)]">
+          <SocialLinks items={["github", "email", "cv", "x"]} />
+        </div>
       </div>
       </div>
     </section>

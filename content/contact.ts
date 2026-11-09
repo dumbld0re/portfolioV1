@@ -17,9 +17,8 @@ export const contactContent: Record<
     email: string
     blurbAfter: string
     phone: string
-    backToTop: string
+    /** Names the letter dialog for screen readers. */
     writeLabel: string
-    elsewhereLabel: string
     form: {
       greeting: string
       messageLabel: string
@@ -58,9 +57,7 @@ export const contactContent: Record<
     email: "dannymiiguel@gmail.com",
     blurbAfter: ". Gern auch ganz formlos.",
     phone: "+264 81 821 0003",
-    backToTop: "nach oben",
     writeLabel: "Schreib mir",
-    elsewhereLabel: "Im Netz",
     form: {
       greeting: "Hallo Danny-Miguel",
       messageLabel: "Nachricht",
@@ -95,9 +92,7 @@ export const contactContent: Record<
     email: "dannymiiguel@gmail.com",
     blurbAfter: ". No need to be formal.",
     phone: "+264 81 821 0003",
-    backToTop: "back to top",
-    writeLabel: "Write",
-    elsewhereLabel: "Elsewhere",
+    writeLabel: "Write to me",
     form: {
       greeting: "Hello Danny-Miguel",
       messageLabel: "Message",

@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import type { ReactNode } from "react"
+import type { CSSProperties, ReactNode } from "react"
 
 import type { Project, Screen } from "@/content/projects"
 import { cn } from "@/lib/utils"
@@ -11,6 +11,10 @@ const BAR = 38
 /** Gap between stacked windows, and how far the later ones step right. */
 const GAP = 16
 const STEP = 40
+/** Phone cards: the gap between the pair, how far the second sits lower, and the narrowest the row may get. */
+const PAIR_GAP = 16
+const PAIR_DROP = 40
+const PAIR_MIN = 300
 
 /** The space the cards may fill: the column's width and the free height. */
 export type Room = { width: number; height: number }
@@ -29,10 +33,33 @@ function stackedCount(screens: Screen[], room: Room | null) {
   return count
 }
 
+// The widest a row of phone screens may be and still fit the room's height
+// (the second card of a pair sits a step lower).
+function tallWidth(screens: Screen[], room: Room | null) {
+  if (!room) return undefined
+  const [first] = screens
+  const pair = screens.length > 1
+  const cardHeight = room.height - BAR - (pair ? PAIR_DROP : 0)
+  const cardWidth = (cardHeight * first.width) / first.height
+  const width = pair ? cardWidth * 2 + PAIR_GAP : cardWidth
+  return Math.round(Math.max(pair ? PAIR_MIN : PAIR_MIN / 2, Math.min(width, room.width)))
+}
+
 // One window: a path bar on top, then the screen or terminal.
-function Window({ path, className, children }: { path: string; className?: string; children: ReactNode }) {
+function Window({
+  path,
+  className,
+  style,
+  children,
+}: {
+  path: string
+  className?: string
+  style?: CSSProperties
+  children: ReactNode
+}) {
   return (
     <figure
+      style={style}
       className={cn(
         "min-w-0 overflow-hidden rounded-md border border-border/70 bg-background shadow-[0_18px_40px_-20px_rgb(0_0_0/0.35)]",
         className,
@@ -107,16 +134,14 @@ export function ProjectPreview({
 
   if (tall) {
     return (
+      // Sized by the height left on screen, so the cards never run off its
+      // bottom edge; they ease to a new size as that room changes.
       <div
-        className={cn(
-          "flex items-start gap-4",
-          // Sized by height, so the pair always fits under the sticky top
-          // with room to spare on short laptop screens.
-          several ? "max-w-[calc((100svh-9rem)*0.8)]" : "max-w-[calc((100svh-9rem)*0.42)]",
-        )}
+        className="flex items-start transition-[max-width] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+        style={{ gap: PAIR_GAP, maxWidth: tallWidth(screens, room) }}
       >
         {screens.map((screen, i) => (
-          <Window key={screen.src} path={path(screen)} className={cn("flex-1", i % 2 === 1 && "mt-10")}>
+          <Window key={screen.src} path={path(screen)} className="flex-1" style={i % 2 === 1 ? { marginTop: PAIR_DROP } : undefined}>
             <Shot screen={screen} alt={screen.name ? `${project.title}: ${screen.name}` : project.title} />
           </Window>
         ))}

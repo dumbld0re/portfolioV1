@@ -6,7 +6,6 @@ import { useTheme } from "next-themes"
 
 import { siteCopy } from "@/content/site"
 import { useLanguageOrDefault } from "@/components/language-provider"
-import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 const emptySubscribe = () => () => {}
@@ -26,10 +25,9 @@ export function ThemeToggle() {
   const swap = switched ? "motion-safe:animate-icon-swap" : undefined
 
   return (
-    <Button
-      variant="ghost"
-      size="icon"
-      className="-m-1.5 size-11 text-muted-foreground hover:text-foreground md:m-0 md:size-8"
+    <button
+      type="button"
+      className="-m-1.5 inline-flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-2 focus-visible:outline-primary md:m-0 md:size-8 dark:hover:bg-accent/50"
       onClick={() => {
         setSwitched(true)
         setTheme(resolvedTheme === "dark" ? "light" : "dark")
@@ -42,6 +40,6 @@ export function ThemeToggle() {
       ) : (
         <Moon key="moon" className={cn("size-4", swap)} />
       )}
-    </Button>
+    </button>
   )
 }

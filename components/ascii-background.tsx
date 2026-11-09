@@ -7,8 +7,9 @@ import { cn } from "@/lib/utils"
 // Tile travel distance in the bg-drift keyframes (globals.css) must equal this
 // size, and the inner layer's negative inset must cover it, or the loop seams.
 const TILE_SIZE = 240
-const GLYPHS = [".", "·", "•"]
-const GLYPH_DENSITY = 0.4
+/** Dot radii in px: a full stop, a middle dot, a bullet. */
+const DOTS = [0.7, 0.95, 1.6]
+const DOT_DENSITY = 0.4
 
 interface AsciiBackgroundProps {
   cellSize?: number
@@ -37,19 +38,18 @@ export function AsciiBackground({ cellSize = 16, className }: AsciiBackgroundPro
     // theme's text color, so the dots follow light/dark switches live instead
     // of keeping whatever color the page had when it loaded.
     ctx.fillStyle = "#fff"
-    ctx.textAlign = "center"
-    ctx.textBaseline = "middle"
 
-    // Glyphs stay inside their cells, so the pattern tiles seamlessly.
+    // Dots stay inside their cells, so the pattern tiles seamlessly. Drawn as
+    // circles rather than font glyphs: every system renders them the same.
     const cells = Math.floor(TILE_SIZE / cellSize)
     for (let row = 0; row < cells; row++) {
       for (let col = 0; col < cells; col++) {
-        if (Math.random() > GLYPH_DENSITY) continue
-        const size = cellSize * (0.5 + Math.random() * 0.4)
-        ctx.font = `${Math.round(size)}px 'Geist Mono', ui-monospace, monospace`
+        if (Math.random() > DOT_DENSITY) continue
+        const radius = DOTS[Math.floor(Math.random() * DOTS.length)] * (0.85 + Math.random() * 0.3)
         ctx.globalAlpha = 0.15 + Math.random() * 0.85
-        const glyph = GLYPHS[Math.floor(Math.random() * GLYPHS.length)]
-        ctx.fillText(glyph, col * cellSize + cellSize / 2, row * cellSize + cellSize / 2)
+        ctx.beginPath()
+        ctx.arc(col * cellSize + cellSize / 2, row * cellSize + cellSize / 2, radius, 0, Math.PI * 2)
+        ctx.fill()
       }
     }
 

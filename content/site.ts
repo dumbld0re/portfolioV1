@@ -20,6 +20,8 @@ export const siteCopy: Record<
     boringLabel: string
     themeLabel: string
     notFound: string
+    home: string
+    backToTop: string
     sayHello: string
     on: string
     off: string
@@ -45,6 +47,8 @@ export const siteCopy: Record<
     boringLabel: "Langweiligen Modus umschalten",
     themeLabel: "Farbschema wechseln",
     notFound: "nicht gefunden",
+    home: "zurück zur startseite",
+    backToTop: "nach oben",
     sayHello: "sag hallo",
     on: "an",
     off: "aus",
@@ -69,6 +73,8 @@ export const siteCopy: Record<
     boringLabel: "Toggle boring mode",
     themeLabel: "Toggle theme",
     notFound: "not found",
+    home: "back to the start",
+    backToTop: "back to top",
     sayHello: "say hello",
     on: "on",
     off: "off",

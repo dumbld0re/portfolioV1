@@ -40,7 +40,7 @@ export function Header() {
   ]
 
   return (
-    <header className="relative z-30 w-full px-6 md:px-12 pt-5 pb-4 md:pt-12 print:hidden">
+    <header className="relative z-30 w-full px-6 md:px-12 pt-5 pb-4 md:pt-12 short:pt-6! print:hidden">
       <nav
         className={cn(
           "mx-auto flex max-w-[90rem] items-center gap-x-4 font-mono text-[13px] md:justify-end md:gap-x-8 md:text-base",
@@ -77,6 +77,8 @@ export function Header() {
             // A prefetch would run before the click stores the cookie, and
             // proxy.ts could answer it with a redirect back to this language.
             prefetch={false}
+            // Stay where you are on the page: only the words change.
+            scroll={false}
             hrefLang={otherLanguage}
             className={cn(navLink, "-mx-2 px-2 after:inset-x-2 md:mx-0 md:px-0 md:after:inset-x-0")}
             aria-label={otherLanguage === "en" ? "EN — switch to English" : "DE — auf Deutsch wechseln"}

@@ -6,6 +6,7 @@ import { track } from "@vercel/analytics"
 
 import { contactContent } from "@/content/contact"
 import { useLanguageOrDefault } from "@/components/language-provider"
+import { lockScroll } from "@/lib/scroll"
 import { cn } from "@/lib/utils"
 
 // web3forms access key for the contact letter. It's public by design: a key
@@ -18,6 +19,24 @@ type Problem = { field: "message" | "email"; text: string } | null
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const OPEN_EVENT = "letter:open"
+const DRAFT_KEY = "letter-draft"
+const CLOSE_MS = 180
+
+function readDraft(): { message: string; email: string } | null {
+  try {
+    const draft = JSON.parse(sessionStorage.getItem(DRAFT_KEY) ?? "null")
+    return draft && typeof draft.message === "string" && typeof draft.email === "string" ? draft : null
+  } catch {
+    return null
+  }
+}
+
+function saveDraft(draft: { message: string; email: string } | null) {
+  try {
+    if (draft && (draft.message || draft.email)) sessionStorage.setItem(DRAFT_KEY, JSON.stringify(draft))
+    else sessionStorage.removeItem(DRAFT_KEY)
+  } catch {}
+}
 
 /** Opens the letter from anywhere: the corner's "say hello", the email icon. */
 export function openLetter() {
@@ -26,8 +45,10 @@ export function openLetter() {
 
 /* The letter lives in a modal <dialog>, closed until someone asks for it.
    Esc, the close button and a click outside the sheet put it away; a draft
-   survives closing, a sent letter starts fresh next time. */
+   survives closing (and moving between pages), a sent letter starts fresh
+   next time. While it's open the page behind holds still. */
 export function LetterDialog() {
+  const label = contactContent[useLanguageOrDefault()].writeLabel
   const ref = useRef<HTMLDialogElement>(null)
   const [round, setRound] = useState(0)
   const wasSent = useRef(false)
@@ -40,26 +61,50 @@ export function LetterDialog() {
         wasSent.current = false
         setRound((r) => r + 1)
       }
+      delete dialog.dataset.closing
       dialog.showModal()
+      lockScroll(true)
+      // straight into the letter, not onto the close button
+      dialog.querySelector("textarea")?.focus()
       // put the custom cursor back above the dialog (components/custom-cursor.tsx)
       window.dispatchEvent(new Event("cursor:raise"))
     }
     window.addEventListener(OPEN_EVENT, open)
-    return () => window.removeEventListener(OPEN_EVENT, open)
+    return () => {
+      window.removeEventListener(OPEN_EVENT, open)
+      lockScroll(false)
+    }
   }, [])
+
+  // Sinks away first (globals.css), then really closes.
+  const dismiss = () => {
+    const dialog = ref.current
+    if (!dialog?.open || dialog.dataset.closing) return
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return dialog.close()
+    dialog.dataset.closing = ""
+    window.setTimeout(() => dialog.close(), CLOSE_MS)
+  }
 
   return (
     <dialog
       ref={ref}
-      aria-label="Write to me"
+      aria-label={label}
       onClick={(e) => {
-        if (e.target === e.currentTarget) e.currentTarget.close()
+        if (e.target === e.currentTarget) dismiss()
+      }}
+      onCancel={(e) => {
+        e.preventDefault()
+        dismiss()
+      }}
+      onClose={(e) => {
+        delete e.currentTarget.dataset.closing
+        lockScroll(false)
       }}
       className="letter-dialog m-auto w-full max-w-xl overflow-visible bg-transparent p-4 text-foreground backdrop:bg-background/75 backdrop:backdrop-blur-sm"
     >
       <LetterForm
         key={round}
-        onClose={() => ref.current?.close()}
+        onClose={dismiss}
         onSent={() => {
           wasSent.current = true
         }}
@@ -91,6 +136,16 @@ export function LetterForm({
   const sheet = useRef<HTMLDivElement>(null)
   const messageRef = useRef<HTMLTextAreaElement>(null)
   const emailRef = useRef<HTMLInputElement>(null)
+
+  // A draft left earlier in this tab comes back. Read after hydration: the
+  // server can't see it.
+  useEffect(() => {
+    const draft = readDraft()
+    if (!draft) return
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMessage(draft.message)
+    setEmail(draft.email)
+  }, [])
 
   const mailto = `mailto:${t.email}?subject=${encodeURIComponent(f.greeting)}&body=${encodeURIComponent(message)}`
 
@@ -137,6 +192,7 @@ export function LetterForm({
       const ok = res.ok && data.success !== false
       setState(ok ? "sent" : "error")
       if (ok) {
+        saveDraft(null)
         track("letter sent")
         onSent?.()
       }
@@ -158,7 +214,15 @@ export function LetterForm({
   const wrong = "decoration-destructive underline decoration-wavy underline-offset-4"
 
   return (
-    <form onSubmit={send} noValidate className={cn("flex w-full max-w-xl flex-col items-center", className)}>
+    <form
+      onSubmit={send}
+      // Ctrl/Cmd + Enter sends, as in a mail app.
+      onKeyDown={(e) => {
+        if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) e.currentTarget.requestSubmit()
+      }}
+      noValidate
+      className={cn("flex w-full max-w-xl flex-col items-center", className)}
+    >
       <div
         ref={sheet}
         className="relative flex min-h-[26rem] w-full flex-col rounded-[3px] border border-border/70 bg-card px-7 pt-8 pb-12 shadow-[0_1px_2px_rgb(0_0_0/0.04),0_12px_32px_-12px_rgb(0_0_0/0.12)] md:min-h-[30rem] md:px-12 md:pt-12 md:pb-14 dark:shadow-none"
@@ -196,6 +260,7 @@ export function LetterForm({
               disabled={busy}
               onChange={(e) => {
                 setMessage(e.target.value)
+                saveDraft({ message: e.target.value, email })
                 if (problem?.field === "message") setProblem(null)
               }}
               placeholder={f.messagePlaceholder}
@@ -221,6 +286,7 @@ export function LetterForm({
               disabled={busy}
               onChange={(e) => {
                 setEmail(e.target.value)
+                saveDraft({ message, email: e.target.value })
                 if (problem?.field === "email") setProblem(null)
               }}
               placeholder={f.emailPlaceholder}

@@ -8,22 +8,18 @@ export const homeContent: Record<
   {
     hero: {
       name: string
-      subtitle: string
       intro: string
       now: RichText
       description: string
       location: string
       /** The small line above the name. */
       currently: string
-      introLabel: string
-      cta: string
     }
   }
 > = {
   de: {
     hero: {
       name: "danny-miguel mittelberger",
-      subtitle: "Entwickler • Linux-Enthusiast",
       intro:
         "Ich baue Websites, die schnell laden, sich gut lesen und keine Anleitung brauchen. Klingt selbstverständlich, ist es aber erstaunlich oft nicht.",
       now: [
@@ -39,14 +35,11 @@ export const homeContent: Record<
         "Daneben studiere ich Quantitative Finance an der UNAM und bastle so lange an meinem Linux-Setup, bis irgendwas kaputtgeht.",
       location: "Windhoek, Namibia",
       currently: "gerade in namibia, windhoek",
-      introLabel: "Über mich",
-      cta: "Lass uns zusammenarbeiten",
     },
   },
   en: {
     hero: {
       name: "danny-miguel mittelberger",
-      subtitle: "Developer • Linux Enthusiast",
       intro:
         "I make websites that load fast, read easily and don't need a manual. Sounds obvious, but you'd be surprised how often it isn't.",
       now: [
@@ -62,8 +55,6 @@ export const homeContent: Record<
         "On the side I study quantitative finance at UNAM and tinker with my Linux setup until something breaks.",
       location: "Windhoek, Namibia",
       currently: "currently in namibia, windhoek",
-      introLabel: "Introduction",
-      cta: "Let's work together",
     },
   },
 }

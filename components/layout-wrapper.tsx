@@ -5,14 +5,10 @@ import { usePathname } from "next/navigation"
 
 import { AsciiBackground } from "@/components/ascii-background"
 import { BoringHome } from "@/components/boring/boring-home"
-import { BoringToggle } from "@/components/boring-toggle"
 import { CornerControls } from "@/components/corner-controls"
-import { DontClickLink } from "@/components/dont-click-link"
 import { Header } from "@/components/header"
-import { LastUpdated } from "@/components/last-updated"
 import { LetterDialog } from "@/components/letter-form"
-import { useLanguage } from "@/components/language-provider"
-import { siteCopy } from "@/content/site"
+import { SiteFooter } from "@/components/site-footer"
 import { stripLanguage } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
 
@@ -21,15 +17,11 @@ interface LayoutWrapperProps {
 }
 
 export function LayoutWrapper({ children }: LayoutWrapperProps) {
-  const { language } = useLanguage()
   const pathname = usePathname()
-  const copy = siteCopy[language]
 
-  // The home page ends with the ContactSection, which carries its own
-  // statement-footer (copyright + back to top). The shared footer below would
-  // duplicate it there, so it only renders on the other routes.
+  // The home page ends with the ContactSection, which carries the footer line
+  // itself, so it only renders here on the other routes.
   const home = stripLanguage(pathname) === "/"
-  const showFooter = !home
 
   // .site: restyled as plain HTML in boring mode (globals.css). The home page
   // goes further: boring mode swaps it for a whole other document.
@@ -43,16 +35,9 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
         {children}
         <CornerControls />
         <LetterDialog />
-        {showFooter && (
+        {!home && (
           <footer className="w-full px-6 md:px-12 pt-16 pb-8 lg:pb-16 print:hidden">
-            <div className="mx-auto max-w-[90rem] border-t border-border/60 pt-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between font-mono text-xs text-muted-foreground">
-              <p>{copy.footer}</p>
-              <LastUpdated />
-              <DontClickLink className="w-fit transition-colors hover:text-foreground">{copy.dontClickHere}</DontClickLink>
-              <div className="lg:hidden">
-                <BoringToggle />
-              </div>
-            </div>
+            <SiteFooter className="mx-auto max-w-[90rem]" />
           </footer>
         )}
       </div>

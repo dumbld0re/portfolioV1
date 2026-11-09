@@ -1,7 +1,8 @@
 @import 'tailwindcss';
-@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
+/* Laptop screens that are wide but not tall: the hero tightens to fit. */
+@custom-variant short (@media (min-width: 64rem) and (max-height: 52rem));
 
 :root {
   --background: #ffffff;
@@ -25,21 +26,12 @@
   --border: #e4e4e7;
   --input: #e4e4e7;
   --ring: #a1a1aa;
-  --accent-green: #4d7c0f;
   --chart-1: #cc241d;
   --chart-2: #98971a;
   --chart-3: #d79921;
   --chart-4: #458588;
   --chart-5: #b16286;
   --radius: 0.625rem;
-  --sidebar: #fafafa;
-  --sidebar-foreground: #1c1c1c;
-  --sidebar-primary: #9d6610;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f4f4f5;
-  --sidebar-accent-foreground: #1c1c1c;
-  --sidebar-border: #e4e4e7;
-  --sidebar-ring: #a1a1aa;
 }
 
 .dark {
@@ -64,20 +56,11 @@
   --border: #383838;
   --input: #383838;
   --ring: #737373;
-  --accent-green: #b8bb26;
   --chart-1: #fb4934;
   --chart-2: #b8bb26;
   --chart-3: #fabd2f;
   --chart-4: #83a598;
   --chart-5: #d3869b;
-  --sidebar: #222222;
-  --sidebar-foreground: #ffffff;
-  --sidebar-primary: #d79921;
-  --sidebar-primary-foreground: #1a1a1a;
-  --sidebar-accent: #2a2a2a;
-  --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #383838;
-  --sidebar-ring: #737373;
 }
 
 @theme inline {
@@ -97,7 +80,6 @@
   --animate-icon-swap: icon-swap 450ms cubic-bezier(0.16, 1, 0.3, 1) both;
   --animate-char-rise: char-rise 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
   --animate-line-in: line-in 1200ms cubic-bezier(0.16, 1, 0.3, 1) 300ms both;
-  --animate-underline-redraw: underline-redraw 600ms cubic-bezier(0.16, 1, 0.3, 1) both;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -117,7 +99,6 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-accent-green: var(--accent-green);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -127,14 +108,6 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
 }
 
 @layer base {
@@ -164,7 +137,6 @@
 html {
   /* Safari tints its status bar and overscroll area from the root background. */
   background-color: var(--background);
-  transition: filter 300ms ease-out;
   /* Keep room for the scrollbar on short pages too, so moving between a short
      and a long page doesn't shift the layout sideways. */
   scrollbar-gutter: stable;
@@ -255,18 +227,6 @@ html.boring-plain .site [aria-hidden="true"] {
   :is(a, button):is(:hover, :focus-visible) .roll-text > span + span {
     transform: translateY(0);
   }
-}
-
-/* Hairline rules that draw themselves in from the left when their scroll
-   reveal fires (a .line-draw inside, or on, a [data-reveal] element). */
-.line-draw {
-  transform-origin: left;
-  transition: transform 1200ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.reveal-pending .line-draw,
-.reveal-pending.line-draw {
-  transform: scaleX(0);
 }
 
 /* Scroll reveal (components/scroll-reveal.tsx). Only elements below the fold
@@ -487,19 +447,10 @@ html.paused .eye-mark-iris {
   }
 }
 
-/* Page-header hairlines on the CV and posts routes draw in on load. */
+/* Page-header hairlines on the posts routes draw in on load. */
 @keyframes line-in {
   from {
     transform: scaleX(0);
-  }
-}
-
-@keyframes underline-redraw {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
   }
 }
 
@@ -578,6 +529,18 @@ html.lenis {
   }
   .letter-dialog[open]::backdrop {
     animation: letter-fade 0.3s ease;
+  }
+  .letter-dialog[data-closing] {
+    animation: letter-out 0.18s ease-in forwards;
+  }
+  .letter-dialog[data-closing]::backdrop {
+    animation: letter-fade 0.18s ease-in reverse forwards;
+  }
+}
+@keyframes letter-out {
+  to {
+    opacity: 0;
+    transform: translateY(12px) scale(0.985);
   }
 }
 @keyframes letter-in {

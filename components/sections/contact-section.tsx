@@ -1,23 +1,22 @@
 "use client"
 
-
 import { contactContent } from "@/content/contact"
 import { sayHiToMe } from "@/content/handwriting"
-import { siteCopy } from "@/content/site"
-import { BoringToggle } from "@/components/boring-toggle"
-import { DontClickLink } from "@/components/dont-click-link"
 import { Handwritten } from "@/components/handwritten"
-import { LastUpdated } from "@/components/last-updated"
 import { openLetter } from "@/components/letter-form"
 import { useLanguage } from "@/components/language-provider"
+import { SiteFooter } from "@/components/site-footer"
 import { SocialLinks } from "@/components/social-links"
 import { TimeStatus } from "@/components/time-status"
 import { column, inlineLink, sectionLabel } from "@/lib/styles"
+import { cn } from "@/lib/utils"
 
 export function ContactSection() {
   const { language } = useLanguage()
   const t = contactContent[language]
-  const copy = siteCopy[language]
+  // The handwriting only exists in English ("say hi to me"); German keeps
+  // its heading as set type.
+  const scribbled = language === "en"
 
   return (
     <section id="contact" className="scroll-mt-10 px-6 md:px-12 pt-24 pb-10 md:pt-32 lg:pb-16">
@@ -26,18 +25,26 @@ export function ContactSection() {
           {t.title}
         </h2>
 
-        {/* The set heading, with "say hi to me" scribbled over it by hand. */}
-        <div className="relative mt-6 mb-16 w-fit md:mb-20">
-          <p className="font-serif text-5xl lowercase leading-tight tracking-[-0.02em] text-balance text-foreground/35 md:text-7xl">
+        {/* The set heading; in English "say hi to me" is scribbled over it by
+            hand, and the space below is for the scribble's tail. */}
+        <div className={cn("relative mt-6 w-fit", scribbled && "mb-20 md:mb-28")}>
+          <p
+            className={cn(
+              "font-serif text-5xl lowercase leading-tight tracking-[-0.02em] text-balance md:text-7xl",
+              scribbled && "text-foreground/35",
+            )}
+          >
             {t.heading.replace(/\.$/, "")}
-            <span className="text-primary/60">.</span>
+            <span className={scribbled ? "text-primary/60" : "text-primary"}>.</span>
           </p>
-          <Handwritten
-            writing={sayHiToMe}
-            label="say hi to me"
-            delay={250}
-            className="pointer-events-none absolute left-[12%] top-[-55%] w-[min(30rem,72vw)] -rotate-6 text-primary"
-          />
+          {scribbled && (
+            <Handwritten
+              writing={sayHiToMe}
+              label="say hi to me"
+              delay={250}
+              className="pointer-events-none absolute left-[12%] top-[-55%] w-[min(30rem,72vw)] -rotate-6 text-primary"
+            />
+          )}
         </div>
 
         <p className="mt-8 max-w-2xl text-xl leading-relaxed md:text-2xl text-muted-foreground">
@@ -63,14 +70,7 @@ export function ContactSection() {
 
         <TimeStatus className="mt-8 space-y-1 font-mono text-sm text-muted-foreground" />
 
-        <div className="mt-24 flex flex-col gap-3 border-t border-border/60 pt-6 font-mono text-sm text-muted-foreground md:flex-row md:items-center md:justify-between">
-          <p>{copy.footer}</p>
-          <LastUpdated />
-          <DontClickLink className="w-fit transition-colors hover:text-foreground">{copy.dontClickHere}</DontClickLink>
-          <div className="mt-2 lg:hidden">
-            <BoringToggle />
-          </div>
-        </div>
+        <SiteFooter className="mt-24" />
       </div>
     </section>
   )

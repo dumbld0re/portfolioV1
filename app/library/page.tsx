@@ -3,6 +3,10 @@ import { LibraryShell } from "@/components/library/library-shell"
 import { libraryCopy } from "@/content/library-topics"
 import { getLibrary, getLibraryStats } from "@/lib/library"
 
+// Rebuilt once a day: the ledger's window ends at the current month, which
+// would otherwise freeze at the last deploy.
+export const revalidate = 86400
+
 export default function LibraryPage() {
   const entries = getLibrary()
   const stats = getLibraryStats(entries)

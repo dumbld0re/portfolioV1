@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 
 import { LayoutWrapper } from "@/components/layout-wrapper"
-import { NotFoundLabel } from "@/components/not-found-home-link"
+import { NotFoundHomeLink, NotFoundLabel } from "@/components/not-found-copy"
 import { column, sectionLabel } from "@/lib/styles"
 
 export const metadata: Metadata = {
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   robots: { index: false },
 }
 
-// Set like a home section: a mono label and a serif line.
+// Set like a home section: a mono label, a serif line, and a way home.
 export default function NotFound() {
   return (
     <LayoutWrapper>
@@ -20,6 +20,9 @@ export default function NotFound() {
           </h1>
           <p className="mt-6 font-serif text-5xl lowercase leading-tight tracking-[-0.02em] text-balance md:text-7xl">
             no such file or directory<span className="text-primary">.</span>
+          </p>
+          <p className="mt-10 font-mono text-sm text-muted-foreground">
+            <NotFoundHomeLink />
           </p>
         </div>
       </main>
