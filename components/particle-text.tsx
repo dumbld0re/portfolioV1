@@ -208,7 +208,10 @@ export function ParticleText({
       const box = el.getBoundingClientRect()
       const bases = [...el.querySelectorAll<HTMLElement>("[data-base]")].map((b) => b.getBoundingClientRect())
       const lineHeight = bases.length > 1 ? bases[1].bottom - bases[0].bottom : size
-      const gap = Math.min(3.7, Math.max(2.1, size / 58))
+      // Dots on whole device pixels with an even step: fractional spacing
+      // shows up as stripes across small letters (phones).
+      const snap = (v: number) => Math.max(3, Math.round(v * dpr)) / dpr
+      const gap = snap(Math.min(3.7, Math.max(2.4, size / 58)))
       radius = gap * 0.36
       reach = Math.max(70, size * 0.6)
 
@@ -246,7 +249,7 @@ export function ParticleText({
           for (let gx = 0; gx < off.width; gx += g) {
             const k = (Math.floor(gy) * off.width + Math.floor(gx)) * 4
             if (data[k + 3] < 140) continue
-            pts.push(originX + gx, originY + gy)
+            pts.push(Math.round((originX + gx) * dpr) / dpr, Math.round((originY + gy) * dpr) / dpr)
             flags.push(data[k + 1] < 120 ? 1 : 0)
           }
         }
@@ -255,7 +258,7 @@ export function ParticleText({
       let found = collect(gap)
       // Keep the count in a range any laptop animates smoothly: widen the grid if needed.
       if (found.flags.length > MAX_DOTS) {
-        const wider = gap * Math.sqrt(found.flags.length / MAX_DOTS)
+        const wider = snap(gap * Math.sqrt(found.flags.length / MAX_DOTS) + 0.5 / dpr)
         radius = wider * 0.36
         found = collect(wider)
       }

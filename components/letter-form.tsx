@@ -117,10 +117,13 @@ export function LetterDialog() {
    address at the foot of the page, and the Send pill tucked under its
    bottom edge. No boxes, no labels on show. */
 export function LetterForm({
+  id = "letter",
   className,
   onClose,
   onSent,
 }: {
+  /** Prefix for the fields' ids, so two letters can share a page. */
+  id?: string
   className?: string
   onClose?: () => void
   onSent?: () => void
@@ -248,11 +251,11 @@ export function LetterForm({
             <p className="pr-10 text-xl font-medium text-foreground md:text-2xl" aria-hidden="true">
               {f.greeting}
             </p>
-            <label htmlFor="letter-message" className="sr-only">
+            <label htmlFor={`${id}-message`} className="sr-only">
               {f.messageLabel}
             </label>
             <textarea
-              id="letter-message"
+              id={`${id}-message`}
               ref={messageRef}
               name="message"
               rows={6}
@@ -265,17 +268,17 @@ export function LetterForm({
               }}
               placeholder={f.messagePlaceholder}
               aria-invalid={problem?.field === "message" || undefined}
-              aria-describedby={problem?.field === "message" ? "letter-problem" : undefined}
+              aria-describedby={problem?.field === "message" ? `${id}-problem` : undefined}
               className={cn(
                 field,
                 "mt-5 flex-1 resize-none text-lg leading-relaxed [field-sizing:content] md:text-xl",
               )}
             />
-            <label htmlFor="letter-email" className="sr-only">
+            <label htmlFor={`${id}-email`} className="sr-only">
               {f.emailLabel}
             </label>
             <input
-              id="letter-email"
+              id={`${id}-email`}
               ref={emailRef}
               type="email"
               name="email"
@@ -291,7 +294,7 @@ export function LetterForm({
               }}
               placeholder={f.emailPlaceholder}
               aria-invalid={problem?.field === "email" || undefined}
-              aria-describedby={problem?.field === "email" ? "letter-problem" : undefined}
+              aria-describedby={problem?.field === "email" ? `${id}-problem` : undefined}
               className={cn(field, "mt-8 text-lg md:text-xl", problem?.field === "email" && wrong)}
             />
             {/* honeypot: people never see it, bots tick it */}
@@ -305,14 +308,14 @@ export function LetterForm({
         type={sent ? "button" : "submit"}
         onClick={sent ? again : undefined}
         disabled={busy}
-        className="relative z-10 -mt-7 inline-flex h-14 min-w-36 items-center justify-center rounded-full bg-foreground px-9 text-base font-medium text-background shadow-[0_6px_20px_-8px_rgb(0_0_0/0.45)] transition-[transform,opacity] duration-200 hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary active:translate-y-0 disabled:opacity-70 motion-reduce:transition-none"
+        className="relative z-10 -mt-7 inline-flex h-14 min-w-36 items-center justify-center rounded-[3px] bg-foreground px-9 text-base font-medium text-background shadow-[0_6px_20px_-8px_rgb(0_0_0/0.45)] transition-[transform,opacity] duration-200 hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary active:translate-y-0 disabled:opacity-70 motion-reduce:transition-none"
       >
         {sent ? f.again : busy ? f.sending : f.send}
       </button>
 
       <p aria-live="polite" className="mt-4 min-h-6 text-center font-mono text-sm text-muted-foreground">
         {problem ? (
-          <span id="letter-problem" className="text-destructive">
+          <span id={`${id}-problem`} className="text-destructive">
             {problem.text}
           </span>
         ) : state === "error" ? (

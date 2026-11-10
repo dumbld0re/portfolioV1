@@ -1,10 +1,9 @@
 "use client"
 
-import { ContactBox } from "@/components/contact-box"
 import { contactContent } from "@/content/contact"
 import { sayHiToMe } from "@/content/handwriting"
 import { Handwritten } from "@/components/handwritten"
-import { openLetter } from "@/components/letter-form"
+import { LetterForm, openLetter } from "@/components/letter-form"
 import { useLanguage } from "@/components/language-provider"
 import { SiteFooter } from "@/components/site-footer"
 import { SocialLinks } from "@/components/social-links"
@@ -20,7 +19,7 @@ export function ContactSection() {
   const scribbled = language === "en"
 
   return (
-    <section id="contact" className="scroll-mt-10 px-6 md:px-12 pt-24 pb-10 md:pt-32 lg:pb-16">
+    <section id="contact" className="scroll-mt-10 px-6 md:px-12 pt-24 pb-10 md:pt-32 lg:pb-24">
       <div data-reveal className={column}>
         {/* Wide screens: the text on the left, the message box on the right. */}
         <div className="lg:grid lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-end lg:gap-12">
@@ -75,7 +74,9 @@ export function ContactSection() {
         <TimeStatus className="mt-8 space-y-1 font-mono text-sm text-muted-foreground" />
         </div>
 
-        <ContactBox className="mt-12 lg:mt-0" />
+        {/* Wide screens: the letter sits open on the right. Phones: it opens
+            from the email address (and the corner's "say hello") instead. */}
+        <LetterForm id="contact-letter" className="mt-12 hidden lg:mt-0 lg:flex lg:justify-self-end" />
         </div>
 
         <SiteFooter className="mt-24" />

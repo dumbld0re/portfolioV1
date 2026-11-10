@@ -659,11 +659,6 @@ html.booting *::after {
   }
 }
 
-/* A dotted rule along the bottom edge (the message box's fields). */
-.dot-rule {
-  background: radial-gradient(circle, var(--border) 1px, transparent 1.45px) left bottom / 8px 3px repeat-x;
-}
-
 /* Easter eggs (components/easter-eggs.tsx): the note that names one, and the
    old cheat code, which drops every block off the page and brings it back. */
 @media (prefers-reduced-motion: no-preference) {
