@@ -572,6 +572,12 @@ html.lenis {
   color: var(--primary);
 }
 
+/* The letters hand over to the dots as these print in, rather than vanishing at once. */
+.pt,
+.pt-accent {
+  transition: color 0.7s ease;
+}
+
 .pt[data-live="true"] {
   color: transparent;
   user-select: none;
