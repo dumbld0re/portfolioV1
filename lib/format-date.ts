@@ -12,6 +12,13 @@ export function formatPostDate(date: string, language: Language) {
   }).format(parsed)
 }
 
+/** "2026-11-09" -> "09/11/26": day, month, two-digit year. */
+export function formatShortDate(date: string) {
+  const [year, month, day] = date.split("-")
+  if (!year || !month || !day) return date
+  return `${day}/${month}/${year.slice(-2)}`
+}
+
 const locale = (language: Language) => (language === "de" ? "de-DE" : "en-GB")
 
 /** "2026-10" -> "Oct 2026" / "Okt. 2026"; a bare year stays as it is. */
