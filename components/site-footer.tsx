@@ -1,12 +1,14 @@
 "use client"
 
 import Link from "next/link"
+import { useState } from "react"
 
 import { BoringToggle } from "@/components/boring-toggle"
 import { useLanguage } from "@/components/language-provider"
 import { LanguageSwitch } from "@/components/language-switch"
 import { LastUpdated } from "@/components/last-updated"
 import { siteCopy } from "@/content/site"
+import { motionOff } from "@/lib/eggs"
 import { scrollPage } from "@/lib/scroll"
 import { cn } from "@/lib/utils"
 
@@ -21,6 +23,24 @@ const tap = "-my-2 py-2 lg:my-0 lg:py-0"
 export function SiteFooter({ className }: { className?: string }) {
   const { language, localize } = useLanguage()
   const copy = siteCopy[language]
+  // "2086© (so i dont forget…)": the year can be clicked, and then the
+  // calendar runs forward to it.
+  const [stamp, ...note] = copy.footer.split(" ")
+  const [year, setYear] = useState<number | null>(null)
+
+  const timeTravel = () => {
+    if (year !== null || motionOff()) return
+    const from = new Date().getFullYear()
+    const to = parseInt(stamp, 10)
+    const start = performance.now()
+    const run = (now: number) => {
+      const p = Math.min(1, (now - start) / 1400)
+      setYear(Math.round(from + (to - from) * (1 - Math.pow(1 - p, 3))))
+      if (p < 1) requestAnimationFrame(run)
+      else window.setTimeout(() => setYear(null), 1600)
+    }
+    requestAnimationFrame(run)
+  }
 
   return (
     <div
@@ -34,7 +54,12 @@ export function SiteFooter({ className }: { className?: string }) {
           split left and right: what the site says, where to go, and the
           controls. */}
       <div className="flex flex-col gap-2 lg:contents">
-        <p className="text-balance">{copy.footer}</p>
+        <p className="text-balance">
+          <button type="button" onClick={timeTravel} className="cursor-pointer tabular-nums transition-colors hover:text-foreground">
+            {year === null ? stamp : stamp.replace(/\d+/, String(year))}
+          </button>{" "}
+          {note.join(" ")}
+        </p>
         <LastUpdated />
       </div>
       <div className="flex items-baseline justify-between gap-x-8 lg:contents">

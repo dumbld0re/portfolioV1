@@ -36,6 +36,8 @@ export const contactContent: Record<
       badEmail: string
       failed: string
       failedLink: string
+      /** Under the message box in the contact section: where the message goes. */
+      privacy: string
     }
     time: {
       mine: string
@@ -75,6 +77,7 @@ export const contactContent: Record<
       badEmail: "Die E-Mail sieht nicht ganz richtig aus.",
       failed: "Das hat nicht geklappt.",
       failedLink: "Per Mail-App senden",
+      privacy: "deine nachricht und e-mail gehen über web3forms in mein postfach. sonst wird nichts gespeichert.",
     },
     time: {
       mine: "meine zeit gerade",
@@ -110,6 +113,7 @@ export const contactContent: Record<
       badEmail: "That email doesn’t look quite right.",
       failed: "That didn’t go through.",
       failedLink: "Send it from your mail app",
+      privacy: "your message and email go to my inbox through web3forms. nothing else is stored.",
     },
     time: {
       mine: "my time currently",

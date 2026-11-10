@@ -3,7 +3,8 @@
 import type React from "react"
 import { usePathname } from "next/navigation"
 
-import { AsciiBackground } from "@/components/ascii-background"
+import { DotGround } from "@/components/dot-ground"
+import { EasterEggs } from "@/components/easter-eggs"
 import { BoringHome } from "@/components/boring/boring-home"
 import { CornerControls } from "@/components/corner-controls"
 import { Header } from "@/components/header"
@@ -29,12 +30,13 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
     <>
     {home && <BoringHome />}
     <div className={cn("site relative min-h-screen flex flex-col bg-background", home && "fancy-only")}>
-      <AsciiBackground />
+      <DotGround />
       <div className="relative z-10 flex flex-col min-h-screen">
         <Header />
         {children}
         <CornerControls />
         <LetterDialog />
+        <EasterEggs />
         {!home && (
           <footer className="w-full px-6 md:px-12 pt-16 pb-8 lg:pb-16 print:hidden">
             <SiteFooter className="mx-auto max-w-[90rem]" />

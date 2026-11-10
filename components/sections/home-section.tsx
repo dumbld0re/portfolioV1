@@ -3,14 +3,13 @@
 import { useEffect, useState } from "react"
 
 import { homeContent } from "@/content/home"
-import { HeroPiece } from "@/components/hero-piece"
+import { ParticleText } from "@/components/particle-text"
 import { useLanguage } from "@/components/language-provider"
+import { setHeroName } from "@/lib/eggs"
 import { BOOT_SEQUENCE_MS, hasBootPlayed, markBootPlayed } from "@/lib/motion"
 import { SocialLinks } from "@/components/social-links"
 import { column } from "@/lib/styles"
 import { cn } from "@/lib/utils"
-
-const CHAR_STAGGER_MS = 30
 
 export function HomeSection() {
   const { language } = useLanguage()
@@ -24,20 +23,12 @@ export function HomeSection() {
   const reveal = boot ? "motion-safe:animate-reveal-up" : undefined
   const delay = (ms: number) => (boot ? { animationDelay: `${ms}ms` } : undefined)
 
-  let charIndex = 0
-
   return (
     // Gaps and the name scale with the screen's height as well as its width,
-    // so the whole hero (icons included) fits on a laptop screen.
-    <section className="flex min-h-[calc(100svh-5rem)] flex-col justify-center px-6 md:px-12 py-[clamp(2rem,5svh,5rem)]">
-      <div className={cn(column, "relative")}>
-      {/* The free side of the wide hero: the cursor, large, in dots. */}
-      <HeroPiece
-        className={cn(
-          "absolute right-0 top-1/2 hidden w-[min(34vw,64svh,34rem)] -translate-y-1/2 xl:[@media(hover:hover)]:block",
-          boot && "motion-safe:animate-page-fade",
-        )}
-      />
+    // so the whole hero (icons included) fits on a laptop screen. data-stage:
+    // the area the name's dots can fly, fall and be thrown around in.
+    <section data-stage="" className="relative flex min-h-[calc(100svh-5rem)] flex-col justify-center px-6 md:px-12 py-[clamp(2rem,5svh,5rem)]">
+      <div className={column}>
       <p
         className={cn("font-mono text-sm text-muted-foreground", reveal)}
         style={delay(BOOT_SEQUENCE_MS.heroName - 100)}
@@ -45,35 +36,25 @@ export function HomeSection() {
         {t.currently}
       </p>
 
-      {/* One name per line; each letter rises out of its own clipping box. */}
-      <h1 className="mt-[clamp(1.25rem,3.5svh,2rem)] font-serif font-normal lowercase leading-[1.02] tracking-[-0.02em] text-[min(clamp(3.25rem,1rem+8.5vw,8.5rem),14svh)]">
-        {/* Screen readers get the name whole, not letter by letter. */}
-        <span className="sr-only">{t.name}</span>
-        {t.name.split(/\s+/).map((line, li, lines) => (
-          <span key={line} aria-hidden="true" className="block">
-            {[...line].map((char) => {
-              const i = charIndex++
-              return (
-                <span key={i} className="inline-block overflow-hidden pb-[0.2em] -mb-[0.2em] align-bottom">
-                  <span
-                    className={cn("inline-block", boot && "motion-safe:animate-char-rise", char === "-" && "text-primary")}
-                    style={boot ? { animationDelay: `${BOOT_SEQUENCE_MS.heroName + i * CHAR_STAGGER_MS}ms` } : undefined}
-                  >
-                    {char}
-                  </span>
-                </span>
-              )
-            })}
-            {li === lines.length - 1 && (
-              <span className="ml-[0.04em] font-mono text-[0.6em] text-primary motion-safe:animate-caret-blink" aria-hidden="true">
-                _
-              </span>
-            )}
+      {/* The name, in loose dots: they fly in, give way to the cursor and can
+          be gathered by a held mouse button (components/particle-text.tsx). */}
+      <ParticleText
+        ref={(handle) => {
+          setHeroName(handle)
+          return () => setHeroName(null)
+        }}
+        lines={t.name.split(/\s+/)}
+        accent="-"
+        delay={boot ? BOOT_SEQUENCE_MS.heroName : 0}
+        className="mt-[clamp(1.25rem,3.5svh,2rem)] font-serif font-normal lowercase tracking-[-0.02em] text-[min(clamp(3.25rem,1rem+10vw,12rem),19svh)] leading-[1.02]"
+        after={
+          <span className="ml-[0.04em] font-mono text-[0.6em] text-primary motion-safe:animate-caret-blink" aria-hidden="true">
+            _
           </span>
-        ))}
-      </h1>
+        }
+      />
 
-      <div className={cn("mt-[clamp(1.5rem,5svh,3rem)] max-w-2xl space-y-5", reveal)} style={delay(BOOT_SEQUENCE_MS.heroSubtitle)}>
+      <div className={cn("mt-[clamp(1.5rem,5svh,3rem)] max-w-4xl space-y-5", reveal)} style={delay(BOOT_SEQUENCE_MS.heroSubtitle)}>
         <p className="text-xl leading-relaxed text-foreground/90 text-pretty md:text-2xl short:text-xl!">{t.intro}</p>
         <p className="text-lg leading-relaxed text-muted-foreground text-pretty md:text-xl short:text-lg!">{t.description}</p>
       </div>
