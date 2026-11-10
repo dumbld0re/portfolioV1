@@ -2,12 +2,15 @@ import type { Language } from "@/lib/i18n"
 
 export type ProjectStatus = "inDevelopment" | "inUse"
 
+/** Large screens in their own panel, or a list of names with a card on the cursor. */
+export type ProjectsView = "stage" | "index"
+
 /** A screenshot in public/. Width and height are the file's pixel size. */
 export type Screen = {
   src: string
   width: number
   height: number
-  /** Names the screen in its card's path: ~/projects/<slug>/<name>. */
+  /** Names the screen in its image's alt text. */
   name?: string
 }
 
@@ -23,7 +26,7 @@ export type ProjectPreview =
 
 export type Project = {
   preview: ProjectPreview
-  /** Rendered as a terminal-style path header: ~/projects/<slug> */
+  /** Stable key for the project. */
   slug?: string
   title: string
   tagline?: string
@@ -53,6 +56,9 @@ export const projectsContent: Record<
   Language,
   {
     heading: string
+    /** The switch between the two layouts: "view: stage / index". */
+    viewLabel: string
+    views: Record<ProjectsView, string>
     viewDemoLabel: string
     viewSiteLabel: string
     viewSourceLabel: string
@@ -63,6 +69,8 @@ export const projectsContent: Record<
 > = {
   de: {
     heading: "ausgewählte projekte",
+    viewLabel: "ansicht",
+    views: { stage: "bühne", index: "liste" },
     viewDemoLabel: "Demo ansehen",
     viewSiteLabel: "Website ansehen",
     viewSourceLabel: "Quellcode",
@@ -124,6 +132,8 @@ export const projectsContent: Record<
   },
   en: {
     heading: "selected work",
+    viewLabel: "view",
+    views: { stage: "stage", index: "index" },
     viewDemoLabel: "View demo",
     viewSiteLabel: "View site",
     viewSourceLabel: "View source",

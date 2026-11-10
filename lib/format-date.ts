@@ -35,9 +35,3 @@ export function monthStart(value: string) {
   const [year, month] = value.split("-").map(Number)
   return year * 12 + (month ? month - 1 : 0)
 }
-
-/** Exclusive: the first month after the role. */
-export function monthEnd(value: string) {
-  const [year, month] = value.split("-").map(Number)
-  return year * 12 + (month ? month : 12)
-}

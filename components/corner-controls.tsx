@@ -3,7 +3,8 @@
 import { useEffect, useState, useSyncExternalStore } from "react"
 
 import { siteCopy } from "@/content/site"
-import { useLanguageOrDefault } from "@/components/language-provider"
+import { useHasLanguages, useLanguageOrDefault } from "@/components/language-provider"
+import { LanguageSwitch } from "@/components/language-switch"
 import { openLetter } from "@/components/letter-form"
 import { getServerSnapshot, getSnapshot, setBoring, subscribe } from "@/lib/boring-store"
 import { cn } from "@/lib/utils"
@@ -24,9 +25,12 @@ const control = "text-muted-foreground transition-colors hover:text-foreground"
 
 // Small text controls pinned to the bottom corners on wide screens. Phones and
 // tablets get the boring toggle in the page footer instead, where it can't
-// cover the content.
+// cover the content; there, only the language switch sits in the corner. It
+// shows once the header is out of sight, so the language can be changed from
+// anywhere on the page.
 export function CornerControls() {
   const labels = siteCopy[useLanguageOrDefault()]
+  const languages = useHasLanguages()
   const boring = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot) !== "off"
   const [paused, setPaused] = useState(false)
   // The hero has its own email icon in this corner of the screen, so "say
@@ -45,6 +49,29 @@ export function CornerControls() {
     observer.observe(links)
     return () => observer.disconnect()
   }, [])
+
+  // The header has its own language link, so the one down here only comes
+  // in once the header has scrolled off the screen. On phones and tablets the
+  // footer carries the languages too, so the floating one steps aside again
+  // when the footer comes into view, instead of sitting on top of it.
+  const [headerGone, setHeaderGone] = useState(false)
+  const [footerHere, setFooterHere] = useState(false)
+  useEffect(() => {
+    const header = document.querySelector("header")
+    const footer = document.querySelector("[data-site-footer]")
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.target === header) setHeaderGone(!entry.isIntersecting)
+        else setFooterHere(entry.isIntersecting)
+      }
+    })
+    if (header) observer.observe(header)
+    if (footer) observer.observe(footer)
+    return () => observer.disconnect()
+  }, [])
+  const languageSwitch = languages && headerGone
+  const floating = languageSwitch && !footerHere
+  const fade = (shown: boolean) => cn("transition-opacity duration-300", !shown && "pointer-events-none opacity-0")
 
   useEffect(() => {
     // Restoring a stored preference after hydration, not deriving state.
@@ -78,7 +105,23 @@ export function CornerControls() {
           </span>
         </button>
       </div>
+      {languages && (
+        <div
+          inert={!floating}
+          className={cn(
+            "fixed bottom-3 right-3 z-40 flex items-center rounded-full bg-background/85 px-2 font-mono text-sm text-muted-foreground backdrop-blur-sm lg:hidden print:hidden",
+            fade(floating),
+          )}
+        >
+          <LanguageSwitch showCurrent className={cn(control, "px-2 py-2.5")} currentClassName="px-2 py-2.5" />
+        </div>
+      )}
       <div className={`${corner} right-3`}>
+        {languages && (
+          <span inert={!languageSwitch} className={cn("flex items-center gap-2.5 text-muted-foreground", fade(languageSwitch))}>
+            <LanguageSwitch showCurrent className={control} />
+          </span>
+        )}
         <button
           type="button"
           role="switch"

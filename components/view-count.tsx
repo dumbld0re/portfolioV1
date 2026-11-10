@@ -34,7 +34,7 @@ export function ViewCount() {
   const count = views.toLocaleString(language === "de" ? "de-DE" : "en-US")
   return (
     <span className="whitespace-nowrap">
-      <span aria-hidden="true" className="mx-2 opacity-50">|</span>
+      <span aria-hidden="true" className="mx-2 hidden opacity-50 lg:inline">|</span>
       <span className="inline-flex items-center gap-1.5 align-middle" title={`${count} ${siteCopy[language].visitors}`}>
         <BlinkingEye />
         <span>{count}</span>

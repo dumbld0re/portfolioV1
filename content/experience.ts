@@ -11,26 +11,50 @@ export type ExperienceItem = {
   description?: string
 }
 
-/** Roles without an end are listed under "now", the rest under "before"; the section sorts them. */
+/**
+ * The section's text: paragraphs with roles dropped in by company name. Each
+ * one shows as a highlighted name (or `text`, where there's no employer to
+ * name) with its dates beside it, both taken from `experiences`.
+ */
+export type ExperienceProse = (string | { company: string; text?: string })[][]
+
 export const experienceContent: Record<
   Language,
   {
     title: string
-    current: string
-    past: string
     present: string
+    prose: ExperienceProse
     experiences: ExperienceItem[]
   }
 > = {
   de: {
     title: "wo ich gearbeitet habe",
-    current: "aktuell",
-    past: "davor",
     present: "heute",
+    prose: [
+      [
+        "gerade mache ich drei Dinge gleichzeitig. ich bin im Executive Team von ",
+        { company: "Oratores Novi" },
+        " und baue dort die digitalen Abläufe auf: Ablage, Anmeldungen und die Datenbanken dahinter. ich führe ",
+        { company: "aestudio" },
+        ", mein Studio für Webdesign und Websites. und ich unterrichte Deutsch bei ",
+        { company: "Fluent Academy" },
+        ".",
+      ],
+      [
+        "davor war ich freiberuflicher ",
+        { company: "Selbstständig", text: "Frontend-Entwickler" },
+        ", daraus ist aestudio entstanden. ich habe Python-Tools und Arduino-Logik für Roboter bei ",
+        { company: "MindsInAction" },
+        " gebaut und bei ",
+        { company: "Pyronam" },
+        " Rechnungen und Tabellen in Ordnung gehalten.",
+      ],
+    ],
     experiences: [
       {
         role: "Koordinator Digitale Verwaltung",
         company: "Oratores Novi",
+        companyHref: "https://oratoresnovi.org/",
         start: "2026-10",
         description:
           "Teil des Executive Teams. Ich baue die digitalen Abläufe auf: Ablage, Anmeldungen und Zertifikate für Veranstaltungen, Datenbanken.",
@@ -75,13 +99,32 @@ export const experienceContent: Record<
   },
   en: {
     title: "where i have worked",
-    current: "now",
-    past: "before",
     present: "now",
+    prose: [
+      [
+        "right now i do three things at once. i sit on the executive team of ",
+        { company: "Oratores Novi" },
+        ", where i set up the digital side: filing, event sign-ups and the databases behind them. i run ",
+        { company: "aestudio" },
+        ", my studio for designing and building websites. and i teach German at ",
+        { company: "Fluent Academy" },
+        ".",
+      ],
+      [
+        "before that i freelanced as a ",
+        { company: "Self-employed", text: "frontend developer" },
+        ", which grew into aestudio. i built Python tooling and Arduino logic for robots at ",
+        { company: "MindsInAction" },
+        ", and kept the invoices and spreadsheets in order at ",
+        { company: "Pyronam" },
+        ".",
+      ],
+    ],
     experiences: [
       {
         role: "Digital Administration Coordinator",
         company: "Oratores Novi",
+        companyHref: "https://oratoresnovi.org/",
         start: "2026-10",
         description:
           "On the executive team. I set up the digital side of things: filing, event sign-ups and certificates, and the databases behind them.",

@@ -6,10 +6,11 @@ import { useEffect, useState } from "react"
 
 import { siteCopy } from "@/content/site"
 import { CvMenu } from "@/components/cv-menu"
-import { rememberLanguage, useLanguage } from "@/components/language-provider"
+import { useLanguage } from "@/components/language-provider"
+import { LanguageSwitch } from "@/components/language-switch"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { SHOW_POSTS } from "@/lib/features"
-import { localizePath, stripLanguage } from "@/lib/i18n"
+import { stripLanguage } from "@/lib/i18n"
 import { hasBootPlayed, markBootPlayed } from "@/lib/motion"
 import { cn } from "@/lib/utils"
 
@@ -18,7 +19,6 @@ import { cn } from "@/lib/utils"
 export function Header() {
   const { language, localize } = useLanguage()
   const pathname = stripLanguage(usePathname())
-  const otherLanguage = language === "de" ? "en" : "de"
   const labels = siteCopy[language]
   const [boot] = useState(() => !hasBootPlayed())
 
@@ -71,20 +71,7 @@ export function Header() {
           <span className="hidden text-muted-foreground/40 md:inline" aria-hidden="true">
             /
           </span>
-          <Link
-            href={localizePath(otherLanguage, pathname)}
-            onClick={() => rememberLanguage(otherLanguage)}
-            // A prefetch would run before the click stores the cookie, and
-            // proxy.ts could answer it with a redirect back to this language.
-            prefetch={false}
-            // Stay where you are on the page: only the words change.
-            scroll={false}
-            hrefLang={otherLanguage}
-            className={cn(navLink, "-mx-2 px-2 after:inset-x-2 md:mx-0 md:px-0 md:after:inset-x-0")}
-            aria-label={otherLanguage === "en" ? "EN — switch to English" : "DE — auf Deutsch wechseln"}
-          >
-            {otherLanguage}
-          </Link>
+          <LanguageSwitch className={cn(navLink, "-mx-2 px-2 after:inset-x-2 md:mx-0 md:px-0 md:after:inset-x-0")} />
           <ThemeToggle />
         </span>
       </nav>

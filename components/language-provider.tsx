@@ -42,6 +42,11 @@ export function useLanguageOrDefault(): Language {
   return useContext(LanguageContext)?.language ?? "en"
 }
 
+/** True inside [lang] pages, where there is another language to switch to. */
+export function useHasLanguages() {
+  return useContext(LanguageContext) !== null
+}
+
 /** Remembers an explicit language choice so proxy.ts stops redirecting by browser language. */
 export function rememberLanguage(language: Language) {
   document.cookie = `${LANGUAGE_COOKIE}=${language};path=/;max-age=${60 * 60 * 24 * 365};samesite=lax`
