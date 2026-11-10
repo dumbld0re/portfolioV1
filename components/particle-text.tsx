@@ -43,17 +43,15 @@ type Props = {
 const VERTEX = `
 attribute vec2 p;
 attribute float hot;
-attribute float fade;
 uniform vec2 res;
 uniform float size;
+uniform float lift;
 varying float v;
-varying float f;
 void main() {
-  vec2 c = p / res * 2.0 - 1.0;
+  vec2 c = (p + vec2(0.0, lift)) / res * 2.0 - 1.0;
   gl_Position = vec4(c.x, -c.y, 0.0, 1.0);
   gl_PointSize = size;
   v = hot;
-  f = fade;
 }`
 
 const FRAGMENT = `
@@ -62,9 +60,8 @@ uniform vec3 ink;
 uniform vec3 amber;
 uniform float alpha;
 varying float v;
-varying float f;
 void main() {
-  float a = (1.0 - smoothstep(0.36, 0.5, length(gl_PointCoord - 0.5))) * alpha * f;
+  float a = (1.0 - smoothstep(0.36, 0.5, length(gl_PointCoord - 0.5))) * alpha;
   gl_FragColor = vec4(mix(ink, amber, v) * a, a);
 }`
 
@@ -79,10 +76,6 @@ function rgb(hex: string): [number, number, number] {
 const SPRING = 0.045
 const DAMPING = 0.86
 const MAX_DOTS = 7000
-/** The physics is tuned per 60th of a second; slower screens take more steps per frame. */
-const TICK = 1000 / 60
-/** How long the entrance takes to sweep from the first letter to the last (ms). */
-const SWEEP = 900
 
 export function ParticleText({
   as: Tag = "h1",
@@ -110,7 +103,14 @@ export function ParticleText({
   useEffect(() => {
     const el = host.current
     const stage = el?.closest<HTMLElement>("[data-stage]")
-    if (!el || !stage || still) return
+    if (!el) return
+    // "off": no dots this time, so the heading shows as plain text right away.
+    if (!stage || still) {
+      el.dataset.live = "off"
+      return () => {
+        delete el.dataset.live
+      }
+    }
     // The canvas covers the whole stage, so it is added to the stage itself
     // rather than rendered inside the heading.
     const canvas = document.createElement("canvas")
@@ -120,7 +120,10 @@ export function ParticleText({
     // All dots go to the GPU as one batch of round points. Without WebGL the
     // heading simply stays as text.
     const gl = canvas.getContext("webgl", { antialias: false, premultipliedAlpha: true })
-    if (!gl) return
+    if (!gl) {
+      el.dataset.live = "off"
+      return
+    }
     stage.appendChild(canvas)
     const compile = (type: number, source: string) => {
       const shader = gl.createShader(type)!
@@ -134,6 +137,7 @@ export function ParticleText({
     gl.linkProgram(program)
     if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
       canvas.remove()
+      el.dataset.live = "off"
       return
     }
     gl.useProgram(program)
@@ -142,15 +146,13 @@ export function ParticleText({
     gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer())
     const aP = gl.getAttribLocation(program, "p")
     const aHot = gl.getAttribLocation(program, "hot")
-    const aFade = gl.getAttribLocation(program, "fade")
     gl.enableVertexAttribArray(aP)
     gl.enableVertexAttribArray(aHot)
-    gl.enableVertexAttribArray(aFade)
-    gl.vertexAttribPointer(aP, 2, gl.FLOAT, false, 16, 0)
-    gl.vertexAttribPointer(aHot, 1, gl.FLOAT, false, 16, 8)
-    gl.vertexAttribPointer(aFade, 1, gl.FLOAT, false, 16, 12)
+    gl.vertexAttribPointer(aP, 2, gl.FLOAT, false, 12, 0)
+    gl.vertexAttribPointer(aHot, 1, gl.FLOAT, false, 12, 8)
     const uni = (name: string) => gl.getUniformLocation(program, name)
     const uRes = uni("res")
+    const uLift = uni("lift")
     const uSize = uni("size")
     const uInk = uni("ink")
     const uAmber = uni("amber")
@@ -168,15 +170,16 @@ export function ParticleText({
     let ty = new Float32Array(0)
     let wake = new Float32Array(0)
     let pile = new Float32Array(0)
-    let fade = new Float32Array(0)
     let hot = new Uint8Array(0)
 
     let w = 0
     let h = 0
+    // How far the canvas reaches above the stage, up to the top of the page,
+    // so dots also fly in from behind the top bar instead of leaving a gap.
+    let lift = 0
     let radius = 1.2
     let reach = 90
     let raf = 0
-    let last = 0
     let visible = false
     let started = !whenVisible
     let startAt = performance.now() + delay
@@ -205,10 +208,7 @@ export function ParticleText({
       const box = el.getBoundingClientRect()
       const bases = [...el.querySelectorAll<HTMLElement>("[data-base]")].map((b) => b.getBoundingClientRect())
       const lineHeight = bases.length > 1 ? bases[1].bottom - bases[0].bottom : size
-      // Dots on whole device pixels with an even step: fractional spacing
-      // shows up as stripes across small letters.
-      const snap = (v: number) => Math.max(2, Math.round(v * dpr)) / dpr
-      const gap = snap(Math.min(3.7, Math.max(2.4, size / 58)))
+      const gap = Math.min(3.7, Math.max(2.1, size / 58))
       radius = gap * 0.36
       reach = Math.max(70, size * 0.6)
 
@@ -246,7 +246,7 @@ export function ParticleText({
           for (let gx = 0; gx < off.width; gx += g) {
             const k = (Math.floor(gy) * off.width + Math.floor(gx)) * 4
             if (data[k + 3] < 140) continue
-            pts.push(Math.round((originX + gx) * dpr) / dpr, Math.round((originY + gy) * dpr) / dpr)
+            pts.push(originX + gx, originY + gy)
             flags.push(data[k + 1] < 120 ? 1 : 0)
           }
         }
@@ -255,7 +255,7 @@ export function ParticleText({
       let found = collect(gap)
       // Keep the count in a range any laptop animates smoothly: widen the grid if needed.
       if (found.flags.length > MAX_DOTS) {
-        const wider = snap(gap * Math.sqrt(found.flags.length / MAX_DOTS) + 0.5 / dpr)
+        const wider = gap * Math.sqrt(found.flags.length / MAX_DOTS)
         radius = wider * 0.36
         found = collect(wider)
       }
@@ -264,10 +264,9 @@ export function ParticleText({
 
     // Hands every dot a place. More places than dots: new dots split off from
     // existing ones. Fewer: the spare dots double up on places already taken.
-    const assign = (pts: Float32Array, flags: Uint8Array, shuffle = true) => {
+    const assign = (pts: Float32Array, flags: Uint8Array) => {
       const m = pts.length / 2
       if (!m) return
-      const born = n === 0
       if (m > n) {
         const grow = <T extends Float32Array | Uint8Array>(a: T, make: (len: number) => T) => {
           const b = make(m)
@@ -283,53 +282,32 @@ export function ParticleText({
         ty = grow(ty, f32)
         wake = grow(wake, f32)
         pile = grow(pile, f32)
-        fade = grow(fade, f32)
         hot = grow(hot, (len) => new Uint8Array(len))
         for (let i = n; i < m; i++) {
           if (n) {
             const from = Math.floor(Math.random() * n)
             x[i] = x[from]
             y[i] = y[from]
-            fade[i] = fade[from]
+          } else {
+            x[i] = Math.random() * w
+            y[i] = Math.random() * (h + lift) - lift
+            wake[i] = Math.random() * 700
           }
           pile[i] = Math.random() ** 2
         }
         n = m
       }
       // A shuffled order, so dots cross each other on the way to a new word.
-      // A resize keeps the order, so the dots only shift a little.
       const order = Array.from({ length: m }, (_, i) => i)
-      if (shuffle && !born) {
-        for (let i = m - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1))
-          ;[order[i], order[j]] = [order[j], order[i]]
-        }
+      for (let i = m - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[order[i], order[j]] = [order[j], order[i]]
       }
       for (let i = 0; i < n; i++) {
         const p = order[i % m]
         tx[i] = pts[p * 2]
         ty[i] = pts[p * 2 + 1]
         hot[i] = flags[p]
-      }
-      if (born) {
-        // The entrance: the name prints from left to right, each dot fading in
-        // a short way from its place and settling into it.
-        let lo = Infinity
-        let hi = -Infinity
-        for (let i = 0; i < n; i++) {
-          lo = Math.min(lo, tx[i])
-          hi = Math.max(hi, tx[i])
-        }
-        const span = Math.max(1, hi - lo)
-        const drift = Math.max(12, reach * 0.35)
-        for (let i = 0; i < n; i++) {
-          wake[i] = ((tx[i] - lo) / span) * SWEEP + Math.random() * 160
-          const a = Math.random() * 6.2832
-          const r = drift * (0.4 + Math.random() * 0.6)
-          x[i] = tx[i] - drift * 0.6 + Math.cos(a) * r
-          y[i] = ty[i] + Math.sin(a) * r * 0.6
-          fade[i] = 0
-        }
       }
     }
 
@@ -338,54 +316,26 @@ export function ParticleText({
       dpr = Math.min(window.devicePixelRatio || 1, 1.5)
       w = box.width
       h = box.height
+      lift = Math.max(0, Math.round(box.top + window.scrollY))
+      canvas.style.top = `${-lift}px`
+      canvas.style.height = `${h + lift}px`
       canvas.width = Math.round(w * dpr)
-      canvas.height = Math.round(h * dpr)
+      canvas.height = Math.round((h + lift) * dpr)
       gl.viewport(0, 0, canvas.width, canvas.height)
-      gl.uniform2f(uRes, w, h)
+      gl.uniform2f(uRes, w, h + lift)
+      gl.uniform1f(uLift, lift)
     }
 
     const step = (now: number) => {
       raf = 0
       const since = now - startAt
       const go = started && since > 0
-      // As many physics ticks as a 60Hz screen would have run since the last frame.
-      const ticks = last ? Math.min(4, Math.max(1, Math.round((now - last) / TICK))) : 1
-      last = now
-      let energy = 0
-      for (let t = 0; t < ticks; t++) energy = tick(now, since, go)
-      const wellOn = down && now - downAt > 140
-
-      if (vertices.length !== n * 4) vertices = new Float32Array(n * 4)
-      for (let i = 0; i < n; i++) {
-        vertices[i * 4] = x[i]
-        vertices[i * 4 + 1] = y[i]
-        vertices[i * 4 + 2] = hot[i]
-        vertices[i * 4 + 3] = fade[i]
-      }
-      gl.clearColor(0, 0, 0, 0)
-      gl.clear(gl.COLOR_BUFFER_BIT)
-      gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.DYNAMIC_DRAW)
-      gl.uniform1f(uSize, radius * 2 * dpr * 1.3)
-      gl.uniform1f(uAlpha, 1)
-      gl.drawArrays(gl.POINTS, 0, n)
-
-      // Rest once everything has settled; any input wakes the loop again.
-      const busy = !go || energy / Math.max(1, n) > 0.02 || wellOn
-      if (visible && busy) raf = requestAnimationFrame(step)
-      else last = 0
-    }
-
-    const tick = (now: number, since: number, go: boolean) => {
+      if (go && !el.dataset.dots) el.dataset.dots = ""
       let energy = 0
       const wellOn = down && now - downAt > 140
       const floor = h - 6
 
       for (let i = 0; i < n; i++) {
-        const awake = go && since > wake[i]
-        if (awake && fade[i] < 1) {
-          fade[i] = Math.min(1, fade[i] + TICK / 380)
-          energy += 1
-        }
         if (falling) {
           vy[i] += 0.55
           vx[i] *= 0.985
@@ -396,7 +346,7 @@ export function ParticleText({
             vx[i] *= 0.7
             if (Math.abs(vy[i]) < 0.6) vy[i] = 0
           }
-        } else if (awake) {
+        } else if (go && since > wake[i]) {
           vx[i] += (tx[i] - x[i]) * SPRING
           vy[i] += (ty[i] - y[i]) * SPRING
         }
@@ -428,7 +378,23 @@ export function ParticleText({
         y[i] += vy[i]
         energy += Math.abs(vx[i]) + Math.abs(vy[i]) + (falling ? 0 : Math.abs(tx[i] - x[i]) + Math.abs(ty[i] - y[i]))
       }
-      return energy
+
+      if (vertices.length !== n * 3) vertices = new Float32Array(n * 3)
+      for (let i = 0; i < n; i++) {
+        vertices[i * 3] = x[i]
+        vertices[i * 3 + 1] = y[i]
+        vertices[i * 3 + 2] = hot[i]
+      }
+      gl.clearColor(0, 0, 0, 0)
+      gl.clear(gl.COLOR_BUFFER_BIT)
+      gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.DYNAMIC_DRAW)
+      gl.uniform1f(uSize, radius * 2 * dpr * 1.3)
+      gl.uniform1f(uAlpha, go ? Math.min(1, since / 500) : 0)
+      gl.drawArrays(gl.POINTS, 0, n)
+
+      // Rest once everything has settled; any input wakes the loop again.
+      const busy = !go || energy / Math.max(1, n) > 0.02 || wellOn
+      if (visible && busy) raf = requestAnimationFrame(step)
     }
     const kick = () => {
       if (!raf && visible && !disposed) raf = requestAnimationFrame(step)
@@ -438,7 +404,7 @@ export function ParticleText({
       resize()
       readColors()
       const { pts, flags } = sample(baseLines)
-      assign(pts, flags, false)
+      assign(pts, flags)
       if (first && n) el.dataset.live = "true"
       kick()
     }
@@ -480,7 +446,7 @@ export function ParticleText({
         falling = false
         for (let i = 0; i < n; i++) {
           x[i] = Math.random() * w
-          y[i] = Math.random() * h
+          y[i] = Math.random() * (h + lift) - lift
           vx[i] = vy[i] = 0
         }
         kick()
@@ -532,9 +498,6 @@ export function ParticleText({
 
     let resizeTimer = 0
     const ro = new ResizeObserver(() => {
-      // Observing fires once straight away; only a real change rebuilds.
-      const { width, height } = stage.getBoundingClientRect()
-      if (Math.abs(width - w) < 1 && Math.abs(height - h) < 1) return
       window.clearTimeout(resizeTimer)
       resizeTimer = window.setTimeout(() => !disposed && build(false), 120)
     })
@@ -579,6 +542,7 @@ export function ParticleText({
       window.removeEventListener("pointercancel", onUp)
       document.documentElement.removeEventListener("pointerleave", onLeave)
       delete el.dataset.live
+      delete el.dataset.dots
       canvas.remove()
     }
   }, [text, accent, delay, whenVisible, still])

@@ -23,6 +23,7 @@ export function ScrollReveal() {
         for (const entry of entries) {
           if (!entry.isIntersecting) continue
           entry.target.classList.remove("reveal-pending")
+          entry.target.classList.add("reveal-in")
           observer.unobserve(entry.target)
         }
       },
@@ -32,7 +33,7 @@ export function ScrollReveal() {
 
     return () => {
       observer.disconnect()
-      pending.forEach((el) => el.classList.remove("reveal-pending"))
+      pending.forEach((el) => el.classList.remove("reveal-pending", "reveal-in"))
     }
   }, [pathname])
 

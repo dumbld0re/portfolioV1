@@ -44,7 +44,7 @@ export function Header() {
       <nav
         className={cn(
           "mx-auto flex max-w-[90rem] items-center gap-x-4 font-mono text-[13px] md:justify-end md:gap-x-8 md:text-base",
-          boot && "motion-safe:animate-reveal-up",
+          boot && "m-block",
         )}
       >
         {/* One row on every width: on narrow phones the links scroll sideways

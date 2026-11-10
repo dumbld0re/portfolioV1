@@ -4,8 +4,10 @@ import { notFound } from "next/navigation"
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 
+import { BootGate } from "@/components/boot-gate"
 import { BoringClassSync } from "@/components/boring-toggle"
 import { BORING_SCRIPT } from "@/lib/boring-store"
+import { BOOT_GATE_SCRIPT } from "@/lib/motion"
 import { THEME_SCRIPT } from "@/lib/theme-script"
 import { CustomCursor } from "@/components/custom-cursor"
 import { LanguageProvider } from "@/components/language-provider"
@@ -92,12 +94,16 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
         {/* Boring mode is stored in the browser; apply it before the first paint. */}
         <script dangerouslySetInnerHTML={{ __html: BORING_SCRIPT }} />
+        {/* A blank page until the scripts are ready, so the UI and the name's
+            dots come in as one sequence instead of half-loaded. */}
+        <script dangerouslySetInnerHTML={{ __html: BOOT_GATE_SCRIPT }} />
       </head>
       <body className={`${fontVariables} font-sans antialiased`}>
         <LanguageProvider language={lang}>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
             <ThemeColorSync />
             <BoringClassSync />
+            <BootGate />
             {children}
             <ScrollReveal />
             <SmoothScroll />
