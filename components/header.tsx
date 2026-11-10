@@ -33,7 +33,7 @@ export function Header() {
     "relative -my-3 py-3 md:my-0 md:py-0 lowercase text-muted-foreground transition-colors hover:text-foreground after:absolute after:inset-x-0 after:bottom-2 md:after:-bottom-1 after:h-px after:origin-left after:scale-x-0 after:bg-primary after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100 aria-[current=page]:text-foreground aria-[current=page]:after:scale-x-100"
 
   const links = [
-    { href: "/#projects", label: labels.nav.projects },
+    { href: "/projects", label: labels.nav.projects, current: pathname.startsWith("/projects") },
     { href: "/#experience", label: labels.nav.experience },
     { href: "/#contact", label: labels.nav.contact },
     ...(SHOW_POSTS ? [{ href: "/posts", label: labels.nav.posts, current: pathname.startsWith("/posts") }] : []),

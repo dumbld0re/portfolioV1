@@ -14,10 +14,6 @@ const copy = {
     notice: "Boring mode is on.",
     off: "Make it fun again",
     projects: "Projects",
-    builtWith: "Built with",
-    demo: "Demo",
-    site: "Website",
-    source: "Source code",
     experience: "Experience",
     when: "When",
     role: "Role",
@@ -31,10 +27,6 @@ const copy = {
     notice: "Der langweilige Modus ist an.",
     off: "Mach es wieder schön",
     projects: "Projekte",
-    builtWith: "Gebaut mit",
-    demo: "Demo",
-    site: "Website",
-    source: "Quellcode",
     experience: "Erfahrung",
     when: "Wann",
     role: "Rolle",
@@ -50,7 +42,7 @@ const copy = {
 // content, no design at all: everything here is reset to the browser's own
 // default styles (.plain-doc in globals.css), so the markup is all it has.
 export function PlainHome() {
-  const { language } = useLanguage()
+  const { language, localize } = useLanguage()
   const t = copy[language]
   const hero = homeContent[language].hero
   const projects = projectsContent[language]
@@ -75,41 +67,13 @@ export function PlainHome() {
         <i>{hero.location}</i>
       </p>
       <p>{hero.intro}</p>
-      <p>
-        {hero.now.map((part, i) =>
-          typeof part === "string" ? part : part.href ? <a key={i} href={part.href}>{part.label}</a> : part.label,
-        )}
-      </p>
       <p>{hero.description}</p>
 
       <hr />
       <h2>{t.projects}</h2>
-      <ul>
-        {projects.projects.map((project) => (
-          <li key={project.title}>
-            <p>
-              <b>{project.title}</b>
-              {project.status && ` (${projects.statusLabels[project.status]})`}
-              <br />
-              {project.tagline && (
-                <>
-                  {project.tagline}
-                  <br />
-                </>
-              )}
-              {project.description}
-              <br />
-              <i>
-                {t.builtWith}: {project.tech.join(", ")}
-              </i>
-              {(project.demoHref || project.githubHref) && <br />}
-              {project.demoHref && <a href={project.demoHref}>{project.demoKind === "site" ? t.site : t.demo}</a>}
-              {project.demoHref && project.githubHref && " | "}
-              {project.githubHref && <a href={project.githubHref}>{t.source}</a>}
-            </p>
-          </li>
-        ))}
-      </ul>
+      <p>
+        <a href={localize("/projects")}>{projects.heading}</a>: {projects.updating}
+      </p>
 
       <hr />
       <h2>{t.experience}</h2>

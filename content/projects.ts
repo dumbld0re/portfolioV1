@@ -56,6 +56,8 @@ export const projectsContent: Record<
   Language,
   {
     heading: string
+    /** Shown on the projects page while it is being reworked. */
+    updating: string
     /** The switch between the two layouts: "view: stage / index". */
     viewLabel: string
     views: Record<ProjectsView, string>
@@ -69,6 +71,7 @@ export const projectsContent: Record<
 > = {
   de: {
     heading: "ausgewählte projekte",
+    updating: "diese seite überarbeite ich gerade. schau bald wieder vorbei.",
     viewLabel: "ansicht",
     views: { stage: "bühne", index: "liste" },
     viewDemoLabel: "Demo ansehen",
@@ -132,6 +135,7 @@ export const projectsContent: Record<
   },
   en: {
     heading: "selected work",
+    updating: "i'm currently reworking this page. check back soon.",
     viewLabel: "view",
     views: { stage: "stage", index: "index" },
     viewDemoLabel: "View demo",

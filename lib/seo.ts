@@ -9,19 +9,21 @@ export const OG_LOCALE: Record<Language, string> = { de: "de_DE", en: "en_US" }
 
 export const siteMeta: Record<
   Language,
-  { description: string; postsDescription: string }
+  { description: string; postsDescription: string; projectsDescription: string }
 > = {
   de: {
     description:
       "Entwickler und Student der Quantitative Finance in Windhoek, Namibia — ich baue schnelle, saubere Web-Interfaces, mit einer Schwäche für Linux und das Terminal.",
     postsDescription:
       "Notizen und Beiträge von Danny-Miguel Mittelberger — ein digitaler Garten über Webentwicklung, Linux und alles andere.",
+    projectsDescription: "Ausgewählte Projekte von Danny-Miguel Mittelberger. Die Seite wird gerade überarbeitet.",
   },
   en: {
     description:
       "Developer and quantitative finance student in Windhoek, Namibia — building fast, clean web interfaces with a soft spot for Linux and the terminal.",
     postsDescription:
       "Notes and posts by Danny-Miguel Mittelberger — a digital garden on web development, Linux and whatever else.",
+    projectsDescription: "Selected work by Danny-Miguel Mittelberger. This page is being reworked.",
   },
 }
 
