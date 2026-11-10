@@ -76,7 +76,7 @@ export function ContactSection() {
 
         {/* Wide screens: the letter sits open on the right. Phones: it opens
             from the email address (and the corner's "say hello") instead. */}
-        <LetterForm id="contact-letter" className="mt-12 hidden lg:mt-0 lg:flex lg:justify-self-end" />
+        <LetterForm id="contact-letter" see className="mt-12 hidden lg:mt-0 lg:flex lg:justify-self-end" />
         </div>
 
         <SiteFooter className="mt-24" />

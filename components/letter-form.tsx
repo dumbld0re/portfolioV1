@@ -118,12 +118,16 @@ export function LetterDialog() {
    bottom edge. No boxes, no labels on show. */
 export function LetterForm({
   id = "letter",
+  see = false,
   className,
   onClose,
   onSent,
 }: {
   /** Prefix for the fields' ids, so two letters can share a page. */
   id?: string
+  /** See-through until you write in it: the sheet fills in on focus and stays
+   *  filled while it holds any text (the open letter on the contact section). */
+  see?: boolean
   className?: string
   onClose?: () => void
   onSent?: () => void
@@ -228,7 +232,12 @@ export function LetterForm({
     >
       <div
         ref={sheet}
-        className="relative flex min-h-[26rem] w-full flex-col rounded-[3px] border border-border/70 bg-card px-7 pt-8 pb-12 shadow-[0_1px_2px_rgb(0_0_0/0.04),0_12px_32px_-12px_rgb(0_0_0/0.12)] md:min-h-[30rem] md:px-12 md:pt-12 md:pb-14 dark:shadow-none"
+        className={cn(
+          "relative flex min-h-[26rem] w-full flex-col rounded-[3px] border border-border/70 px-7 pt-8 pb-7 md:min-h-[30rem] md:px-12 md:pt-12 md:pb-10",
+          see && !message && !email && !sent
+            ? "bg-transparent transition-[background-color,box-shadow] duration-300 focus-within:bg-card focus-within:shadow-[0_1px_2px_rgb(0_0_0/0.04),0_12px_32px_-12px_rgb(0_0_0/0.12)] dark:focus-within:shadow-none"
+            : "bg-card shadow-[0_1px_2px_rgb(0_0_0/0.04),0_12px_32px_-12px_rgb(0_0_0/0.12)] transition-[background-color,box-shadow] duration-300 dark:shadow-none",
+        )}
       >
         {onClose && (
           <button
@@ -301,19 +310,28 @@ export function LetterForm({
             <input type="checkbox" name="botcheck" tabIndex={-1} aria-hidden="true" className="hidden" />
           </>
         )}
+
+        {/* Send, written in the letter's bottom corner like the site's other
+            mono links: an underline that warms to amber, an amber arrow. */}
+        <button
+          type={sent ? "button" : "submit"}
+          onClick={sent ? again : undefined}
+          disabled={busy}
+          className="group mt-8 inline-flex cursor-pointer items-center gap-2 self-end py-1 font-mono text-sm lowercase text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary disabled:cursor-default disabled:opacity-60 md:text-base"
+        >
+          <span className="underline decoration-border decoration-1 underline-offset-[6px] transition-colors group-hover:decoration-primary">
+            {sent ? f.again : busy ? f.sending : f.send}
+          </span>
+          <span
+            className="text-primary transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none"
+            aria-hidden="true"
+          >
+            →
+          </span>
+        </button>
       </div>
 
-      {/* the pill sits on the sheet's bottom edge, like a stamp on the fold */}
-      <button
-        type={sent ? "button" : "submit"}
-        onClick={sent ? again : undefined}
-        disabled={busy}
-        className="relative z-10 -mt-7 inline-flex h-14 min-w-36 items-center justify-center rounded-[3px] bg-foreground px-9 text-base font-medium text-background shadow-[0_6px_20px_-8px_rgb(0_0_0/0.45)] transition-[transform,opacity] duration-200 hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary active:translate-y-0 disabled:opacity-70 motion-reduce:transition-none"
-      >
-        {sent ? f.again : busy ? f.sending : f.send}
-      </button>
-
-      <p aria-live="polite" className="mt-4 min-h-6 text-center font-mono text-sm text-muted-foreground">
+      <p aria-live="polite" className="mt-3 min-h-6 self-end text-right font-mono text-sm text-muted-foreground">
         {problem ? (
           <span id={`${id}-problem`} className="text-destructive">
             {problem.text}
