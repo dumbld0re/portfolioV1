@@ -76,6 +76,9 @@ function rgb(hex: string): [number, number, number] {
 const SPRING = 0.045
 const DAMPING = 0.86
 const MAX_DOTS = 7000
+/** The physics is tuned per 60th of a second; other refresh rates run as many
+ *  ticks as a 60Hz screen would have, so the motion looks the same everywhere. */
+const TICK = 1000 / 60
 
 export function ParticleText({
   as: Tag = "h1",
@@ -190,6 +193,11 @@ export function ParticleText({
     // pointer, in stage coordinates
     let px = -9999
     let py = -9999
+    // ...and in the window, kept so a scroll can move it across the stage
+    // without the pointer moving (else the dots give way to a stale spot).
+    let cx: number | null = null
+    let cy = 0
+    let last = 0
     let down = false
     let downAt = 0
 
@@ -267,7 +275,7 @@ export function ParticleText({
 
     // Hands every dot a place. More places than dots: new dots split off from
     // existing ones. Fewer: the spare dots double up on places already taken.
-    const assign = (pts: Float32Array, flags: Uint8Array) => {
+    const assign = (pts: Float32Array, flags: Uint8Array, shuffle = true) => {
       const m = pts.length / 2
       if (!m) return
       if (m > n) {
@@ -302,7 +310,8 @@ export function ParticleText({
       }
       // A shuffled order, so dots cross each other on the way to a new word.
       const order = Array.from({ length: m }, (_, i) => i)
-      for (let i = m - 1; i > 0; i--) {
+      // A resize keeps the order, so each dot only shifts a little.
+      for (let i = shuffle ? m - 1 : 0; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1))
         ;[order[i], order[j]] = [order[j], order[i]]
       }
@@ -334,8 +343,22 @@ export function ParticleText({
       const since = now - startAt
       const go = started && since > 0
       if (go && !el.dataset.dots) el.dataset.dots = ""
-      let energy = 0
       const wellOn = down && now - downAt > 140
+      const ticks = last ? Math.min(4, Math.max(1, Math.round((now - last) / TICK))) : 1
+      last = now
+      let motion = 0
+      for (let t = 0; t < ticks; t++) motion = tick(since, go, wellOn)
+      draw(go, since)
+
+      // Rest once the dots have stopped moving (after the entrance, while
+      // nothing is held); any input wakes the loop again.
+      const busy = !go || since < 1200 || motion / Math.max(1, n) > 0.01 || wellOn
+      if (visible && busy) raf = requestAnimationFrame(step)
+      else last = 0
+    }
+
+    const tick = (since: number, go: boolean, wellOn: boolean) => {
+      let motion = 0
       const floor = h - 6
 
       for (let i = 0; i < n; i++) {
@@ -379,9 +402,12 @@ export function ParticleText({
         }
         x[i] += vx[i]
         y[i] += vy[i]
-        energy += Math.abs(vx[i]) + Math.abs(vy[i]) + (falling ? 0 : Math.abs(tx[i] - x[i]) + Math.abs(ty[i] - y[i]))
+        motion += Math.abs(vx[i]) + Math.abs(vy[i])
       }
+      return motion
+    }
 
+    const draw = (go: boolean, since: number) => {
       if (vertices.length !== n * 3) vertices = new Float32Array(n * 3)
       for (let i = 0; i < n; i++) {
         vertices[i * 3] = x[i]
@@ -394,10 +420,6 @@ export function ParticleText({
       gl.uniform1f(uSize, radius * 2 * dpr * 1.3)
       gl.uniform1f(uAlpha, go ? Math.min(1, since / 500) : 0)
       gl.drawArrays(gl.POINTS, 0, n)
-
-      // Rest once everything has settled; any input wakes the loop again.
-      const busy = !go || energy / Math.max(1, n) > 0.02 || wellOn
-      if (visible && busy) raf = requestAnimationFrame(step)
     }
     const kick = () => {
       if (!raf && visible && !disposed) raf = requestAnimationFrame(step)
@@ -407,7 +429,7 @@ export function ParticleText({
       resize()
       readColors()
       const { pts, flags } = sample(baseLines)
-      assign(pts, flags)
+      assign(pts, flags, first)
       if (first && n) el.dataset.live = "true"
       kick()
     }
@@ -456,15 +478,30 @@ export function ParticleText({
       },
     }
 
-    const toStage = (e: PointerEvent) => {
+    const toStage = (e?: PointerEvent) => {
+      if (e) {
+        cx = e.clientX
+        cy = e.clientY
+      }
+      if (cx === null) return false
       const box = stage.getBoundingClientRect()
-      px = e.clientX - box.left
-      py = e.clientY - box.top
-      return px >= 0 && py >= 0 && px <= box.width && py <= box.height
+      px = cx - box.left
+      py = cy - box.top
+      return px >= -reach && py >= -reach && px <= box.width + reach && py <= box.height + reach
     }
-    const onMove = (e: PointerEvent) => {
-      if (toStage(e) || down) kick()
+    // Scrolling carries the stage under a still pointer.
+    // Kick on the way in and on the way out, so dots that gave way always
+    // come back once the pointer has gone.
+    let near = false
+    const track = (e?: PointerEvent) => {
+      const now = toStage(e)
+      if (now || near || down) kick()
+      near = now
     }
+    const onScroll = () => {
+      if (cx !== null) track()
+    }
+    const onMove = (e: PointerEvent) => track(e)
     const onDown = (e: PointerEvent) => {
       if (e.button !== 0 || e.pointerType === "touch") return
       if ((e.target as Element | null)?.closest?.("a, button, input, textarea, label")) return
@@ -476,7 +513,13 @@ export function ParticleText({
       downAt = performance.now()
       kick()
     }
-    const onUp = () => {
+    const onUp = (e: PointerEvent) => {
+      // A finger that lifts (or turns into a scroll) leaves nothing behind.
+      if (e.pointerType === "touch") {
+        cx = null
+        px = py = -9999
+        kick()
+      }
       if (!down) return
       const held = performance.now() - downAt
       down = false
@@ -496,11 +539,16 @@ export function ParticleText({
       kick()
     }
     const onLeave = () => {
+      cx = null
       px = py = -9999
+      kick()
     }
 
     let resizeTimer = 0
     const ro = new ResizeObserver(() => {
+      // Observing fires once straight away; only a real change rebuilds.
+      const box = stage.getBoundingClientRect()
+      if (Math.abs(box.width - w) < 1 && Math.abs(box.height - h) < 1) return
       window.clearTimeout(resizeTimer)
       resizeTimer = window.setTimeout(() => !disposed && build(false), 120)
     })
@@ -524,6 +572,7 @@ export function ParticleText({
       io.observe(el)
       themeWatch.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
       window.addEventListener("pointermove", onMove, { passive: true })
+      window.addEventListener("scroll", onScroll, { passive: true })
       window.addEventListener("pointerdown", onDown)
       window.addEventListener("pointerup", onUp)
       window.addEventListener("pointercancel", onUp)
@@ -540,6 +589,7 @@ export function ParticleText({
       io.disconnect()
       themeWatch.disconnect()
       window.removeEventListener("pointermove", onMove)
+      window.removeEventListener("scroll", onScroll)
       window.removeEventListener("pointerdown", onDown)
       window.removeEventListener("pointerup", onUp)
       window.removeEventListener("pointercancel", onUp)
