@@ -20,7 +20,7 @@ type Problem = { field: "message" | "email"; text: string } | null
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const OPEN_EVENT = "letter:open"
 const DRAFT_KEY = "letter-draft"
-const CLOSE_MS = 180
+const CLOSE_MS = 220
 
 function readDraft(): { message: string; email: string } | null {
   try {
@@ -100,10 +100,11 @@ export function LetterDialog() {
         delete e.currentTarget.dataset.closing
         lockScroll(false)
       }}
-      className="letter-dialog m-auto w-full max-w-xl overflow-visible bg-transparent p-4 text-foreground backdrop:bg-background/75 backdrop:backdrop-blur-sm"
+      className="letter-dialog m-auto w-full max-w-xl overflow-visible bg-transparent p-4 text-foreground backdrop:bg-background/90 backdrop:backdrop-blur-md"
     >
       <LetterForm
         key={round}
+        see="always"
         onClose={dismiss}
         onSent={() => {
           wasSent.current = true
@@ -126,8 +127,9 @@ export function LetterForm({
   /** Prefix for the fields' ids, so two letters can share a page. */
   id?: string
   /** See-through until you write in it: the sheet fills in on focus and stays
-   *  filled while it holds any text (the open letter on the contact section). */
-  see?: boolean
+   *  filled while it holds any text (the open letter on the contact section).
+   *  "always": see-through throughout (the pop-up, over its blurred backdrop). */
+  see?: boolean | "always"
   className?: string
   onClose?: () => void
   onSent?: () => void
@@ -234,7 +236,9 @@ export function LetterForm({
         ref={sheet}
         className={cn(
           "relative flex min-h-[26rem] w-full flex-col rounded-[3px] border border-border/70 px-7 pt-8 pb-7 md:min-h-[30rem] md:px-12 md:pt-12 md:pb-10",
-          see && !message && !email && !sent
+          see === "always"
+            ? "bg-transparent"
+            : see && !message && !email && !sent
             ? "bg-transparent transition-[background-color,box-shadow] duration-300 focus-within:bg-card focus-within:shadow-[0_1px_2px_rgb(0_0_0/0.04),0_12px_32px_-12px_rgb(0_0_0/0.12)] dark:focus-within:shadow-none"
             : "bg-card shadow-[0_1px_2px_rgb(0_0_0/0.04),0_12px_32px_-12px_rgb(0_0_0/0.12)] transition-[background-color,box-shadow] duration-300 dark:shadow-none",
         )}

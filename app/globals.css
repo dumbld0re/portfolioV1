@@ -555,29 +555,35 @@ html.lenis {
 /* the contact letter (components/letter-form.tsx): it rises in, the page
    behind dims */
 @media (prefers-reduced-motion: no-preference) {
+  /* Opens the way the rest of the site arrives: rising out of a soft blur. */
   .letter-dialog[open] {
-    animation: letter-in 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: letter-in 0.7s cubic-bezier(0.19, 1, 0.22, 1);
   }
   .letter-dialog[open]::backdrop {
-    animation: letter-fade 0.3s ease;
+    animation: letter-fade 0.4s ease;
   }
   .letter-dialog[data-closing] {
-    animation: letter-out 0.18s ease-in forwards;
+    animation: letter-out 0.22s ease-in forwards;
   }
   .letter-dialog[data-closing]::backdrop {
-    animation: letter-fade 0.18s ease-in reverse forwards;
+    animation: letter-fade 0.22s ease-in reverse forwards;
   }
 }
 @keyframes letter-out {
   to {
     opacity: 0;
-    transform: translateY(12px) scale(0.985);
+    transform: translateY(10px);
+    filter: blur(6px);
   }
 }
 @keyframes letter-in {
   from {
     opacity: 0;
-    transform: translateY(24px) scale(0.98);
+    transform: translateY(22px);
+    filter: blur(10px);
+  }
+  60% {
+    filter: blur(0);
   }
 }
 @keyframes letter-fade {

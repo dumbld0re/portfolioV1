@@ -180,7 +180,8 @@ export function ParticleText({
     // How far the canvas reaches above the stage, up to the top of the page,
     // so dots also fly in from behind the top bar instead of leaving a gap.
     let lift = 0
-    let radius = 1.2
+    /** Each dot's size on screen, in device pixels. */
+    let pointPx = 3
     let reach = 90
     let raf = 0
     let visible = false
@@ -216,11 +217,13 @@ export function ParticleText({
       const box = el.getBoundingClientRect()
       const bases = [...el.querySelectorAll<HTMLElement>("[data-base]")].map((b) => b.getBoundingClientRect())
       const lineHeight = bases.length > 1 ? bases[1].bottom - bases[0].bottom : size
-      // Dots on whole device pixels with an even step: fractional spacing
-      // shows up as stripes across small letters (phones).
-      const snap = (v: number) => Math.max(3, Math.round(v * dpr)) / dpr
-      const gap = snap(Math.min(3.7, Math.max(2.4, size / 58)))
-      radius = gap * 0.36
+      // The grid steps in whole device pixels, at least 3 on 1x screens and 4
+      // on 2x and up, so every dot lands the same way on the screen's pixels
+      // (fractional steps show as stripes and uneven dots). Small names get a
+      // finer grid so thin strokes keep their dots.
+      const minStep = dpr >= 2 ? 4 : 3
+      const snap = (v: number) => Math.max(minStep, Math.round(v * dpr)) / dpr
+      const gap = snap(Math.min(3.7, Math.max(size < 90 ? 2 : 2.4, size / 58)))
       reach = Math.max(70, size * 0.6)
 
       const pad = Math.ceil(size * 0.4)
@@ -250,26 +253,47 @@ export function ParticleText({
       const data = o.getImageData(0, 0, off.width, off.height).data
       const originX = box.left - stageBox.left - pad
       const originY = box.top - stageBox.top - pad
+      // A dot for every grid cell the letters cover by about a third or
+      // more (not one pixel per cell, which misses thin strokes), placed in
+      // the cell's middle. The accent's cells are told apart by their red.
       const collect = (g: number) => {
         const pts: number[] = []
         const flags: number[] = []
-        for (let gy = 0; gy < off.height; gy += g) {
-          for (let gx = 0; gx < off.width; gx += g) {
-            const k = (Math.floor(gy) * off.width + Math.floor(gx)) * 4
-            if (data[k + 3] < 140) continue
-            pts.push(Math.round((originX + gx) * dpr) / dpr, Math.round((originY + gy) * dpr) / dpr)
-            flags.push(data[k + 1] < 120 ? 1 : 0)
+        // Whole-pixel dot sizes: an odd size sits on a pixel's centre, an
+        // even one on the line between pixels, so each dot comes out crisp.
+        const dotPx = Math.max(2, Math.round(g * dpr * 0.936))
+        const nudge = dotPx % 2 ? 0.5 / dpr : 0
+        const at = (v: number) => Math.round(v * dpr) / dpr + nudge
+        for (let gy = 0; gy + 1 < off.height; gy += g) {
+          const y0 = Math.floor(gy)
+          const y1 = Math.min(off.height, Math.max(y0 + 1, Math.floor(gy + g)))
+          for (let gx = 0; gx + 1 < off.width; gx += g) {
+            const x0 = Math.floor(gx)
+            const x1 = Math.min(off.width, Math.max(x0 + 1, Math.floor(gx + g)))
+            let ink = 0
+            let red = 0
+            for (let yy = y0; yy < y1; yy++) {
+              for (let xx = x0; xx < x1; xx++) {
+                const k = (yy * off.width + xx) * 4
+                const a = data[k + 3]
+                ink += a
+                if (a > 110 && data[k + 1] < 120) red++
+              }
+            }
+            const cells = (y1 - y0) * (x1 - x0)
+            if (ink < cells * 255 * 0.34) continue
+            pts.push(at(originX + gx + g / 2), at(originY + gy + g / 2))
+            flags.push(red * 2 > cells * 0.34 ? 1 : 0)
           }
         }
-        return { pts, flags }
+        return { pts, flags, dotPx }
       }
       let found = collect(gap)
       // Keep the count in a range any laptop animates smoothly: widen the grid if needed.
       if (found.flags.length > MAX_DOTS) {
-        const wider = snap(gap * Math.sqrt(found.flags.length / MAX_DOTS) + 0.5 / dpr)
-        radius = wider * 0.36
-        found = collect(wider)
+        found = collect(snap(gap * Math.sqrt(found.flags.length / MAX_DOTS) + 0.5 / dpr))
       }
+      pointPx = found.dotPx
       return { pts: Float32Array.from(found.pts), flags: Uint8Array.from(found.flags) }
     }
 
@@ -325,7 +349,9 @@ export function ParticleText({
 
     const resize = () => {
       const box = stage.getBoundingClientRect()
-      dpr = Math.min(window.devicePixelRatio || 1, 1.5)
+      // Drawn at the screen's real sharpness (up to 3x on phones, where the
+      // stage is small): a canvas upscaled by the browser blurs the dots faint.
+      dpr = Math.min(window.devicePixelRatio || 1, box.width < 768 ? 3 : 2)
       w = box.width
       h = box.height
       lift = Math.max(0, Math.round(box.top + window.scrollY))
@@ -417,7 +443,7 @@ export function ParticleText({
       gl.clearColor(0, 0, 0, 0)
       gl.clear(gl.COLOR_BUFFER_BIT)
       gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.DYNAMIC_DRAW)
-      gl.uniform1f(uSize, radius * 2 * dpr * 1.3)
+      gl.uniform1f(uSize, pointPx)
       gl.uniform1f(uAlpha, go ? Math.min(1, since / 500) : 0)
       gl.drawArrays(gl.POINTS, 0, n)
     }
@@ -430,6 +456,14 @@ export function ParticleText({
       readColors()
       const { pts, flags } = sample(baseLines)
       assign(pts, flags, first)
+      // After a resize the name is simply redrawn in place (unless the dots are
+      // lying on the floor, or the entrance is still under way).
+      if (!first && !falling && performance.now() - startAt > 2000) {
+        x.set(tx)
+        y.set(ty)
+        vx.fill(0)
+        vy.fill(0)
+      }
       if (first && n) el.dataset.live = "true"
       kick()
     }
