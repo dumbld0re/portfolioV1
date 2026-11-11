@@ -368,7 +368,6 @@ export function ParticleText({
       raf = 0
       const since = now - startAt
       const go = started && since > 0
-      if (go && !el.dataset.dots) el.dataset.dots = ""
       const wellOn = down && now - downAt > 140
       const ticks = last ? Math.min(4, Math.max(1, Math.round((now - last) / TICK))) : 1
       last = now
@@ -629,7 +628,6 @@ export function ParticleText({
       window.removeEventListener("pointercancel", onUp)
       document.documentElement.removeEventListener("pointerleave", onLeave)
       delete el.dataset.live
-      delete el.dataset.dots
       canvas.remove()
     }
   }, [text, accent, delay, whenVisible, still])

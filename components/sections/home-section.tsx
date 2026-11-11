@@ -48,11 +48,6 @@ export function HomeSection() {
         accent="-"
         delay={boot ? BOOT_SEQUENCE_MS.heroDots : 0}
         className="mt-[clamp(1.25rem,3.5svh,2rem)] font-serif font-normal lowercase tracking-[-0.02em] text-[min(clamp(3.25rem,1rem+10vw,12rem),19svh)] leading-[1.02]"
-        after={
-          <span className="ml-[0.04em] font-mono text-[0.6em] text-primary motion-safe:animate-caret-blink" aria-hidden="true">
-            _
-          </span>
-        }
       />
 
       <div className="mt-[clamp(1.5rem,5svh,3rem)] max-w-4xl space-y-5">

@@ -629,10 +629,6 @@ html.booting *::after {
     animation: pt-wait 4s;
   }
 }
-/* The caret waits too, rather than blinking alone in an empty hero. */
-.pt:not([data-live="off"]):not([data-dots]) .pt-line > [aria-hidden="true"] {
-  visibility: hidden;
-}
 @keyframes pt-wait {
   0%,
   99% {
