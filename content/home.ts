@@ -40,7 +40,7 @@ export const homeContent: Record<
       things: ["dinge", "websites", "es möglich", "kaffee"],
       lines: [
         "websites, die schnell laden und keine {manual} brauchen.",
-        "gemacht in {namibia}, studium an der {unam}, basteln an {linux}, bis es {breaks}.",
+        "gerade in {namibia}, studium an der {unam}, basteln an {linux}, bis es {breaks}.",
       ],
       socials: "schau vorbei auf {pinterest}, {x} und {instagram}.",
       manual: { word: "anleitung", answer: "gibt's keine. genau darum geht's." },
@@ -63,11 +63,34 @@ export const homeContent: Record<
       things: ["things", "websites", "it work", "coffee"],
       lines: [
         "websites that load fast and need no {manual}.",
-        "made in {namibia}, studying at {unam}, tinkering with {linux} until it {breaks}.",
+        "currently in {namibia}, studying at {unam}, tinkering with {linux} until it {breaks}.",
       ],
       socials: "check me out on {pinterest}, {x} and {instagram}.",
       manual: { word: "manual", answer: "there isn't one. that's the point." },
       breaks: "breaks",
+      unam: "unam",
+      linux: "linux",
+      namibia: { word: "namibia", place: "windhoek, namibia", coords: "22.56° s 17.08° e" },
+    },
+  },
+  it: {
+    hero: {
+      name: "danny-miguel mittelberger",
+      intro:
+        "Faccio siti web che si caricano in fretta, si leggono bene e non hanno bisogno di istruzioni. Sembra ovvio, ma ti stupiresti di quanto spesso non lo sia.",
+      description:
+        "Nel frattempo studio finanza quantitativa alla UNAM e smanetto con il mio setup Linux finché qualcosa non si rompe.",
+      location: "Windhoek, Namibia",
+      currently: "al momento in namibia, windhoek",
+      tagline: "20, faccio",
+      things: ["cose", "siti web", "funzionare tutto", "il caffè"],
+      lines: [
+        "siti web che si caricano in fretta e non hanno bisogno di {manual}.",
+        "al momento in {namibia}, studio alla {unam}, smanetto con {linux} finché non si {breaks}.",
+      ],
+      socials: "trovami su {pinterest}, {x} e {instagram}.",
+      manual: { word: "istruzioni", answer: "non ce ne sono. è proprio questo il punto." },
+      breaks: "rompe",
       unam: "unam",
       linux: "linux",
       namibia: { word: "namibia", place: "windhoek, namibia", coords: "22.56° s 17.08° e" },

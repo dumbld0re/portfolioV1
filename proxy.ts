@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server"
 
-import { DEFAULT_LANGUAGE, LANGUAGE_COOKIE, isLanguage, localizePath, stripLanguage } from "@/lib/i18n"
+import { DEFAULT_LANGUAGE, LANGUAGE_COOKIE, isLanguage, localizePath, stripLanguage, type Language } from "@/lib/i18n"
 import { LIBRARY_PATH, ROOT_DOMAIN, isLibraryHost, libraryHost } from "@/lib/library-host"
 
 // Pages live under app/[lang]. English is served from the unprefixed URLs via
@@ -58,13 +58,23 @@ function libraryProxy(request: NextRequest) {
   return NextResponse.rewrite(new URL(`${LIBRARY_PATH}${pathname === "/" ? "" : pathname}${search}`, request.url))
 }
 
-function preferredLanguage(request: NextRequest) {
+// Who gets what on a first visit (a language picked before, kept in the
+// cookie, always wins): a phone or browser set to German or Italian gets that
+// language; otherwise someone in Germany gets German and someone in Italy
+// gets Italian; everyone else gets English.
+const COUNTRY_LANGUAGE: Record<string, Language> = { DE: "de", IT: "it" }
+
+function preferredLanguage(request: NextRequest): Language {
   // "lang" is the cookie name the site used before lang_pref.
   const cookie = request.cookies.get(LANGUAGE_COOKIE)?.value ?? request.cookies.get("lang")?.value
   if (isLanguage(cookie)) return cookie
 
   const primary = request.headers.get("accept-language")?.split(",")[0]?.trim().slice(0, 2).toLowerCase()
-  return isLanguage(primary) ? primary : DEFAULT_LANGUAGE
+  if (isLanguage(primary) && primary !== DEFAULT_LANGUAGE) return primary
+
+  // Set by Vercel from the visitor's IP; absent locally.
+  const country = request.headers.get("x-vercel-ip-country")?.toUpperCase()
+  return (country && COUNTRY_LANGUAGE[country]) || DEFAULT_LANGUAGE
 }
 
 export const config = {

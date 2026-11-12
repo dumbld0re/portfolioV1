@@ -38,6 +38,19 @@ const copy = {
     cv: "Lebenslauf",
     viewed: "Am besten in Netscape Navigator 3.0 bei 800×600.",
   },
+  it: {
+    notice: "La modalità noiosa è attiva.",
+    off: "Rendilo di nuovo divertente",
+    projects: "Progetti",
+    experience: "Esperienza",
+    when: "Quando",
+    role: "Ruolo",
+    where: "Dove",
+    contact: "Contatti",
+    email: "E-mail",
+    cv: "CV",
+    viewed: "Visualizzazione ottimale con Netscape Navigator 3.0 a 800×600.",
+  },
 }
 
 /** The hero's {tokens} as 1996 would have them: names as plain links, the rest as words. */

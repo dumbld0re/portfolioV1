@@ -69,4 +69,5 @@ const years: TimelineYear[] = [
 export const timelineContent: Record<Language, { reflection: string; jumpTo: string; years: TimelineYear[] }> = {
   en: { reflection: "looking back", jumpTo: "jump to year", years },
   de: { reflection: "rückblick", jumpTo: "zu jahr springen", years },
+  it: { reflection: "guardando indietro", jumpTo: "vai all'anno", years },
 }

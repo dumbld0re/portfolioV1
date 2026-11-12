@@ -21,6 +21,7 @@ import { DEFAULT_LANGUAGE, LANGUAGES, isLanguage, localizePath } from "@/lib/i18
 import { SITE_NAME, SITE_URL, baseOpenGraph, languageAlternates, shareImages, siteMeta } from "@/lib/seo"
 import "../globals.css"
 
+
 export function generateStaticParams() {
   return LANGUAGES.map((lang) => ({ lang }))
 }

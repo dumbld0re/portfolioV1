@@ -7,7 +7,7 @@ import { useEffect, useState } from "react"
 import { siteCopy } from "@/content/site"
 import { CvMenu } from "@/components/cv-menu"
 import { useLanguage } from "@/components/language-provider"
-import { LanguageSwitch } from "@/components/language-switch"
+import { LanguageCycle } from "@/components/language-switch"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { SHOW_POSTS } from "@/lib/features"
 import { stripLanguage } from "@/lib/i18n"
@@ -71,7 +71,7 @@ export function Header() {
           <span className="hidden text-muted-foreground/40 md:inline" aria-hidden="true">
             /
           </span>
-          <LanguageSwitch className={cn(navLink, "-mx-2 px-2 after:inset-x-2 md:mx-0 md:px-0 md:after:inset-x-0")} />
+          <LanguageCycle className={cn(navLink, "-mx-2 px-2 after:inset-x-2 md:mx-0 md:px-0 md:after:inset-x-0")} />
           <ThemeToggle />
         </span>
       </nav>

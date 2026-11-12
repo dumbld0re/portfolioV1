@@ -1,4 +1,4 @@
-export const LANGUAGES = ["de", "en"] as const
+export const LANGUAGES = ["de", "en", "it"] as const
 
 export type Language = (typeof LANGUAGES)[number]
 
@@ -24,3 +24,6 @@ export function stripLanguage(pathname: string) {
   if (!isLanguage(first)) return pathname
   return `/${rest.join("/")}`
 }
+
+/** For Intl dates and numbers. English uses en-GB dates ("8 July 2026"). */
+export const LOCALE: Record<Language, string> = { de: "de-DE", en: "en-GB", it: "it-IT" }

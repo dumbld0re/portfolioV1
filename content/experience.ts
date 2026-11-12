@@ -22,6 +22,8 @@ export const experienceContent: Record<
   Language,
   {
     title: string
+    /** Flow C prototype: the word of `title` set on a pill. */
+    titlePill?: string
     present: string
     prose: ExperienceProse
     experiences: ExperienceItem[]
@@ -29,6 +31,7 @@ export const experienceContent: Record<
 > = {
   de: {
     title: "wo ich gearbeitet habe",
+    titlePill: "gearbeitet",
     present: "heute",
     prose: [
       [
@@ -99,6 +102,7 @@ export const experienceContent: Record<
   },
   en: {
     title: "where i have worked",
+    titlePill: "worked",
     present: "now",
     prose: [
       [
@@ -164,6 +168,77 @@ export const experienceContent: Record<
         start: "2024-06",
         end: "2024-12",
         description: "Handled invoicing, spreadsheets, and daily office workflows.",
+      },
+    ],
+  },
+  it: {
+    title: "dove ho lavorato",
+    titlePill: "lavorato",
+    present: "oggi",
+    prose: [
+      [
+        "al momento faccio tre cose insieme. faccio parte del comitato esecutivo di ",
+        { company: "Oratores Novi" },
+        ", dove mi occupo della parte digitale: archivio, iscrizioni agli eventi e i database che ci stanno dietro. dirigo ",
+        { company: "aestudio" },
+        ", il mio studio di design e sviluppo di siti web. e insegno tedesco alla ",
+        { company: "Fluent Academy" },
+        ".",
+      ],
+      [
+        "prima lavoravo da freelance come ",
+        { company: "Freelance", text: "sviluppatore frontend" },
+        ", ed è da lì che è nato aestudio. ho creato strumenti in Python e logica Arduino per robot da ",
+        { company: "MindsInAction" },
+        " e ho tenuto in ordine fatture e fogli di calcolo da ",
+        { company: "Pyronam" },
+        ".",
+      ],
+    ],
+    experiences: [
+      {
+        role: "Coordinatore dell'amministrazione digitale",
+        company: "Oratores Novi",
+        companyHref: "https://oratoresnovi.org/",
+        start: "2026-10",
+        description:
+          "Nel comitato esecutivo. Mi occupo della parte digitale: archivio, iscrizioni e attestati per gli eventi, e i database che ci stanno dietro.",
+      },
+      {
+        role: "Tutor di tedesco",
+        company: "Fluent Academy",
+        companyHref: "https://fluentacademy.co/",
+        start: "2025-12",
+        description: "Insegno tedesco a chi lo sta imparando.",
+      },
+      {
+        role: "Fondatore",
+        company: "aestudio",
+        companyHref: "https://www.aestudio.site/",
+        start: "2026-07",
+        description: "Progetto e sviluppo siti web. Tutti questi lavori, casi studio compresi, sono su aestudio.",
+      },
+      {
+        role: "Sviluppatore frontend freelance",
+        company: "Freelance",
+        start: "2025",
+        end: "2026-06",
+        description: "Siti web veloci e responsive per piccole imprese e privati, con React e Next.js. Da qui è nato aestudio.",
+      },
+      {
+        role: "Stagista di robotica",
+        company: "MindsInAction",
+        companyHref: "https://mindsinaction.com.na/",
+        start: "2025-05",
+        end: "2025-08",
+        description: "Strumenti in Python e logica Arduino per progetti di robotica.",
+      },
+      {
+        role: "Stagista in contabilità e amministrazione",
+        company: "Pyronam",
+        start: "2024-06",
+        end: "2024-12",
+        description: "Fatture, fogli di calcolo e attività quotidiane d'ufficio.",
       },
     ],
   },

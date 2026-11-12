@@ -219,7 +219,7 @@ export function LetterForm({
   const sent = state === "sent"
   const busy = state === "sending"
   const field =
-    "w-full bg-transparent text-foreground outline-none placeholder:text-muted-foreground/60 disabled:opacity-60"
+    "w-full bg-transparent text-foreground outline-none placeholder:lowercase placeholder:text-muted-foreground/60 disabled:opacity-60"
   const wrong = "decoration-destructive underline decoration-wavy underline-offset-4"
 
   return (

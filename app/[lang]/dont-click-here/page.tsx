@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 
 import { useLanguage } from "@/components/language-provider"
+import { LOCALE } from "@/lib/i18n"
 import { inlineLink } from "@/lib/styles"
 
 const VISITS_KEY = "dont-click-visits"
@@ -40,6 +41,21 @@ const copy = {
     you: (n: number) => (n === 1 ? "du: einmal" : `du: ${n} mal`),
     everyone: (n: string) => `alle zusammen: ${n} mal`,
     back: "ok, bring mich zurück",
+  },
+  it: {
+    lines: [
+      "ti avevo detto di non cliccare qui, dai.",
+      "di nuovo? c'è ancora scritto di non farlo.",
+      "terza volta. qui non c'è niente di nuovo, promesso.",
+      "ok, adesso mi stai solo mettendo alla prova.",
+      "non c'è nessun premio. non c'è mai stato un premio.",
+      "va bene. ecco un premio: ▲. felice ora?",
+      "è la settima volta che vieni qui. comincio a preoccuparmi.",
+    ],
+    more: (n: number) => `${n} volte. dovremmo uscire un po' tutti e due.`,
+    you: (n: number) => (n === 1 ? "tu: una volta" : `tu: ${n} volte`),
+    everyone: (n: string) => `tutti insieme: ${n} volte`,
+    back: "ok, riportami indietro",
   },
 }
 
@@ -93,7 +109,7 @@ export default function DontClickHerePage() {
                 <span className="mx-2 opacity-50" aria-hidden="true">
                   |
                 </span>
-                {t.everyone(everyone.toLocaleString(language === "de" ? "de-DE" : "en-US"))}
+                {t.everyone(everyone.toLocaleString(language === "en" ? "en-US" : LOCALE[language]))}
               </>
             )}
           </p>

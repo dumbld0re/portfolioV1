@@ -24,4 +24,11 @@ export const postsContent: Record<
     publishedLabel: "Published",
     readingLabel: "Reading",
   },
+  it: {
+    label: "Articoli",
+    emptyState: "Ancora nessun articolo — un giardino digitale che sta crescendo.",
+    minRead: "min di lettura",
+    publishedLabel: "Pubblicato",
+    readingLabel: "Lettura",
+  },
 }

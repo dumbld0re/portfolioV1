@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils"
 
 // "secrets 3/15" in the footer. Opened, it lists what has been found (the
 // rest stay "???"); with all of them found it offers a wallpaper of the name.
-export function SecretsCount({ className }: { className?: string }) {
+export function SecretsCount({ className, buttonClassName }: { className?: string; buttonClassName?: string }) {
   const { language } = useLanguage()
   const t = eggsContent[language].secrets
   const found = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
@@ -36,14 +36,14 @@ export function SecretsCount({ className }: { className?: string }) {
         aria-expanded={open}
         aria-controls="secrets-list"
         onClick={() => setOpen((o) => !o)}
-        className="cursor-pointer tabular-nums transition-colors hover:text-foreground"
+        className={cn("cursor-pointer tabular-nums transition-colors hover:text-foreground", buttonClassName)}
       >
         {t.label} <span className={all ? "text-primary" : undefined}>{found.length}/{SECRETS.length}</span>
       </button>
       {open && (
         <span
           id="secrets-list"
-          className="absolute bottom-[calc(100%+10px)] left-0 z-40 block w-64 rounded-xl border border-border bg-popover p-3 text-xs text-popover-foreground shadow-lg"
+          className="absolute bottom-[calc(100%+10px)] left-0 z-40 block w-64 text-left max-lg:left-1/2 max-lg:-translate-x-1/2 rounded-xl border border-border bg-popover p-3 text-xs text-popover-foreground shadow-lg"
         >
           <ol className="space-y-1">
             {SECRETS.map((id) => (

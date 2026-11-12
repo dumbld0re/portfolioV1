@@ -116,13 +116,13 @@ export function CornerControls() {
             fade(floating),
           )}
         >
-          <LanguageSwitch showCurrent className={cn(control, "px-2 py-2.5")} currentClassName="px-2 py-2.5" />
+          <LanguageSwitch className={cn(control, "px-2 py-2.5")} currentClassName="px-2 py-2.5" />
         </div>
       )}
       <div className={`${corner} right-3`}>
         {languages && (
           <span inert={!languageSwitch} className={cn("flex items-center gap-2.5 text-muted-foreground", fade(languageSwitch))}>
-            <LanguageSwitch showCurrent className={control} />
+            <LanguageSwitch className={control} />
           </span>
         )}
         <button

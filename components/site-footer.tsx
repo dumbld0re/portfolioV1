@@ -15,8 +15,10 @@ import { scrollPage } from "@/lib/scroll"
 import { cn } from "@/lib/utils"
 
 const quiet = "w-fit transition-colors hover:text-foreground"
-/** A taller tap area on touch screens, without moving the text. */
-const tap = "-my-2 py-2 lg:my-0 lg:py-0"
+/** A 44px tap area on touch screens, without moving the text. */
+const tap = "-my-3 py-3 lg:my-0 lg:py-0"
+/** A footer label never breaks inside itself. */
+const whole = "inline-block whitespace-nowrap"
 
 // The last line of every page: the copyright joke, when the site last
 // changed and who has seen it, the link nobody should click, and a way back
@@ -50,14 +52,13 @@ export function SiteFooter({ className }: { className?: string }) {
     <div
       data-site-footer
       className={cn(
-        "flex flex-col gap-4 border-t border-border/60 pt-6 font-mono text-sm text-muted-foreground lg:flex-row lg:flex-wrap lg:items-center lg:justify-between lg:gap-x-8",
+        "flex flex-col items-center gap-4 border-t border-border/60 pt-6 text-center font-mono text-sm text-muted-foreground lg:flex-row lg:flex-wrap lg:justify-between lg:gap-x-8 lg:text-left",
         className,
       )}
     >
-      {/* Wide screens: one row of four. Below that, three tidy rows, each
-          split left and right: what the site says, where to go, and the
-          controls. */}
-      <div className="flex flex-col gap-2 lg:contents">
+      {/* Wide screens: one row of four. Below that, centred rows under the
+          page's centre line: what the site says, where to go, the controls. */}
+      <div className="flex flex-col items-center gap-2 lg:contents">
         <p className="text-balance">
           <button type="button" onClick={timeTravel} className="cursor-pointer tabular-nums transition-colors hover:text-foreground">
             {year === null ? stamp : stamp.replace(/\d+/, String(year))}
@@ -66,14 +67,18 @@ export function SiteFooter({ className }: { className?: string }) {
         </p>
         <LastUpdated />
       </div>
-      <div className="flex items-baseline justify-between gap-x-8 lg:contents">
-        <span className="flex items-baseline gap-x-8">
-          <Link href={localize("/dont-click-here")} className={cn(quiet, tap)}>
+      {/* Phones: the three links centred on one row, wrapping to a second
+          centred row where a language's labels are too long for one. The
+          secrets list opens centred over this row. */}
+      <div className="relative flex flex-wrap items-baseline justify-center gap-x-6 gap-y-5 lg:contents">
+        {/* Wide screens keep these two together as one of the row's four. */}
+        <span className="contents lg:flex lg:items-baseline lg:gap-x-8">
+          <Link href={localize("/dont-click-here")} className={cn(quiet, tap, whole)}>
             {copy.dontClickHere}
           </Link>
-          <SecretsCount className={tap} />
+          <SecretsCount className="whitespace-nowrap max-lg:static" buttonClassName={cn(tap, whole)} />
         </span>
-        <button type="button" onClick={() => scrollPage(0)} className={cn(quiet, tap, "cursor-pointer")}>
+        <button type="button" onClick={() => scrollPage(0)} className={cn(quiet, tap, whole, "cursor-pointer")}>
           {copy.backToTop}
           <span className="text-primary" aria-hidden="true">
             {" "}
@@ -81,10 +86,10 @@ export function SiteFooter({ className }: { className?: string }) {
           </span>
         </button>
       </div>
-      <div className="flex items-center justify-between gap-x-8 border-t border-border/60 pt-4 lg:hidden">
+      <div className="flex items-center justify-center gap-x-8 lg:hidden">
         <BoringToggle />
-        <span className="-mr-2 flex items-center">
-          <LanguageSwitch showCurrent className={cn(quiet, "-my-3 px-2 py-3")} currentClassName="px-2" />
+        <span className="flex items-center">
+          <LanguageSwitch className={cn(quiet, "-my-3 px-2 py-3")} currentClassName="px-2" />
         </span>
       </div>
     </div>

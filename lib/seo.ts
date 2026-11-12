@@ -5,7 +5,7 @@ import { LANGUAGES, localizePath, type Language } from "@/lib/i18n"
 export const SITE_URL = "https://www.dannymiguel.com"
 export const SITE_NAME = "Danny-Miguel Mittelberger"
 
-export const OG_LOCALE: Record<Language, string> = { de: "de_DE", en: "en_US" }
+export const OG_LOCALE: Record<Language, string> = { de: "de_DE", en: "en_US", it: "it_IT" }
 
 export const siteMeta: Record<
   Language,
@@ -24,6 +24,13 @@ export const siteMeta: Record<
     postsDescription:
       "Notes and posts by Danny-Miguel Mittelberger — a digital garden on web development, Linux and whatever else.",
     projectsDescription: "Selected work by Danny-Miguel Mittelberger. This page is being reworked.",
+  },
+  it: {
+    description:
+      "Sviluppatore e studente di finanza quantitativa a Windhoek, in Namibia — costruisco interfacce web veloci e pulite, con un debole per Linux e il terminale.",
+    postsDescription:
+      "Note e articoli di Danny-Miguel Mittelberger — un giardino digitale sullo sviluppo web, Linux e tutto il resto.",
+    projectsDescription: "Progetti scelti di Danny-Miguel Mittelberger. La pagina è in fase di revisione.",
   },
 }
 

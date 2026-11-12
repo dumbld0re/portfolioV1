@@ -29,7 +29,8 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
   return (
     <>
     {home && <BoringHome />}
-    <div className={cn("site relative min-h-screen flex flex-col bg-background", home && "fancy-only")}>
+    {/* Everything on the site is written lowercase; form fields keep what is typed. */}
+    <div className={cn("site relative flex min-h-screen flex-col bg-background lowercase", home && "fancy-only")}>
       <DotGround />
       <div className="relative z-10 flex flex-col min-h-screen">
         <Header />

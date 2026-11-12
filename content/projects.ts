@@ -197,4 +197,68 @@ export const projectsContent: Record<
       },
     ],
   },
+  it: {
+    heading: "progetti scelti",
+    updating: "sto rifacendo questa pagina. ripassa presto.",
+    viewLabel: "vista",
+    views: { stage: "palco", index: "elenco" },
+    viewDemoLabel: "Vedi la demo",
+    viewSiteLabel: "Vai al sito",
+    viewSourceLabel: "Codice sorgente",
+    internalToolLabel: "Strumento interno",
+    statusLabels: {
+      inDevelopment: "In sviluppo",
+      inUse: "In uso",
+    },
+    projects: [
+      {
+        slug: "finance-tracker",
+        title: "Finance Tracker",
+        description:
+          "Un'app per entrate, spese e obiettivi di risparmio che funziona anche offline – pensata per il telefono, ma sincronizzata su tutti i dispositivi.",
+        tech: ["React", "Vite", "Vercel Functions", "Upstash Redis"],
+        demoHref: "https://financetracker-demo.vercel.app/",
+        githubHref: "https://github.com/dumbld0re/financeApp",
+        preview: {
+          kind: "screens",
+          screens: [
+            { src: "/projects/finance-tracker-home.webp", width: 1170, height: 2532, name: "home" },
+            { src: "/projects/finance-tracker-insights.webp", width: 1170, height: 2532, name: "insights" },
+          ],
+        },
+        internalTool: true,
+        status: "inUse",
+      },
+      {
+        slug: "uni",
+        title: "uni — kit per ripetizioni e università",
+        tagline:
+          "Una CLI che da un unico file Typst genera sia la scheda per lo studente sia le soluzioni.",
+        description:
+          "Una CLI in Python tipizzato per le mie ripetizioni di tedesco e lo studio universitario.",
+        tech: ["Python", "typer", "Typst", "pytest"],
+        preview: { kind: "terminal", lines: UNI_SESSION },
+        internalTool: true,
+        status: "inDevelopment",
+      },
+      {
+        slug: "ae",
+        title: "æ design studio",
+        description:
+          "Il mio studio di design, con un sito costruito da zero. Tutti i miei lavori di web design e per clienti, casi studio compresi, sono lì.",
+        tech: ["Next.js", "TypeScript", "Canvas", "CSS"],
+        demoHref: "https://www.aestudio.site/",
+        demoKind: "site",
+        githubHref: "https://github.com/dumbld0re/ae",
+        preview: {
+          kind: "screens",
+          screens: [
+            { src: "/projects/ae-home.webp", width: 2880, height: 1800, name: "home" },
+            { src: "/projects/ae-contact.webp", width: 2880, height: 1800, name: "contact" },
+          ],
+        },
+        status: "inUse",
+      },
+    ],
+  },
 }

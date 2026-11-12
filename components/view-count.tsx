@@ -3,6 +3,7 @@
 import { useEffect, useId, useState } from "react"
 
 import { useLanguage } from "@/components/language-provider"
+import { LOCALE } from "@/lib/i18n"
 import { siteCopy } from "@/content/site"
 
 // The footer can render twice on one page (contact section + site footer), so
@@ -31,7 +32,7 @@ export function ViewCount() {
   }, [])
 
   if (views === null) return null
-  const count = views.toLocaleString(language === "de" ? "de-DE" : "en-US")
+  const count = views.toLocaleString(language === "en" ? "en-US" : LOCALE[language])
   return (
     <span className="whitespace-nowrap">
       <span aria-hidden="true" className="mx-2 hidden opacity-50 lg:inline">|</span>

@@ -15,7 +15,10 @@ export const contactContent: Record<
     heading: string
     blurbBefore: string
     email: string
+    /** Between the email and the WhatsApp link. */
     blurbAfter: string
+    /** After the WhatsApp link. */
+    blurbEnd: string
     phone: string
     /** Names the letter dialog for screen readers. */
     writeLabel: string
@@ -57,8 +60,9 @@ export const contactContent: Record<
     heading: "sag hallo.",
     blurbBefore: "Egal ob du eine Idee hast, eine Frage, oder einfach reden willst, schreib mir an",
     email: "dannymiiguel@gmail.com",
-    blurbAfter: ". Gern auch ganz formlos.",
-    phone: "+264 81 821 0003",
+    blurbAfter: ". oder schreib mir direkt auf",
+    blurbEnd: ".",
+    phone: "+264 85 800 0433",
     writeLabel: "Schreib mir",
     form: {
       greeting: "Hallo Danny-Miguel",
@@ -93,8 +97,9 @@ export const contactContent: Record<
     heading: "say hi.",
     blurbBefore: "Whether you have an idea, a question, or just want to talk, write to me at",
     email: "dannymiiguel@gmail.com",
-    blurbAfter: ". No need to be formal.",
-    phone: "+264 81 821 0003",
+    blurbAfter: ". or shoot me a text directly at",
+    blurbEnd: ".",
+    phone: "+264 85 800 0433",
     writeLabel: "Write to me",
     form: {
       greeting: "Hello Danny-Miguel",
@@ -122,6 +127,43 @@ export const contactContent: Record<
       gap: (m) => `${span(m, "h", "m")} ${m > 0 ? "ahead" : "behind"}`,
       lateEvening: "it's past 10pm here, i'll reply tomorrow",
       lateNight: "it's the middle of the night here, i'll reply in the morning",
+    },
+  },
+  it: {
+    title: "Contatti",
+    heading: "dimmi ciao.",
+    blurbBefore: "Che tu abbia un'idea, una domanda o voglia solo fare due chiacchiere, scrivimi a",
+    email: "dannymiiguel@gmail.com",
+    blurbAfter: ". oppure scrivimi direttamente su",
+    blurbEnd: ".",
+    phone: "+264 85 800 0433",
+    writeLabel: "Scrivimi",
+    form: {
+      greeting: "Ciao Danny-Miguel",
+      messageLabel: "Messaggio",
+      messagePlaceholder: "Mi piace il tuo lavoro. Costruiamo qualcosa insieme.",
+      emailLabel: "La tua e-mail",
+      emailPlaceholder: "tu@esempio.it",
+      send: "Invia",
+      sending: "Invio in corso…",
+      sent: "Arrivato.",
+      sentNote: (email) => `Grazie! Ti rispondo a ${email}, di solito entro un giorno.`,
+      again: "Scrivine un altro",
+      close: "Chiudi",
+      needMessage: "Prima scrivimi qualche parola.",
+      needEmail: "La tua e-mail, per favore, così posso risponderti.",
+      badEmail: "Questa e-mail non sembra del tutto giusta.",
+      failed: "Non è andato a buon fine.",
+      failedLink: "Invialo dalla tua app di posta",
+      privacy: "il tuo messaggio e la tua e-mail arrivano nella mia casella tramite web3forms. nient'altro viene salvato.",
+    },
+    time: {
+      mine: "la mia ora adesso",
+      yours: "la tua ora adesso",
+      same: "siamo nello stesso fuso orario",
+      gap: (m) => `${span(m, " h", " min")} ${m > 0 ? "avanti" : "indietro"}`,
+      lateEvening: "qui sono passate le 22, ti rispondo domani",
+      lateNight: "qui è notte fonda, ti rispondo domattina",
     },
   },
 }
