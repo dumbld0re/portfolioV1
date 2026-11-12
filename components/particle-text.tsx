@@ -3,6 +3,7 @@
 import { useEffect, useImperativeHandle, useRef, useSyncExternalStore, type ReactNode, type Ref } from "react"
 
 import { motionOff, watchMotion } from "@/lib/eggs"
+import { soundDots, soundEvent, soundOn } from "@/lib/sound"
 import { cn } from "@/lib/utils"
 
 // A heading drawn in dots. The real text stays in the page (for readers,
@@ -255,6 +256,10 @@ export function ParticleText({
       const data = o.getImageData(0, 0, off.width, off.height).data
       const originX = box.left - stageBox.left - pad
       const originY = box.top - stageBox.top - pad
+      nameLeft = box.left - stageBox.left
+      nameTop = box.top - stageBox.top
+      nameW = Math.max(1, box.width)
+      nameH = Math.max(1, box.height)
       // A dot for every grid cell the letters cover by about a third or
       // more (not one pixel per cell, which misses thin strokes), placed in
       // the cell's middle. The accent's cells are told apart by their red.
@@ -374,19 +379,48 @@ export function ParticleText({
       const ticks = last ? Math.min(4, Math.max(1, Math.round((now - last) / TICK))) : 1
       last = now
       let motion = 0
+      listen = soundOn()
+      if (listen && away.length < n) {
+        const grown = new Uint8Array(n)
+        grown.set(away)
+        away = grown
+      }
       for (let t = 0; t < ticks; t++) motion = tick(since, go, wellOn)
       draw(go, since)
+      if (listen) {
+        soundDots({ parts, lands, landU, density: wellOn ? Math.min(1, dense / Math.max(1, n * 0.35)) : 0 })
+        parts.length = 0
+        lands = 0
+      }
 
       // Rest once the dots have stopped moving (after the entrance, while
       // nothing is held); any input wakes the loop again.
       const busy = !go || since < 1200 || motion / Math.max(1, n) > 0.01 || wellOn
       if (visible && busy) raf = requestAnimationFrame(step)
-      else last = 0
+      else {
+        last = 0
+        // At rest every dot is home, whether or not the sound caught it landing.
+        away.fill(0)
+      }
     }
+
+    // For the sound (lib/sound.ts): which dots were pushed from their place
+    // and which came home, as positions across and down the name.
+    let listen = false
+    let away = new Uint8Array(0)
+    const parts: number[] = []
+    let lands = 0
+    let landU = 0.5
+    let dense = 0
+    let nameLeft = 0
+    let nameTop = 0
+    let nameW = 1
+    let nameH = 1
 
     const tick = (since: number, go: boolean, wellOn: boolean) => {
       let motion = 0
       const floor = h - 6
+      dense = 0
 
       for (let i = 0; i < n; i++) {
         if (falling) {
@@ -430,6 +464,22 @@ export function ParticleText({
         x[i] += vx[i]
         y[i] += vy[i]
         motion += Math.abs(vx[i]) + Math.abs(vy[i])
+
+        if (listen) {
+          const ex = x[i] - tx[i]
+          const ey = y[i] - ty[i]
+          const e2 = ex * ex + ey * ey
+          if (!away[i]) {
+            if (e2 > 30) {
+              away[i] = 1
+              parts.push((tx[i] - nameLeft) / nameW, (ty[i] - nameTop) / nameH)
+            }
+          } else if (e2 < 1.4 && vx[i] * vx[i] + vy[i] * vy[i] < 0.3) {
+            away[i] = 0
+            if (!lands++) landU = (tx[i] - nameLeft) / nameW
+          }
+          if (wellOn && d2 < reach * reach * 0.49) dense++
+        }
       }
       return motion
     }
@@ -532,6 +582,68 @@ export function ParticleText({
       const now = toStage(e)
       if (now || near || down) kick()
       near = now
+      if (!e || e.pointerType !== "touch") dwellCheck()
+    }
+
+    // The gravity well without a held button (trackpads with tap-to-click):
+    // keep the pointer still on the name for a moment and the dots gather to
+    // it; it follows the pointer around the name, and leaving the name throws
+    // the clump like letting go of a held press.
+    const DWELL_MS = 900
+    let dwelling = false
+    let dwellTimer = 0
+    let anchorX = 0
+    let anchorY = 0
+    const onName = () => {
+      if (cx === null) return false
+      const box = el.getBoundingClientRect()
+      return cx >= box.left - 40 && cx <= box.right + 40 && cy >= box.top - 40 && cy <= box.bottom + 40
+    }
+    const dwellCheck = () => {
+      if (cx === null || !onName()) {
+        window.clearTimeout(dwellTimer)
+        dwellTimer = 0
+        if (dwelling) release()
+        return
+      }
+      if (dwelling || falling) return
+      // Small jitters don't count as moving.
+      if (dwellTimer && Math.hypot(cx - anchorX, cy - anchorY) < 6) return
+      anchorX = cx
+      anchorY = cy
+      window.clearTimeout(dwellTimer)
+      dwellTimer = window.setTimeout(() => {
+        dwellTimer = 0
+        if (disposed || down || falling || !onName()) return
+        dwelling = true
+        down = true
+        downAt = performance.now()
+        kick()
+      }, DWELL_MS)
+    }
+
+    // Letting go of a gathered clump throws it.
+    const release = () => {
+      if (!down) return
+      const held = performance.now() - downAt
+      down = false
+      dwelling = false
+      if (held > 320) {
+        let thrown = 0
+        for (let i = 0; i < n; i++) {
+          const dx = x[i] - px
+          const dy = y[i] - py
+          const d = Math.hypot(dx, dy) || 1
+          if (d < reach * 3.2) {
+            const p = (1 - d / (reach * 3.2)) * 30
+            vx[i] += (dx / d) * p
+            vy[i] += (dy / d) * p
+            thrown++
+          }
+        }
+        soundEvent("throw", thrown / Math.max(1, n), cx === null ? 0.5 : cx / window.innerWidth)
+      }
+      kick()
     }
     const onScroll = () => {
       if (cx !== null) track()
@@ -544,6 +656,11 @@ export function ParticleText({
       // Only a press on or right beside the heading: text elsewhere stays selectable.
       const box = el.getBoundingClientRect()
       if (e.clientX < box.left - 40 || e.clientX > box.right + 40 || e.clientY < box.top - 40 || e.clientY > box.bottom + 40) return
+      // Already gathered by keeping still: the press just takes it over.
+      if (dwelling) {
+        dwelling = false
+        return
+      }
       down = true
       downAt = performance.now()
       kick()
@@ -555,25 +672,13 @@ export function ParticleText({
         px = py = -9999
         kick()
       }
-      if (!down) return
-      const held = performance.now() - downAt
-      down = false
-      // Letting go of a gathered clump throws it.
-      if (held > 320) {
-        for (let i = 0; i < n; i++) {
-          const dx = x[i] - px
-          const dy = y[i] - py
-          const d = Math.hypot(dx, dy) || 1
-          if (d < reach * 3.2) {
-            const p = (1 - d / (reach * 3.2)) * 30
-            vx[i] += (dx / d) * p
-            vy[i] += (dy / d) * p
-          }
-        }
-      }
-      kick()
+      if (dwelling) return
+      release()
     }
     const onLeave = () => {
+      window.clearTimeout(dwellTimer)
+      dwellTimer = 0
+      if (dwelling) release()
       cx = null
       px = py = -9999
       kick()
@@ -620,6 +725,7 @@ export function ParticleText({
       cancelAnimationFrame(raf)
       window.clearTimeout(morphTimer)
       window.clearTimeout(resizeTimer)
+      window.clearTimeout(dwellTimer)
       ro.disconnect()
       io.disconnect()
       themeWatch.disconnect()

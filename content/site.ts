@@ -18,6 +18,8 @@ export const siteCopy: Record<
     dontClickHere: string
     boring: string
     boringLabel: string
+    sound: string
+    soundLabel: string
     themeLabel: string
     notFound: string
     home: string
@@ -45,6 +47,8 @@ export const siteCopy: Record<
     dontClickHere: "bloß nicht klicken",
     boring: "Langweilig",
     boringLabel: "Langweiligen Modus umschalten",
+    sound: "ton",
+    soundLabel: "Ton ein- oder ausschalten",
     themeLabel: "Farbschema wechseln",
     notFound: "nicht gefunden",
     home: "zurück zur startseite",
@@ -71,6 +75,8 @@ export const siteCopy: Record<
     dontClickHere: "dont click here",
     boring: "Boring",
     boringLabel: "Toggle boring mode",
+    sound: "sound",
+    soundLabel: "Turn sound on or off",
     themeLabel: "Toggle theme",
     notFound: "not found",
     home: "back to the start",

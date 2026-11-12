@@ -7,6 +7,7 @@ import { useHasLanguages, useLanguageOrDefault } from "@/components/language-pro
 import { LanguageSwitch } from "@/components/language-switch"
 import { openLetter } from "@/components/letter-form"
 import { getServerSnapshot, getSnapshot, setBoring, subscribe } from "@/lib/boring-store"
+import * as sound from "@/lib/sound"
 import { cn } from "@/lib/utils"
 
 const PAUSE_KEY = "paused"
@@ -22,6 +23,7 @@ function readPaused() {
 const corner =
   "fixed bottom-4 z-40 hidden lg:flex items-center gap-6 rounded-full bg-background/85 px-4 py-1.5 font-mono text-sm backdrop-blur-sm print:hidden"
 const control = "text-muted-foreground transition-colors hover:text-foreground"
+const INTERACTIVE = "a, button, [role=button], summary, label"
 
 // Small text controls pinned to the bottom corners on wide screens. Phones and
 // tablets get the boring toggle in the page footer instead, where it can't
@@ -33,6 +35,32 @@ export function CornerControls() {
   const languages = useHasLanguages()
   const boring = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot) !== "off"
   const [paused, setPaused] = useState(false)
+  const soundOn = useSyncExternalStore(sound.subscribe, sound.getSnapshot, sound.getServerSnapshot)
+
+  // Sound (lib/sound.ts): a visitor who left it on gets it back at their
+  // first click, and links and buttons tick under a mouse and click when
+  // pressed. Nothing plays while it is off.
+  useEffect(() => {
+    const stopRestore = sound.restoreSound()
+    let current: Element | null = null
+    const onOver = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") return
+      const el = (e.target as Element | null)?.closest?.(INTERACTIVE) ?? null
+      if (el && el !== current) sound.soundEvent("hover", 0.5, e.clientX / window.innerWidth)
+      current = el
+    }
+    const onClick = (e: MouseEvent) => {
+      const el = (e.target as Element | null)?.closest?.(INTERACTIVE)
+      if (el && !el.hasAttribute("data-sound-switch")) sound.soundEvent("click", 0.5, e.clientX / window.innerWidth)
+    }
+    document.addEventListener("pointerover", onOver, { passive: true })
+    document.addEventListener("click", onClick, true)
+    return () => {
+      stopRestore()
+      document.removeEventListener("pointerover", onOver)
+      document.removeEventListener("click", onClick, true)
+    }
+  }, [])
   // The hero has its own email icon in this corner of the screen, so "say
   // hello" only comes in once that row has scrolled away. Hidden until the
   // page has been checked, so it never flashes over the hero on load.
@@ -131,6 +159,17 @@ export function CornerControls() {
           className={control}
         >
           {labels.boring.toLowerCase()}: <span className={boring ? "text-primary" : undefined}>{boring ? labels.on : labels.off}</span>
+        </button>
+        <button
+          type="button"
+          role="switch"
+          aria-checked={soundOn}
+          aria-label={labels.soundLabel}
+          data-sound-switch=""
+          onClick={() => sound.setSound(!soundOn)}
+          className={control}
+        >
+          {labels.sound}: <span className={soundOn ? "text-primary" : undefined}>{soundOn ? labels.on : labels.off}</span>
         </button>
         <button type="button" aria-pressed={paused} onClick={togglePaused} className={control}>
           {paused ? labels.playAnimation : labels.pauseAnimation}
