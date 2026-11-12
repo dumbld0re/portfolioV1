@@ -1,5 +1,7 @@
 "use client"
 
+import { Fragment } from "react"
+
 import { contactContent } from "@/content/contact"
 import { experienceContent } from "@/content/experience"
 import { homeContent } from "@/content/home"
@@ -7,7 +9,7 @@ import { projectsContent } from "@/content/projects"
 import { useLanguage } from "@/components/language-provider"
 import { formatPeriod, monthStart } from "@/lib/format-date"
 import { setBoring } from "@/lib/boring-store"
-import { X_URL } from "@/lib/styles"
+import { INSTAGRAM_URL, PINTEREST_URL, X_URL } from "@/lib/styles"
 
 const copy = {
   en: {
@@ -38,6 +40,29 @@ const copy = {
   },
 }
 
+/** The hero's {tokens} as 1996 would have them: names as plain links, the rest as words. */
+function plainFill(text: string, hero: (typeof homeContent)["en"]["hero"]) {
+  const links: Record<string, [string, string]> = {
+    unam: ["UNAM", "https://www.unam.edu.na"],
+    pinterest: ["Pinterest", PINTEREST_URL],
+    x: ["X", X_URL],
+    instagram: ["Instagram", INSTAGRAM_URL],
+  }
+  const words: Record<string, string> = {
+    manual: hero.manual.word,
+    breaks: hero.breaks,
+    linux: "Linux",
+    namibia: "Namibia",
+    things: hero.things[0],
+  }
+  return text.split(/(\{\w+\})/).map((bit, i) => {
+    const key = bit.match(/^\{(\w+)\}$/)?.[1]
+    if (key && links[key]) return <a key={i} href={links[key][1]}>{links[key][0]}</a>
+    if (key && words[key]) return <Fragment key={i}>{words[key]}</Fragment>
+    return <Fragment key={i}>{bit}</Fragment>
+  })
+}
+
 // Boring mode, plain: the home page as an HTML document from 1996. Same
 // content, no design at all: everything here is reset to the browser's own
 // default styles (.plain-doc in globals.css), so the markup is all it has.
@@ -64,10 +89,15 @@ export function PlainHome() {
 
       <h1>Danny-Miguel Mittelberger</h1>
       <p>
-        <i>{hero.location}</i>
+        <i>
+          {hero.tagline} {hero.things[0]}
+        </i>
       </p>
-      <p>{hero.intro}</p>
-      <p>{hero.description}</p>
+      {/* The same lines as the styled hero, as plain text and plain links. */}
+      {hero.lines.map((line) => (
+        <p key={line}>{plainFill(line, hero)}</p>
+      ))}
+      <p>{plainFill(hero.socials, hero)}</p>
 
       <hr />
       <h2>{t.projects}</h2>

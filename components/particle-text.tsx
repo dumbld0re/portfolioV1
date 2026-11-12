@@ -24,6 +24,9 @@ export type ParticleTextHandle = {
   rise: () => void
   /** Sends every dot somewhere random, to gather again. */
   regroup: () => void
+  /** The dots sag and doze until `wake`, which jolts them back. */
+  doze: () => void
+  wake: () => void
 }
 
 type Props = {
@@ -102,6 +105,8 @@ export function ParticleText({
     fall: () => api.current?.fall(),
     rise: () => api.current?.rise(),
     regroup: () => api.current?.regroup(),
+    doze: () => api.current?.doze(),
+    wake: () => api.current?.wake(),
   }))
 
   useEffect(() => {
@@ -189,6 +194,8 @@ export function ParticleText({
     let started = !whenVisible
     let startAt = performance.now() + delay
     let falling = false
+    // An egg: the name dozing off.
+    let sleepy = false
     let morphTimer = 0
     let disposed = false
 
@@ -434,8 +441,11 @@ export function ParticleText({
             if (Math.abs(vy[i]) < 0.6) vy[i] = 0
           }
         } else if (go && since > wake[i]) {
-          vx[i] += (tx[i] - x[i]) * SPRING
-          vy[i] += (ty[i] - y[i]) * SPRING
+          // Dozing, each dot hangs a little lower, more towards the middle
+          // of a letter's run, like a head nodding off.
+          const sag = sleepy ? reach * (0.22 + 0.16 * Math.sin(tx[i] * 0.021)) : 0
+          vx[i] += (tx[i] - x[i]) * SPRING * (sleepy ? 0.35 : 1)
+          vy[i] += (ty[i] + sag - y[i]) * SPRING * (sleepy ? 0.35 : 1)
         }
 
         const dx = x[i] - px
@@ -562,6 +572,18 @@ export function ParticleText({
           y[i] = Math.random() * (h + lift) - lift
           vx[i] = vy[i] = 0
         }
+        kick()
+      },
+      doze() {
+        if (sleepy || falling) return
+        sleepy = true
+        kick()
+      },
+      wake() {
+        if (!sleepy) return
+        sleepy = false
+        // a jolt
+        for (let i = 0; i < n; i++) vy[i] -= 4 + Math.random() * 5
         kick()
       },
     }

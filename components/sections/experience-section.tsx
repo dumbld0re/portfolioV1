@@ -1,7 +1,8 @@
 "use client"
 
-import { Fragment } from "react"
+import { Fragment, type ReactNode } from "react"
 
+import { AestudioLogo, OratoresLogo } from "@/components/brand-marks"
 import { experienceContent } from "@/content/experience"
 import { siteCopy } from "@/content/site"
 import { useLanguage } from "@/components/language-provider"
@@ -11,7 +12,12 @@ import { cn } from "@/lib/utils"
 
 // Experience, told rather than listed: two paragraphs in the display serif.
 // Each role stands out in the text colour (a link where there's a site), with
-// its dates raised beside it in small mono.
+// its dates raised beside it in small mono, and its logo before it where
+// there is one.
+const LOGOS: Record<string, ReactNode> = {
+  aestudio: <AestudioLogo />,
+  "Oratores Novi": <OratoresLogo />,
+}
 export function ExperienceSection() {
   const { language } = useLanguage()
   const labels = siteCopy[language]
@@ -19,7 +25,7 @@ export function ExperienceSection() {
   const byCompany = new Map(t.experiences.map((exp) => [exp.company, exp]))
 
   return (
-    <section id="experience" className="scroll-mt-10 px-6 md:px-12 py-24 md:py-32">
+    <section id="experience" className="scroll-mt-10 px-6 md:px-12 py-16 md:py-32">
       <div data-reveal className={column}>
         <h2 className={sectionLabel}>{labels.nav.experience}</h2>
         <p className="mt-6 font-serif text-5xl lowercase leading-tight tracking-[-0.02em] md:text-7xl">
@@ -45,6 +51,7 @@ export function ExperienceSection() {
                 const last = words.pop()
                 const name = (
                   <>
+                    {LOGOS[exp.company]}
                     {words.length > 0 && `${words.join(" ")} `}
                     {/* The dates stay on the line of the word before them, so
                         a line never starts with a date. Inline-block keeps a

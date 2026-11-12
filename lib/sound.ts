@@ -57,29 +57,27 @@ export function setSound(next: boolean) {
 }
 
 /**
- * Restores a visitor's "on" after the first click or key press of the visit
- * (browsers won't start sound before one). Returns the cleanup.
+ * Brings back a visitor's "on" (the switch shows it at once), and makes sure
+ * the sound is actually running whenever it should be: browsers only start
+ * or resume audio inside a gesture (on phones that is the finger lifting, not
+ * touching down), and pause it when the tab or the app goes to the
+ * background. So every tap, click and key press checks. Returns the cleanup.
  */
-export function restoreSound() {
-  let wanted = false
+export function keepSoundAlive() {
   try {
-    wanted = localStorage.getItem(KEY) === "on"
+    if (localStorage.getItem(KEY) === "on" && !on) {
+      on = true
+      listeners.forEach((listener) => listener())
+    }
   } catch {}
-  if (!wanted) return () => {}
-  const start = () => {
-    stop()
-    on = true
+  const wake = () => {
+    if (!on || document.documentElement.classList.contains("boring")) return
     unlock()
-    void ac?.resume()
-    listeners.forEach((listener) => listener())
+    if (ac && ac.state !== "running") void ac.resume()
   }
-  const stop = () => {
-    window.removeEventListener("pointerdown", start, true)
-    window.removeEventListener("keydown", start, true)
-  }
-  window.addEventListener("pointerdown", start, true)
-  window.addEventListener("keydown", start, true)
-  return stop
+  const events = ["pointerdown", "pointerup", "touchend", "click", "keydown"] as const
+  events.forEach((type) => window.addEventListener(type, wake, true))
+  return () => events.forEach((type) => window.removeEventListener(type, wake, true))
 }
 
 // ---------------------------------------------------------------- the engine
@@ -330,7 +328,7 @@ export function soundDots(f: DotFrame) {
 
 // ---------------------------------------------------------------- one-off sounds
 
-export type SoundEvent = "hover" | "click" | "tap" | "throw" | "open"
+export type SoundEvent = "hover" | "click" | "tap" | "throw" | "open" | "found"
 
 /** amount: 0..1 (how much was thrown); u: 0..1, where across the screen. */
 export function soundEvent(name: SoundEvent, amount = 0.5, u = 0.5) {
@@ -340,6 +338,7 @@ export function soundEvent(name: SoundEvent, amount = 0.5, u = 0.5) {
 
   if (KIT === "grain") {
     if (name === "hover") for (let i = 0; i < 3; i++) grain(t + i * 0.011, 3600 + i * 700, 12, 0.005, 0.18, pan)
+    if (name === "found") for (let i = 0; i < 3; i++) grain(t + i * 0.07, 2200 + i * 1400, 16, 0.03, 0.3, 0, 0.4)
     if (name === "tap") {
       grain(t, 2400, 3, 0.018, 0.32, pan)
       grain(t + 0.008, 6000, 10, 0.004, 0.14, pan)
@@ -369,6 +368,10 @@ export function soundEvent(name: SoundEvent, amount = 0.5, u = 0.5) {
   }
 
   if (name === "hover") blip(t, 3300, 0.006, 0.16, pan)
+  if (name === "found") {
+    // a secret: three rising pixels, like a high score
+    ;[1760, 2350, 3520].forEach((f, i) => blip(t + i * 0.075, f, 0.06, 0.13, 0, 0.35))
+  }
   if (name === "tap") {
     // a fingertip on the glass: a dry click with a little body under it
     blip(t, 2050, 0.005, 0.24, pan)

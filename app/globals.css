@@ -32,6 +32,15 @@
   --chart-4: #458588;
   --chart-5: #b16286;
   --radius: 0.625rem;
+  /* The inline pills in the hero: bright fills, dark text. */
+  --pill-sun: #ffe45c;
+  --pill-sky: #b3d1ff;
+  --pill-mint: #a8f0c6;
+  --pill-grape: #dcc4ff;
+  --pill-coral: #ffbfa8;
+  --pill-ink: #1c1c1c;
+  --map-land: #c9c9c9;
+  --map-hot: #f2542d;
 }
 
 .dark {
@@ -61,6 +70,14 @@
   --chart-3: #fabd2f;
   --chart-4: #83a598;
   --chart-5: #d3869b;
+  --pill-sun: rgb(255 214 0 / 0.26);
+  --pill-sky: rgb(77 148 255 / 0.3);
+  --pill-mint: rgb(46 214 120 / 0.26);
+  --pill-grape: rgb(160 110 255 / 0.32);
+  --pill-coral: rgb(255 110 70 / 0.3);
+  --pill-ink: #ffffff;
+  --map-land: #5a5a5a;
+  --map-hot: #ff7a50;
 }
 
 @theme inline {
@@ -710,4 +727,158 @@ html.booting *::after {
   76% {
     transform: translateY(130vh) rotate(var(--drop));
   }
+}
+
+/* ---------------------------------------------------------------- hero pills
+   Names and links in the hero's sentences sit on a bright pill, each its own
+   colour (components/sections/hero-copy.tsx). */
+.pill {
+  display: inline;
+  padding: 0.04em 0.32em 0.1em;
+  margin-inline: 0.04em;
+  border-radius: 0.38em;
+  color: var(--pill-ink);
+  background: var(--pill-tone, var(--pill-sun));
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  transition: filter 160ms ease, box-shadow 160ms ease;
+  cursor: pointer;
+}
+.pill:hover,
+.pill:focus-visible,
+.pill[aria-expanded="true"] {
+  filter: saturate(1.25) brightness(0.97);
+  box-shadow: 0 0 0 2px var(--pill-tone, var(--pill-sun));
+  outline: none;
+}
+.pill[data-tone="sun"] { --pill-tone: var(--pill-sun); }
+.pill[data-tone="sky"] { --pill-tone: var(--pill-sky); }
+.pill[data-tone="mint"] { --pill-tone: var(--pill-mint); }
+.pill[data-tone="grape"] { --pill-tone: var(--pill-grape); }
+.pill[data-tone="coral"] { --pill-tone: var(--pill-coral); }
+
+/* A tiny 7x7 dot glyph before a name (components/dot-mark.tsx). */
+.dot-mark {
+  display: inline-block;
+  width: 0.78em;
+  height: 0.78em;
+  margin-right: 0.28em;
+  vertical-align: -0.04em;
+}
+.pill:hover .dot-mark,
+.pill:focus-visible .dot-mark {
+  animation: mark-hop 420ms cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+@keyframes mark-hop {
+  40% { transform: translateY(-0.18em) rotate(-8deg); }
+}
+
+/* A button pill is laid out as a box, not a run of text: give it the
+   height a text pill gets, so every pill in a line matches. */
+button.pill { line-height: 1.2; }
+
+/* The navy Oratores Novi mark needs a light ground on the dark theme. */
+.dark .logo-oratores {
+  background: #ffffff;
+  border-radius: 22%;
+  padding: 0.05em;
+}
+
+/* A real logo before a name (components/brand-marks.tsx). */
+.logo-mark {
+  display: inline-block;
+  width: 0.95em;
+  height: 0.95em;
+  margin-right: 0.3em;
+  vertical-align: -0.14em;
+  object-fit: contain;
+}
+.pill:hover .logo-mark,
+.pill:focus-visible .logo-mark {
+  animation: mark-hop 420ms cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+
+/* Words to play with: a dotted underline says "try me". */
+.play-word {
+  text-decoration: underline dotted;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.22em;
+  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+  cursor: pointer;
+}
+.play-word:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 4px; }
+/* "breaks": its letters fall apart under the pointer and climb back. */
+.breaks-letter { display: inline-block; transition: transform 700ms cubic-bezier(0.2, 1.4, 0.4, 1); }
+.breaks[data-broken="true"] .breaks-letter {
+  transition: transform 380ms cubic-bezier(0.5, 0, 0.9, 0.5);
+  transform: translateY(var(--fall-y)) rotate(var(--fall-r));
+}
+/* "manual": the answer it gives. */
+.manual-note {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  translate: -50% 0;
+  white-space: nowrap;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  color: var(--background);
+  background: var(--foreground);
+  pointer-events: none;
+  animation: note-in 240ms cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+@keyframes note-in {
+  from { opacity: 0; transform: translateY(6px) scale(0.96); }
+}
+
+/* The note a found secret leaves (lib/secrets.ts). */
+.egg-toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+  z-index: 96;
+  translate: -50% 0;
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 12px;
+  color: var(--background);
+  background: var(--foreground);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 220ms ease, transform 320ms cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+.egg-toast[data-shown="true"] { opacity: 1; transform: none; }
+
+/* The Namibia card over the word (components/namibia-word.tsx). */
+.namibia-card {
+  position: fixed;
+  z-index: 90;
+  display: block;
+  width: 300px;
+  padding: 12px;
+  border-radius: 16px;
+  background: var(--popover);
+  color: var(--popover-foreground);
+  border: 1px solid var(--border);
+  box-shadow: 0 18px 40px -18px rgb(0 0 0 / 0.35);
+  text-align: left;
+  pointer-events: none;
+  animation: note-in 260ms cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+.namibia-card::after {
+  content: "";
+  position: absolute;
+  left: var(--arrow, 50%);
+  top: 100%;
+  width: 12px;
+  height: 12px;
+  translate: -50% -6px;
+  rotate: 45deg;
+  background: var(--popover);
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }

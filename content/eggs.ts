@@ -10,6 +10,10 @@ export const eggsContent: Record<
     /** The tab's title while the visitor is away. */
     away: string
     broke: { title: string; note: string }
+    /** What the name spells after five theme switches in a row. */
+    dizzy: string[]
+    /** The footer's count, and the list it opens. */
+    secrets: { label: string; unknown: string; again: string; wallpaper: string; names: Record<string, string> }
   }
 > = {
   en: {
@@ -17,11 +21,51 @@ export const eggsContent: Record<
     greeting: ["hello", "you."],
     away: "● ● ● come back",
     broke: { title: "you broke it.", note: "putting it back together" },
+    dizzy: ["make up", "your mind"],
+    secrets: {
+      label: "secrets",
+      unknown: "???",
+      again: "forget them",
+      wallpaper: "get the wallpaper",
+      names: {
+        hello: "said hello",
+        gravity: "turned on gravity",
+        konami: "the old cheat code",
+        comeback: "left and came back",
+        word: "made it spell a word",
+        doze: "let it doze off",
+        dizzy: "made it dizzy",
+        things: "saw every thing",
+        manual: "asked for the manual",
+        breaks: "broke it",
+        "2086": "went to 2086",
+      },
+    },
   },
   de: {
     words: { hello: ["hallo", "hello"], gravity: ["schwerkraft", "gravity"] },
     greeting: ["hallo", "du."],
     away: "● ● ● komm zurück",
     broke: { title: "kaputt gemacht.", note: "wird wieder zusammengesetzt" },
+    dizzy: ["entscheid", "dich mal"],
+    secrets: {
+      label: "geheimnisse",
+      unknown: "???",
+      again: "vergessen",
+      wallpaper: "hintergrundbild holen",
+      names: {
+        hello: "hallo gesagt",
+        gravity: "schwerkraft an",
+        konami: "der alte cheat-code",
+        comeback: "weg und wieder da",
+        word: "ein wort buchstabieren lassen",
+        doze: "einschlafen lassen",
+        dizzy: "schwindlig gemacht",
+        things: "alle dinge gesehen",
+        manual: "nach der anleitung gefragt",
+        breaks: "kaputtgemacht",
+        "2086": "nach 2086 gereist",
+      },
+    },
   },
 }

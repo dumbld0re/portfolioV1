@@ -15,3 +15,6 @@ export const sectionLabel = "font-mono text-xs uppercase tracking-[0.3em] text-m
 
 /** X (Twitter) profile, linked from the hero and contact icon rows. */
 export const X_URL = "https://x.com/dannymiiiguel"
+// Placeholders until the profiles exist: swap in the real profile links.
+export const INSTAGRAM_URL = "https://www.instagram.com/"
+export const PINTEREST_URL = "https://www.pinterest.com/"

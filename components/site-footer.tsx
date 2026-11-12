@@ -9,6 +9,8 @@ import { LanguageSwitch } from "@/components/language-switch"
 import { LastUpdated } from "@/components/last-updated"
 import { siteCopy } from "@/content/site"
 import { motionOff } from "@/lib/eggs"
+import { markFound } from "@/lib/secrets"
+import { SecretsCount } from "@/components/secrets-count"
 import { scrollPage } from "@/lib/scroll"
 import { cn } from "@/lib/utils"
 
@@ -29,7 +31,9 @@ export function SiteFooter({ className }: { className?: string }) {
   const [year, setYear] = useState<number | null>(null)
 
   const timeTravel = () => {
-    if (year !== null || motionOff()) return
+    if (year !== null) return
+    markFound("2086")
+    if (motionOff()) return
     const from = new Date().getFullYear()
     const to = parseInt(stamp, 10)
     const start = performance.now()
@@ -63,9 +67,12 @@ export function SiteFooter({ className }: { className?: string }) {
         <LastUpdated />
       </div>
       <div className="flex items-baseline justify-between gap-x-8 lg:contents">
-        <Link href={localize("/dont-click-here")} className={cn(quiet, tap)}>
-          {copy.dontClickHere}
-        </Link>
+        <span className="flex items-baseline gap-x-8">
+          <Link href={localize("/dont-click-here")} className={cn(quiet, tap)}>
+            {copy.dontClickHere}
+          </Link>
+          <SecretsCount className={tap} />
+        </span>
         <button type="button" onClick={() => scrollPage(0)} className={cn(quiet, tap, "cursor-pointer")}>
           {copy.backToTop}
           <span className="text-primary" aria-hidden="true">

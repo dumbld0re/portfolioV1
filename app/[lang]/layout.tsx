@@ -10,6 +10,7 @@ import { BORING_SCRIPT } from "@/lib/boring-store"
 import { BOOT_GATE_SCRIPT } from "@/lib/motion"
 import { THEME_SCRIPT } from "@/lib/theme-script"
 import { CustomCursor } from "@/components/custom-cursor"
+import { SoundSync } from "@/components/sound-sync"
 import { LanguageProvider } from "@/components/language-provider"
 import { ScrollReveal } from "@/components/scroll-reveal"
 import { SmoothScroll } from "@/components/smooth-scroll"
@@ -112,6 +113,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
           <SpeedInsights />
         </LanguageProvider>
         <CustomCursor />
+        <SoundSync />
       </body>
     </html>
   )
