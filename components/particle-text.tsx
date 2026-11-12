@@ -465,12 +465,15 @@ export function ParticleText({
         y[i] += vy[i]
         motion += Math.abs(vx[i]) + Math.abs(vy[i])
 
+        // Only dots the pointer itself moves make a sound (and later the
+        // sound of coming home): the entrance and the eggs stay silent.
         if (listen) {
           const ex = x[i] - tx[i]
           const ey = y[i] - ty[i]
           const e2 = ex * ex + ey * ey
           if (!away[i]) {
-            if (e2 > 30) {
+            const touched = wellOn ? d2 < reach * reach * 10.24 : d2 < reach * reach
+            if (e2 > 30 && touched) {
               away[i] = 1
               parts.push((tx[i] - nameLeft) / nameW, (ty[i] - nameTop) / nameH)
             }
