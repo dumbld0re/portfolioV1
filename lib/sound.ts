@@ -34,9 +34,10 @@ export function getServerSnapshot() {
   return false
 }
 
-/** True only while sound is on and playing: cheap enough to check every frame. */
+/** True only while sound is on and playing: cheap enough to check every frame.
+ *  Boring mode (the plain 1996 page) is always silent, whatever the switch says. */
 export function soundOn() {
-  return on && !!ac && ac.state === "running"
+  return on && !!ac && ac.state === "running" && !document.documentElement.classList.contains("boring")
 }
 
 /** Switch sound on or off. Call from a click, so the browser lets it play. */
