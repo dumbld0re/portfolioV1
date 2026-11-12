@@ -74,7 +74,7 @@ const SHARE_IMAGE_ALT =
 // images by URL, so a new query string makes them fetch the new one.
 // The cards are captured from the live dot name on the dev-only /share-card
 // page (see app/[lang]/share-card/page.tsx); the still is 2x so its dots stay round.
-const SHARE_IMAGE_VERSION = 3
+const SHARE_IMAGE_VERSION = 4
 
 export const shareImages = {
   openGraph: [
