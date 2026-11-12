@@ -68,18 +68,26 @@ export function jsonLdScript(data: object) {
 }
 
 const SHARE_IMAGE_ALT =
-  "Danny-Miguel Mittelberger — I freelance here and there, with a soft spot for Linux and everything that runs in a terminal."
+  "danny-miguel mittelberger, written in dots, above the site's triangle cursor mark."
 
 // Bump the version when the card changes: X, iMessage and friends cache share
 // images by URL, so a new query string makes them fetch the new one.
-const SHARE_IMAGE_VERSION = 2
+// The cards are captured from the live dot name on the dev-only /share-card
+// page (see app/[lang]/share-card/page.tsx); the still is 2x so its dots stay round.
+const SHARE_IMAGE_VERSION = 3
 
 export const shareImages = {
   openGraph: [
-    { url: `/opengraph-image.png?v=${SHARE_IMAGE_VERSION}`, width: 1200, height: 630, alt: SHARE_IMAGE_ALT },
+    { url: `/opengraph-image.png?v=${SHARE_IMAGE_VERSION}`, width: 2400, height: 1260, alt: SHARE_IMAGE_ALT },
   ],
-  twitter: [{ url: `/twitter-image.png?v=${SHARE_IMAGE_VERSION}`, width: 1200, height: 630, alt: SHARE_IMAGE_ALT }],
+  twitter: [{ url: `/twitter-image.png?v=${SHARE_IMAGE_VERSION}`, width: 2400, height: 1260, alt: SHARE_IMAGE_ALT }],
 }
+
+// A cursor playing with the name's dots, for the apps that play og:video
+// (Discord, Telegram and others); the rest show the still.
+export const shareVideos = [
+  { url: `${SITE_URL}/share-card.mp4?v=${SHARE_IMAGE_VERSION}`, width: 1920, height: 1080, type: "video/mp4" },
+]
 
 // Next merges metadata shallowly, so a page that sets its own openGraph drops
 // the root's share image and site name. Pages spread this base to keep them.
@@ -88,5 +96,6 @@ export function baseOpenGraph(language: Language) {
     siteName: SITE_NAME,
     locale: OG_LOCALE[language],
     images: shareImages.openGraph,
+    videos: shareVideos,
   }
 }

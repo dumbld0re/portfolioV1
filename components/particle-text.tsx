@@ -235,10 +235,12 @@ export function ParticleText({
       o.font = `${cs.fontWeight} ${size}px ${cs.fontFamily}`
       o.textBaseline = "alphabetic"
       if ("letterSpacing" in o) (o as CanvasRenderingContext2D & { letterSpacing: string }).letterSpacing = cs.letterSpacing
-      const left = bases[0].left - box.left + pad
       const top = bases[0].bottom - box.top + pad
       words.forEach((word, i) => {
         const baseline = top + i * lineHeight
+        // The heading's own lines start where the page put each one (centred
+        // headings start every line differently); other words line up with the first.
+        const left = (word === baseLines[i] && bases[i] ? bases[i] : bases[0]).left - box.left + pad
         o.fillStyle = "#fff"
         o.fillText(word, left, baseline)
         // The accent character again, in red, so its dots can be told apart.
