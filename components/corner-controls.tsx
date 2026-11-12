@@ -38,8 +38,8 @@ export function CornerControls() {
   const soundOn = useSyncExternalStore(sound.subscribe, sound.getSnapshot, sound.getServerSnapshot)
 
   // Sound (lib/sound.ts): a visitor who left it on gets it back at their
-  // first click, and links and buttons tick under a mouse and click when
-  // pressed. Nothing plays while it is off.
+  // first click. Links and buttons tick under a mouse and click when
+  // pressed; a press anywhere else on the page taps. Nothing plays while it is off.
   useEffect(() => {
     const stopRestore = sound.restoreSound()
     let current: Element | null = null
@@ -53,12 +53,18 @@ export function CornerControls() {
       const el = (e.target as Element | null)?.closest?.(INTERACTIVE)
       if (el && !el.hasAttribute("data-sound-switch")) sound.soundEvent("click", 0.5, e.clientX / window.innerWidth)
     }
+    const onDown = (e: PointerEvent) => {
+      if (e.button !== 0 || (e.target as Element | null)?.closest?.(INTERACTIVE)) return
+      sound.soundEvent("tap", 0.5, e.clientX / window.innerWidth)
+    }
     document.addEventListener("pointerover", onOver, { passive: true })
     document.addEventListener("click", onClick, true)
+    document.addEventListener("pointerdown", onDown, { passive: true })
     return () => {
       stopRestore()
       document.removeEventListener("pointerover", onOver)
       document.removeEventListener("click", onClick, true)
+      document.removeEventListener("pointerdown", onDown)
     }
   }, [])
   // The hero has its own email icon in this corner of the screen, so "say

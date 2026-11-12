@@ -329,7 +329,7 @@ export function soundDots(f: DotFrame) {
 
 // ---------------------------------------------------------------- one-off sounds
 
-export type SoundEvent = "hover" | "click" | "throw" | "open"
+export type SoundEvent = "hover" | "click" | "tap" | "throw" | "open"
 
 /** amount: 0..1 (how much was thrown); u: 0..1, where across the screen. */
 export function soundEvent(name: SoundEvent, amount = 0.5, u = 0.5) {
@@ -339,6 +339,10 @@ export function soundEvent(name: SoundEvent, amount = 0.5, u = 0.5) {
 
   if (KIT === "grain") {
     if (name === "hover") for (let i = 0; i < 3; i++) grain(t + i * 0.011, 3600 + i * 700, 12, 0.005, 0.18, pan)
+    if (name === "tap") {
+      grain(t, 2400, 3, 0.018, 0.32, pan)
+      grain(t + 0.008, 6000, 10, 0.004, 0.14, pan)
+    }
     if (name === "click") {
       sweep(t, "sine", 140, 70, 0.07, 0.22, pan)
       grain(t, 1800, 4, 0.03, 0.4, pan)
@@ -364,6 +368,11 @@ export function soundEvent(name: SoundEvent, amount = 0.5, u = 0.5) {
   }
 
   if (name === "hover") blip(t, 3300, 0.006, 0.16, pan)
+  if (name === "tap") {
+    // a fingertip on the glass: a dry click with a little body under it
+    blip(t, 2050, 0.005, 0.24, pan)
+    sweep(t, "sine", 190, 95, 0.035, 0.2, pan)
+  }
   if (name === "click") {
     sweep(t, "sine", 110, 45, 0.14, 0.4, pan)
     blip(t, 2600, 0.008, 0.2, pan)
