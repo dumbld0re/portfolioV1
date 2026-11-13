@@ -11,10 +11,11 @@ import { BOOT_SEQUENCE_MS, hasBootPlayed, markBootPlayed } from "@/lib/motion"
 import { column } from "@/lib/styles"
 import { cn } from "@/lib/utils"
 
-export function HomeSection() {
+/** echo: the inert copy at the foot of the page (components/page-loop.tsx). */
+export function HomeSection({ echo = false }: { echo?: boolean }) {
   const { language } = useLanguage()
   const t = homeContent[language].hero
-  const [boot] = useState(() => !hasBootPlayed())
+  const [boot] = useState(() => !echo && !hasBootPlayed())
 
   useEffect(() => {
     markBootPlayed()
@@ -35,10 +36,16 @@ export function HomeSection() {
       {/* The name, in loose dots: they fly in, give way to the cursor and can
           be gathered by a held mouse button (components/particle-text.tsx). */}
       <ParticleText
-        ref={(handle) => {
-          setHeroName(handle)
-          return () => setHeroName(null)
-        }}
+        ref={
+          echo
+            ? undefined
+            : (handle) => {
+                setHeroName(handle)
+                return () => setHeroName(null)
+              }
+        }
+        as={echo ? "h2" : "h1"}
+        settled={echo}
         lines={t.name.split(/\s+/)}
         accent="-"
         delay={boot ? BOOT_SEQUENCE_MS.heroDots : 0}

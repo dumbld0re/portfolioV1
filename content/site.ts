@@ -27,8 +27,7 @@ export const siteCopy: Record<
     sayHello: string
     on: string
     off: string
-    pauseAnimation: string
-    playAnimation: string
+    loopLabel: string
   }
 > = {
   de: {
@@ -56,8 +55,7 @@ export const siteCopy: Record<
     sayHello: "sag hallo",
     on: "an",
     off: "aus",
-    pauseAnimation: "animation anhalten",
-    playAnimation: "animation abspielen",
+    loopLabel: "Endloses Scrollen ein- oder ausschalten",
   },
   en: {
     nav: {
@@ -84,8 +82,7 @@ export const siteCopy: Record<
     sayHello: "say hello",
     on: "on",
     off: "off",
-    pauseAnimation: "pause animation",
-    playAnimation: "play animation",
+    loopLabel: "Turn endless scrolling on or off",
   },
   it: {
     nav: {
@@ -112,7 +109,6 @@ export const siteCopy: Record<
     sayHello: "dimmi ciao",
     on: "sì",
     off: "no",
-    pauseAnimation: "metti in pausa l'animazione",
-    playAnimation: "riproduci l'animazione",
+    loopLabel: "Attiva o disattiva lo scorrimento infinito",
   },
 }

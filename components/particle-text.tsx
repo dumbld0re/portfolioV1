@@ -41,6 +41,9 @@ type Props = {
   delay?: number
   /** Gather only once the heading scrolls into view. */
   whenVisible?: boolean
+  /** Start with every dot already home, no entrance, and keep the canvas to
+   *  the stage (the home page's loop echo, components/page-loop.tsx). */
+  settled?: boolean
   ref?: Ref<ParticleTextHandle>
 }
 
@@ -92,6 +95,7 @@ export function ParticleText({
   after,
   delay = 0,
   whenVisible = false,
+  settled = false,
   ref,
 }: Props) {
   const host = useRef<HTMLHeadingElement>(null)
@@ -192,7 +196,7 @@ export function ParticleText({
     let raf = 0
     let visible = false
     let started = !whenVisible
-    let startAt = performance.now() + delay
+    let startAt = settled ? performance.now() - 10_000 : performance.now() + delay
     let falling = false
     // An egg: the name dozing off.
     let sleepy = false
@@ -368,7 +372,7 @@ export function ParticleText({
       dpr = Math.min(window.devicePixelRatio || 1, box.width < 768 ? 3 : 2)
       w = box.width
       h = box.height
-      lift = Math.max(0, Math.round(box.top + window.scrollY))
+      lift = settled ? 0 : Math.max(0, Math.round(box.top + window.scrollY))
       canvas.style.top = `${-lift}px`
       canvas.style.height = `${h + lift}px`
       canvas.width = Math.round(w * dpr)
@@ -522,7 +526,7 @@ export function ParticleText({
       assign(pts, flags, first)
       // After a resize the name is simply redrawn in place (unless the dots are
       // lying on the floor, or the entrance is still under way).
-      if (!first && !falling && performance.now() - startAt > 2000) {
+      if ((first && settled) || (!first && !falling && performance.now() - startAt > 2000)) {
         x.set(tx)
         y.set(ty)
         vx.fill(0)
@@ -763,7 +767,7 @@ export function ParticleText({
       delete el.dataset.live
       canvas.remove()
     }
-  }, [text, accent, delay, whenVisible, still])
+  }, [text, accent, delay, whenVisible, settled, still])
 
   return (
     <Tag ref={host} className={cn("pt", className)}>

@@ -9,6 +9,8 @@ export const setLenis = (l: Lenis | null) => {
   active = l
 }
 
+export const getLenis = () => active
+
 /** Holds the page still behind a modal, and lets it go again. */
 export function lockScroll(locked: boolean) {
   if (locked) active?.stop()

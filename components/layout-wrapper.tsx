@@ -8,6 +8,7 @@ import { EasterEggs } from "@/components/easter-eggs"
 import { BoringHome } from "@/components/boring/boring-home"
 import { CornerControls } from "@/components/corner-controls"
 import { Header } from "@/components/header"
+import { PageLoop } from "@/components/page-loop"
 import { LetterDialog } from "@/components/letter-form"
 import { SiteFooter } from "@/components/site-footer"
 import { stripLanguage } from "@/lib/i18n"
@@ -35,6 +36,8 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
       <div className="relative z-10 flex flex-col min-h-screen">
         <Header />
         {children}
+        {/* The home page loops: the top comes round again below the contact section. */}
+        {home && <PageLoop />}
         <CornerControls />
         <LetterDialog />
         <EasterEggs />

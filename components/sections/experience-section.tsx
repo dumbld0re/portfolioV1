@@ -32,15 +32,15 @@ function unbroken(text: string) {
   )
 }
 
-export function ExperienceSection() {
+export function ExperienceSection({ echo = false }: { echo?: boolean }) {
   const { language } = useLanguage()
   const labels = siteCopy[language]
   const t = experienceContent[language]
   const byCompany = new Map(t.experiences.map((exp) => [exp.company, exp]))
 
   return (
-    <section id="experience" className="scroll-mt-10 px-6 py-16 md:px-12 md:py-24">
-      <div data-reveal className={column}>
+    <section id={echo ? undefined : "experience"} className="scroll-mt-10 px-6 py-16 md:px-12 md:py-24">
+      <div data-reveal={echo ? undefined : ""} className={column}>
       {/* The whole section follows the hero's centre line. */}
       <div className="mx-auto max-w-[42rem] text-center">
         <h2 className={sectionLabel}>{labels.nav.experience}</h2>

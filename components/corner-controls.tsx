@@ -1,5 +1,7 @@
 "use client"
 
+import { Infinity as InfinityIcon } from "lucide-react"
+import { usePathname } from "next/navigation"
 import { useEffect, useState, useSyncExternalStore } from "react"
 
 import { siteCopy } from "@/content/site"
@@ -7,18 +9,10 @@ import { useHasLanguages, useLanguageOrDefault } from "@/components/language-pro
 import { LanguageSwitch } from "@/components/language-switch"
 import { openLetter } from "@/components/letter-form"
 import { getServerSnapshot, getSnapshot, setBoring, subscribe } from "@/lib/boring-store"
+import { stripLanguage } from "@/lib/i18n"
+import * as loop from "@/lib/loop-store"
 import * as sound from "@/lib/sound"
 import { cn } from "@/lib/utils"
-
-const PAUSE_KEY = "paused"
-
-function readPaused() {
-  try {
-    return localStorage.getItem(PAUSE_KEY) === "1"
-  } catch {
-    return false
-  }
-}
 
 const corner =
   "fixed bottom-4 z-40 hidden lg:flex items-center gap-6 rounded-full bg-background/85 px-4 py-1.5 font-mono text-sm backdrop-blur-sm print:hidden"
@@ -33,7 +27,9 @@ export function CornerControls() {
   const labels = siteCopy[useLanguageOrDefault()]
   const languages = useHasLanguages()
   const boring = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot) !== "off"
-  const [paused, setPaused] = useState(false)
+  const loopOn = useSyncExternalStore(loop.subscribe, loop.getSnapshot, loop.getServerSnapshot)
+  // Only the home page loops (components/page-loop.tsx).
+  const home = stripLanguage(usePathname()) === "/"
   const soundOn = useSyncExternalStore(sound.subscribe, sound.getSnapshot, sound.getServerSnapshot)
 
   // The hero has its own email icon in this corner of the screen, so "say
@@ -42,16 +38,26 @@ export function CornerControls() {
   const [hello, setHello] = useState(false)
 
   useEffect(() => {
-    const links = document.querySelector("[data-hero-links]")
-    if (!links) {
+    // On the home page there are two: the hero and its loop echo at the foot
+    // (components/page-loop.tsx); "say hello" waits until neither is in view.
+    const links = [...document.querySelectorAll("[data-hero-links]")]
+    if (!links.length) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setHello(true)
       return
     }
-    const observer = new IntersectionObserver(([entry]) => setHello(!entry.isIntersecting))
-    observer.observe(links)
+    const seen = new Set<Element>()
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) seen.add(entry.target)
+        else seen.delete(entry.target)
+      }
+      setHello(seen.size === 0)
+    })
+    links.forEach((el) => observer.observe(el))
     return () => observer.disconnect()
-  }, [])
+    // Looked up again when the loop's echo comes or goes.
+  }, [loopOn])
 
   // The header has its own language link, so the one down here only comes
   // in once the header has scrolled off the screen. On phones and tablets the
@@ -60,39 +66,25 @@ export function CornerControls() {
   const [headerGone, setHeaderGone] = useState(false)
   const [footerHere, setFooterHere] = useState(false)
   useEffect(() => {
-    const header = document.querySelector("header")
+    // The home page's loop echo carries a second header (components/page-loop.tsx).
+    const headers = [...document.querySelectorAll("header")]
     const footer = document.querySelector("[data-site-footer]")
+    const seen = new Set<Element>()
     const observer = new IntersectionObserver((entries) => {
       for (const entry of entries) {
-        if (entry.target === header) setHeaderGone(!entry.isIntersecting)
-        else setFooterHere(entry.isIntersecting)
+        if (entry.target === footer) setFooterHere(entry.isIntersecting)
+        else if (entry.isIntersecting) seen.add(entry.target)
+        else seen.delete(entry.target)
       }
+      setHeaderGone(seen.size === 0)
     })
-    if (header) observer.observe(header)
+    headers.forEach((el) => observer.observe(el))
     if (footer) observer.observe(footer)
     return () => observer.disconnect()
-  }, [])
+  }, [loopOn])
   const languageSwitch = languages && headerGone
   const floating = languageSwitch && !footerHere
   const fade = (shown: boolean) => cn("transition-opacity duration-300", !shown && "pointer-events-none opacity-0")
-
-  useEffect(() => {
-    // Restoring a stored preference after hydration, not deriving state.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setPaused(readPaused())
-  }, [])
-
-  useEffect(() => {
-    document.documentElement.classList.toggle("paused", paused)
-  }, [paused])
-
-  const togglePaused = () => {
-    const next = !paused
-    setPaused(next)
-    try {
-      localStorage.setItem(PAUSE_KEY, next ? "1" : "0")
-    } catch {}
-  }
 
   return (
     <>
@@ -146,9 +138,19 @@ export function CornerControls() {
         >
           {labels.sound}: <span className={soundOn ? "text-primary" : undefined}>{soundOn ? labels.on : labels.off}</span>
         </button>
-        <button type="button" aria-pressed={paused} onClick={togglePaused} className={control}>
-          {paused ? labels.playAnimation : labels.pauseAnimation}
-        </button>
+        {home && (
+          <button
+            type="button"
+            role="switch"
+            aria-checked={loopOn}
+            aria-label={labels.loopLabel}
+            title={labels.loopLabel.toLowerCase()}
+            onClick={() => loop.setLoop(!loopOn)}
+            className={cn(control, "-my-1 py-1", loopOn && "text-primary hover:text-primary")}
+          >
+            <InfinityIcon aria-hidden="true" className="size-[1.15em]" strokeWidth={1.75} />
+          </button>
+        )}
       </div>
     </>
   )
