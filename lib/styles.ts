@@ -24,6 +24,7 @@ export const taglineHeading = "mt-4 font-mono text-base text-foreground"
 
 /** X (Twitter) profile, linked from the hero and contact icon rows. */
 export const X_URL = "https://x.com/dannymiiiguel"
-// Placeholders until the profiles exist: swap in the real profile links.
+/** Pinterest profile (its own short link). */
+export const PINTEREST_URL = "https://pin.it/7G6mz2jvi"
+// Placeholder until the profile exists: swap in the real profile link.
 export const INSTAGRAM_URL = "https://www.instagram.com/"
-export const PINTEREST_URL = "https://www.pinterest.com/"
