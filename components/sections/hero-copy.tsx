@@ -39,10 +39,10 @@ export function HeroStack({ t }: { t: Hero }) {
     manual: <ManualWord word={t.manual.word} answer={t.manual.answer} />,
     breaks: <BreaksWord word={t.breaks} />,
     unam: (
-      <a className="pill" data-tone="grape" href="https://www.unam.edu.na" target="_blank" rel="noreferrer">
+      <span className="pill cursor-default" data-tone="grape">
         <DotMark name="cap" />
         {t.unam}
-      </a>
+      </span>
     ),
     linux: (
       <span className="pill cursor-default" data-tone="mint">

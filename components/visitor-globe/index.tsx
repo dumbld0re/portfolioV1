@@ -361,11 +361,14 @@ export function GlobeHorizon({
   className,
   children,
   screens = "narrow",
+  pill = true,
 }: {
   className?: string
   children?: ReactNode
   /** Which screens this one runs on: the phone footer's, or the wide one under the footer row. */
   screens?: "narrow" | "wide"
+  /** False when the footer already says where people came from. */
+  pill?: boolean
 }) {
   const language = useLanguageOrDefault()
   const t = globeContent[language]
@@ -381,7 +384,7 @@ export function GlobeHorizon({
       {/* The page's background fades in over the far edge, so the ball
           comes up out of the page rather than being cut off by it. */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-background to-transparent" />
-      {data && totals && (
+      {pill && data && totals && (
         <button
           type="button"
           onClick={openGlobe}

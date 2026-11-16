@@ -56,7 +56,6 @@ const copy = {
 /** The hero's {tokens} as 1996 would have them: names as plain links, the rest as words. */
 function plainFill(text: string, hero: (typeof homeContent)["en"]["hero"]) {
   const links: Record<string, [string, string]> = {
-    unam: ["UNAM", "https://www.unam.edu.na"],
     pinterest: ["Pinterest", PINTEREST_URL],
     x: ["X", X_URL],
     instagram: ["Instagram", INSTAGRAM_URL],
@@ -64,6 +63,7 @@ function plainFill(text: string, hero: (typeof homeContent)["en"]["hero"]) {
   const words: Record<string, string> = {
     manual: hero.manual.word,
     breaks: hero.breaks,
+    unam: "UNAM",
     linux: "Linux",
     namibia: "Namibia",
     things: hero.things[0],

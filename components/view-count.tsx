@@ -19,11 +19,9 @@ function fetchViews() {
   return request
 }
 
-/** " | <eye> 1,204": all-time count of unique devices, shown after "last updated". */
-export function ViewCount() {
-  const { language } = useLanguage()
+/** The all-time count of unique devices, once it has loaded. */
+export function useViews() {
   const [views, setViews] = useState<number | null>(null)
-
   useEffect(() => {
     let live = true
     fetchViews().then((n) => live && setViews(n))
@@ -31,6 +29,13 @@ export function ViewCount() {
       live = false
     }
   }, [])
+  return views
+}
+
+/** " | <eye> 1,204": all-time count of unique devices, shown after "last updated". */
+export function ViewCount() {
+  const { language } = useLanguage()
+  const views = useViews()
 
   if (views === null) return null
   const count = views.toLocaleString(language === "en" ? "en-US" : LOCALE[language])
@@ -55,7 +60,7 @@ export function ViewCount() {
 
 /** Hairline almond eye with a drawn iris: it glances left and right, blinks,
  *  and now and then blinks twice. Motion lives in globals.css (.eye-mark). */
-function BlinkingEye() {
+export function BlinkingEye() {
   const clip = `eye-lid-${useId().replace(/:/g, "")}`
   return (
     <svg viewBox="0 0 24 14" aria-hidden="true" className="eye-mark h-[0.85em] w-[1.45em] overflow-visible">

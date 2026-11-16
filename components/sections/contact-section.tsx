@@ -7,8 +7,8 @@ import { SiteFooter } from "@/components/site-footer"
 import { GlobeHorizon } from "@/components/visitor-globe"
 import { BrandIcon } from "@/components/social-links"
 import { TimeStatus } from "@/components/time-status"
-import { ReadingNow } from "@/components/reading-now"
-import { column, inlineLink, sectionHeading, sectionLabel } from "@/lib/styles"
+import { column, inlineLink, sectionHeading } from "@/lib/styles"
+import { cn } from "@/lib/utils"
 
 export function ContactSection() {
   const { language } = useLanguage()
@@ -21,11 +21,9 @@ export function ContactSection() {
             line. Wide screens: the text on the left, the letter open beside it. */}
         <div className="mx-auto max-w-[68rem] lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-16">
         <div className="mx-auto max-w-[42rem] text-center lg:mx-0 lg:text-left">
-        <h2 className={sectionLabel}>
-          {t.title}
-        </h2>
+        <h2 className="sr-only">{t.title}</h2>
 
-        <p className={sectionHeading}>
+        <p className={cn(sectionHeading, "mt-0 md:mt-0")}>
           {t.heading.replace(/\.$/, "")}
           <span className="text-primary">.</span>
         </p>
@@ -62,7 +60,6 @@ export function ContactSection() {
 
 
         <TimeStatus className="mt-8 space-y-1 font-mono text-sm text-muted-foreground" />
-        <ReadingNow className="mt-1" />
         </div>
 
         {/* Wide screens: the letter sits open on the right. Phones: it opens
@@ -72,8 +69,9 @@ export function ContactSection() {
 
         <SiteFooter className="mt-24" globe />
       </div>
-      {/* Wide screens: the globe rises under the footer row, edge to edge. */}
-      <GlobeHorizon screens="wide" className="mt-12 hidden h-64 lg:block" />
+      {/* Wide screens: the globe rises under the footer, edge to edge; the
+          footer's own line already says where people came from. */}
+      <GlobeHorizon screens="wide" pill={false} className="mt-6 hidden h-72 lg:block" />
     </section>
   )
 }

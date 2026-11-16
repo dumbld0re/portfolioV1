@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { useState } from "react"
 
+
 import { BoringToggle } from "@/components/boring-toggle"
 import { ModeSwitches } from "@/components/corner-controls"
 import { useLanguage } from "@/components/language-provider"
@@ -12,7 +13,10 @@ import { siteCopy } from "@/content/site"
 import { motionOff } from "@/lib/eggs"
 import { markFound } from "@/lib/secrets"
 import { SecretsCount } from "@/components/secrets-count"
-import { GlobeHorizon } from "@/components/visitor-globe"
+import { BandStack, GlobeHorizon, openGlobe, useVisitors, visitorTotals } from "@/components/visitor-globe"
+import { BlinkingEye, useViews } from "@/components/view-count"
+import { globeContent } from "@/content/globe"
+import { LOCALE, type Language } from "@/lib/i18n"
 import { scrollPage } from "@/lib/scroll"
 import { cn } from "@/lib/utils"
 
@@ -33,32 +37,7 @@ const floating =
 export function SiteFooter({ className, globe = false }: { className?: string; globe?: boolean }) {
   const { language, localize } = useLanguage()
   const copy = siteCopy[language]
-  // "2086© (so i dont forget…)": the year can be clicked, and then the
-  // calendar runs forward to it.
-  const [stamp, ...note] = copy.footer.split(" ")
-  const [year, setYear] = useState<number | null>(null)
-
-  const timeTravel = () => {
-    if (year !== null) return
-    markFound("2086")
-    if (motionOff()) return
-    const from = new Date().getFullYear()
-    const to = parseInt(stamp, 10)
-    const start = performance.now()
-    const run = (now: number) => {
-      const p = Math.min(1, (now - start) / 1400)
-      setYear(Math.round(from + (to - from) * (1 - Math.pow(1 - p, 3))))
-      if (p < 1) requestAnimationFrame(run)
-      else window.setTimeout(() => setYear(null), 1600)
-    }
-    requestAnimationFrame(run)
-  }
-
-  const yearButton = (
-    <button type="button" onClick={timeTravel} className="cursor-pointer tabular-nums transition-colors hover:text-foreground">
-      {year === null ? stamp : stamp.replace(/\d+/, String(year))}
-    </button>
-  )
+  const joke = <YearJoke />
 
   // Phones and tablets: boring mode and languages on the left, back to top on
   // the right; floating over the globe on the home page.
@@ -85,11 +64,39 @@ export function SiteFooter({ className, globe = false }: { className?: string; g
 
   return (
     <div data-site-footer className={cn("font-mono text-sm text-muted-foreground", className)}>
-      {/* Wide screens: one row of four under a hairline. */}
-      <div className="hidden border-t border-border/60 pt-6 lg:flex lg:flex-wrap lg:items-center lg:justify-between lg:gap-x-8">
-        <p className="text-balance">
-          {yearButton} {note.join(" ")}
-        </p>
+      {/* Wide screens, home page: a centred stack over the visitor globe
+          (the contact section puts the globe under it). */}
+      {globe && (
+        <div className="hidden flex-col items-center pt-8 text-center lg:flex">
+          <VisitorLine />
+          <div className="mt-12 flex items-center gap-x-8">
+            <ModeSwitches className={cn(quiet, whole, "cursor-pointer")} />
+            <button type="button" onClick={() => scrollPage(0)} className={cn(quiet, whole, "cursor-pointer")}>
+              {copy.backToTop} <span className="text-primary">↑</span>
+            </button>
+          </div>
+          <div className="mt-4 flex items-center gap-x-3 text-xs text-muted-foreground/80">
+            <p>{joke}</p>
+            <span aria-hidden="true">·</span>
+            <LastUpdated count={false} className="lg:inline" />
+            <span aria-hidden="true">·</span>
+            <Link href={localize("/dont-click-here")} className={cn(quiet, whole)}>
+              {copy.dontClickHere}
+            </Link>
+            <span aria-hidden="true">·</span>
+            <SecretsCount className="whitespace-nowrap" buttonClassName={whole} />
+          </div>
+        </div>
+      )}
+
+      {/* Wide screens, other pages: one row of four under a hairline. */}
+      <div
+        className={cn(
+          "hidden border-t border-border/60 pt-6 lg:flex lg:flex-wrap lg:items-center lg:justify-between lg:gap-x-8",
+          globe && "lg:hidden",
+        )}
+      >
+        <p className="text-balance">{joke}</p>
         <LastUpdated />
         <span className="flex items-baseline gap-x-8">
           <Link href={localize("/dont-click-here")} className={cn(quiet, whole)}>
@@ -106,9 +113,7 @@ export function SiteFooter({ className, globe = false }: { className?: string; g
           the top of a globe of where visitors come from, rising out of the
           bottom edge with the controls floating over it. */}
       <div className="flex flex-col items-center gap-2.5 text-center lg:hidden">
-        <p className="text-balance">
-          {yearButton} {note.join(" ")}
-        </p>
+        <p className="text-balance">{joke}</p>
         <LastUpdated count={false} />
         <div className="relative mt-3 flex flex-wrap items-baseline justify-center gap-x-6 gap-y-5">
           <Link href={localize("/dont-click-here")} className={cn(quiet, tap, whole)}>
@@ -125,5 +130,76 @@ export function SiteFooter({ className, globe = false }: { className?: string; g
         )}
       </div>
     </div>
+  )
+}
+
+const words: Record<Language, { stopped: (n: string) => string; from: (c: number) => string }> = {
+  en: { stopped: (n) => `${n} people have stopped by`, from: (c) => `from ${c} countries` },
+  de: { stopped: (n) => `${n} leute waren schon hier`, from: (c) => `aus ${c} ländern` },
+  it: { stopped: (n) => `${n} persone sono passate di qui`, from: (c) => `da ${c} paesi` },
+}
+
+/** "<eye> 149 people have stopped by · <bands> from 37 countries": opens the globe. */
+function VisitorLine() {
+  const { language } = useLanguage()
+  const views = useViews()
+  const data = useVisitors()
+  const totals = visitorTotals(data)
+  if (views === null) return <p className="h-5" />
+  const count = views.toLocaleString(language === "en" ? "en-US" : LOCALE[language])
+  return (
+    <button
+      type="button"
+      onClick={openGlobe}
+      aria-haspopup="dialog"
+      aria-label={globeContent[language].open}
+      className="inline-flex cursor-pointer items-center gap-x-2 transition-colors hover:text-foreground"
+    >
+      <BlinkingEye />
+      <span>
+        <span className="tabular-nums text-foreground">{count}</span>
+        {words[language].stopped(count).slice(count.length)}
+      </span>
+      {data && totals && (
+        <>
+          <span aria-hidden="true">·</span>
+          <BandStack data={data} />
+          {words[language].from(totals.countries)}
+        </>
+      )}
+    </button>
+  )
+}
+
+/** "2086© (so i dont forget…)": the year can be clicked, and then the
+ *  calendar runs forward to it. */
+export function YearJoke() {
+  const { language } = useLanguage()
+  const [stamp, ...note] = siteCopy[language].footer.split(" ")
+  const [year, setYear] = useState<number | null>(null)
+
+  const timeTravel = () => {
+    if (year !== null) return
+    markFound("2086")
+    if (motionOff()) return
+    const from = new Date().getFullYear()
+    const to = parseInt(stamp, 10)
+    const start = performance.now()
+    const run = (now: number) => {
+      const p = Math.min(1, (now - start) / 1400)
+      setYear(Math.round(from + (to - from) * (1 - Math.pow(1 - p, 3))))
+      if (p < 1) requestAnimationFrame(run)
+      else window.setTimeout(() => setYear(null), 1600)
+    }
+    requestAnimationFrame(run)
+  }
+
+  return (
+    <>
+      <button type="button" onClick={timeTravel} className="cursor-pointer tabular-nums transition-colors hover:text-foreground">
+        {year === null ? stamp : stamp.replace(/\d+/, String(year))}
+      </button>{" "}
+      {note.join(" ")}
+    </>
   )
 }

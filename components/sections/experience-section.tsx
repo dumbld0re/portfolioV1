@@ -8,7 +8,7 @@ import { siteCopy } from "@/content/site"
 import { useLanguage } from "@/components/language-provider"
 import { formatPeriod } from "@/lib/format-date"
 import { TaglineHeading } from "@/components/sections/tagline-heading"
-import { column, sectionLabel, taglineHeading } from "@/lib/styles"
+import { column, taglineHeading } from "@/lib/styles"
 import { cn } from "@/lib/utils"
 
 // Experience, told rather than listed: two paragraphs in the display serif.
@@ -43,9 +43,9 @@ export function ExperienceSection({ echo = false }: { echo?: boolean }) {
       <div data-reveal={echo ? undefined : ""} className={column}>
       {/* The whole section follows the hero's centre line. */}
       <div className="mx-auto max-w-[42rem] text-center">
-        <h2 className={sectionLabel}>{labels.nav.experience}</h2>
+        <h2 className="sr-only">{labels.nav.experience}</h2>
         {/* The heading in the hero tagline's voice: "where i have [worked]". */}
-        <TaglineHeading text={t.title} pill={t.titlePill} className={taglineHeading} />
+        <TaglineHeading text={t.title} pill={t.titlePill} className={cn(taglineHeading, "mt-0")} />
 
         <div className="mt-8 space-y-6 md:space-y-8">
           {t.prose.map((paragraph, p) => (
