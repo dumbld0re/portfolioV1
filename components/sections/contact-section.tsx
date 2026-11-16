@@ -1,22 +1,17 @@
 "use client"
 
 import { contactContent } from "@/content/contact"
-import { sayHiToMe } from "@/content/handwriting"
-import { Handwritten } from "@/components/handwritten"
 import { LetterForm, openLetter } from "@/components/letter-form"
 import { useLanguage } from "@/components/language-provider"
 import { SiteFooter } from "@/components/site-footer"
 import { BrandIcon } from "@/components/social-links"
 import { TimeStatus } from "@/components/time-status"
+import { ReadingNow } from "@/components/reading-now"
 import { column, inlineLink, sectionHeading, sectionLabel } from "@/lib/styles"
-import { cn } from "@/lib/utils"
 
 export function ContactSection() {
   const { language } = useLanguage()
   const t = contactContent[language]
-  // The handwriting only exists in English ("say hi to me"); German keeps
-  // its heading as set type.
-  const scribbled = language === "en"
 
   return (
     <section id="contact" className="scroll-mt-10 px-6 pt-16 md:px-12 md:pt-24 lg:pb-24">
@@ -29,24 +24,10 @@ export function ContactSection() {
           {t.title}
         </h2>
 
-        {/* The set heading; in English "say hi to me" is scribbled over it by
-            hand, and the space below is for the scribble's tail. The scribble is centred on the heading, and starts
-            inside it where the text is left-aligned. */}
-        <div className={cn("relative mx-auto w-fit lg:mx-0", // Room above for the scribble's tall strokes where it is centred.
-          scribbled && "mt-5 mb-12 md:mb-20 lg:mt-0")}>
-          <p className={cn(sectionHeading, scribbled && "text-foreground/35")}>
-            {t.heading.replace(/\.$/, "")}
-            <span className={scribbled ? "text-primary/60" : "text-primary"}>.</span>
-          </p>
-          {scribbled && (
-            <Handwritten
-              writing={sayHiToMe}
-              label="say hi to me"
-              delay={250}
-              className="pointer-events-none absolute left-1/2 top-[-55%] w-[min(18.5rem,45vw)] -translate-x-1/2 -rotate-6 lg:left-[12%] lg:translate-x-0 text-primary"
-            />
-          )}
-        </div>
+        <p className={sectionHeading}>
+          {t.heading.replace(/\.$/, "")}
+          <span className="text-primary">.</span>
+        </p>
 
         <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl mx-auto lg:mx-0">
           {t.blurbBefore}{" "}
@@ -80,6 +61,7 @@ export function ContactSection() {
 
 
         <TimeStatus className="mt-8 space-y-1 font-mono text-sm text-muted-foreground" />
+        <ReadingNow className="mt-1" />
         </div>
 
         {/* Wide screens: the letter sits open on the right. Phones: it opens
