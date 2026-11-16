@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react"
 
+import { BackHome } from "@/components/back-home"
 import { BoringToggle } from "@/components/boring-toggle"
 import { DotGround } from "@/components/dot-ground"
 import { ThemeToggle } from "@/components/theme-toggle"
@@ -9,7 +10,6 @@ import type { TopicId } from "@/content/library-topics"
 import { formatMinutes } from "@/lib/library-query"
 import type { LibraryEntry } from "@/lib/library-types"
 import { scrollPage } from "@/lib/scroll"
-import { SITE_URL } from "@/lib/seo"
 import { cn } from "@/lib/utils"
 
 // What both library designs share: the main site's frame (dot ground, a quiet
@@ -87,13 +87,8 @@ export function LibraryFrame({ children }: { children: ReactNode }) {
       <DotGround />
       <div className="relative z-10 flex min-h-screen flex-col">
         <header className="w-full px-6 pt-5 pb-4 md:px-12 md:pt-12 print:hidden">
-          <nav className="mx-auto flex max-w-[90rem] items-center justify-end gap-x-6 font-mono text-[13px] md:gap-x-8 md:text-base">
-            <a href={SITE_URL} className={link}>
-              dannymiguel.com <span className="text-primary">↗</span>
-            </a>
-            <span className="text-muted-foreground/40" aria-hidden="true">
-              /
-            </span>
+          <nav className="mx-auto flex max-w-[90rem] items-center justify-between gap-x-6 font-mono text-[13px] md:text-base">
+            <BackHome />
             <ThemeToggle />
           </nav>
         </header>

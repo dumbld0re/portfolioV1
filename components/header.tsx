@@ -9,6 +9,7 @@ import { CvMenu } from "@/components/cv-menu"
 import { useLanguage } from "@/components/language-provider"
 import { LanguageCycle } from "@/components/language-switch"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { BackHome } from "@/components/back-home"
 import { SHOW_POSTS } from "@/lib/features"
 import { stripLanguage } from "@/lib/i18n"
 import { hasBootPlayed, markBootPlayed } from "@/lib/motion"
@@ -34,7 +35,6 @@ export function Header() {
 
   const links = [
     { href: "/projects", label: labels.nav.projects, current: pathname.startsWith("/projects") },
-    { href: "/#experience", label: labels.nav.experience },
     { href: "/#contact", label: labels.nav.contact },
     ...(SHOW_POSTS ? [{ href: "/posts", label: labels.nav.posts, current: pathname.startsWith("/posts") }] : []),
   ]
@@ -47,6 +47,10 @@ export function Header() {
           boot && "m-block",
         )}
       >
+        {/* Posts: the way home starts the bar, at its left end. */}
+        {pathname.startsWith("/posts") && (
+          <BackHome href={localize("/")} label={labels.nav.backHome} compact className="md:mr-auto" />
+        )}
         {/* One row on every width: on narrow phones the links scroll sideways
             under the language and theme controls instead of wrapping. */}
         <div className="-my-3 flex min-w-0 flex-1 gap-x-3.5 overflow-x-auto py-3 whitespace-nowrap [scrollbar-width:none] md:-my-2 md:flex-none md:gap-x-8 md:overflow-visible md:py-2">

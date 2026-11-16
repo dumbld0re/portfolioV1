@@ -9,6 +9,8 @@ export const siteCopy: Record<
       contact: string
       cv: string
       posts: string
+      /** The "← home" link at the start of the top bar on posts and the shelf. */
+      backHome: string
     }
     cvDownload: string
     cvOpen: string
@@ -37,6 +39,7 @@ export const siteCopy: Record<
       contact: "Kontakt",
       cv: "Lebenslauf",
       posts: "Beiträge",
+      backHome: "start",
     },
     cvDownload: "pdf herunterladen",
     cvOpen: "im browser ansehen",
@@ -64,6 +67,7 @@ export const siteCopy: Record<
       contact: "Contact",
       cv: "CV",
       posts: "Posts",
+      backHome: "home",
     },
     cvDownload: "download pdf",
     cvOpen: "view in browser",
@@ -91,6 +95,7 @@ export const siteCopy: Record<
       contact: "Contatti",
       cv: "CV",
       posts: "Articoli",
+      backHome: "home",
     },
     cvDownload: "scarica il pdf",
     cvOpen: "apri nel browser",
