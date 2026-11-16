@@ -1,7 +1,9 @@
 import { NextResponse, type NextRequest } from "next/server"
 
 import { DEFAULT_LANGUAGE, LANGUAGE_COOKIE, isLanguage, localizePath, stripLanguage, type Language } from "@/lib/i18n"
-import { LIBRARY_PATH, ROOT_DOMAIN, isLibraryHost, libraryHost } from "@/lib/library-host"
+import { LIBRARY_PATH, LIBRARY_URL, isOldLibraryHost } from "@/lib/library-host"
+
+const ROOT_DOMAIN = "dannymiguel.com"
 
 // Pages live under app/[lang]. English is served from the unprefixed URLs via
 // an internal rewrite to /en; German lives at /de. First-time visitors whose
@@ -11,20 +13,20 @@ export function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl
   const host = request.headers.get("host") ?? ""
 
-  if (isLibraryHost(host)) return libraryProxy(request)
-
-  // The library lives on its own subdomain; its internal path only serves
-  // directly on hosts without one (localhost, preview deployments).
-  if (pathname === LIBRARY_PATH || pathname.startsWith(`${LIBRARY_PATH}/`)) {
-    if (!host.endsWith(ROOT_DOMAIN)) return NextResponse.next()
-    const url = new URL(pathname.slice(LIBRARY_PATH.length) || "/", request.url)
-    url.host = libraryHost(host)
-    url.search = search
+  // The library used to live on read.dannymiguel.com (read.localhost in
+  // dev): its old links go to the shelf on the main site. Filters and an open
+  // piece live in the query and hash, so they carry over.
+  if (isOldLibraryHost(host)) {
+    const url = new URL(`${LIBRARY_PATH}${search}`, request.url)
+    if (host.endsWith(ROOT_DOMAIN)) return NextResponse.redirect(`${LIBRARY_URL}${search}`, 308)
+    url.host = host.replace(/^read\./, "")
     return NextResponse.redirect(url, 308)
   }
 
-  // Matched only so the library host can claim them; the main site's own
-  // metadata routes need no rewriting.
+  // The library (app/read) has its own root layout and no language prefix.
+  if (pathname === LIBRARY_PATH || pathname.startsWith(`${LIBRARY_PATH}/`)) return NextResponse.next()
+
+  // The metadata routes need no language rewriting.
   if (pathname === "/robots.txt" || pathname === "/sitemap.xml") return NextResponse.next()
 
   const [, first] = pathname.split("/")
@@ -42,20 +44,6 @@ export function proxy(request: NextRequest) {
   }
 
   return NextResponse.rewrite(new URL(`/${DEFAULT_LANGUAGE}${pathname === "/" ? "" : pathname}${search}`, request.url))
-}
-
-// read.dannymiguel.com (and read.localhost in dev) serves app/library from its
-// root: "/" -> "/library", "/robots.txt" -> "/library/robots.txt". The library
-// is English-only, so none of the language handling below applies.
-function libraryProxy(request: NextRequest) {
-  const { pathname, search } = request.nextUrl
-
-  // Keep a single URL per page: drop the internal prefix if someone types it.
-  if (pathname === LIBRARY_PATH || pathname.startsWith(`${LIBRARY_PATH}/`)) {
-    return NextResponse.redirect(new URL((pathname.slice(LIBRARY_PATH.length) || "/") + search, request.url), 308)
-  }
-
-  return NextResponse.rewrite(new URL(`${LIBRARY_PATH}${pathname === "/" ? "" : pathname}${search}`, request.url))
 }
 
 // Who gets what on a first visit (a language picked before, kept in the
@@ -79,7 +67,7 @@ function preferredLanguage(request: NextRequest): Language {
 
 export const config = {
   // Skip API routes, Next internals and anything with a file extension (public assets like
-  // cv.pdf, icons and the share images) — except the metadata routes, which the
-  // library host rewrites to its own.
+  // cv.pdf, icons and the share images) — except the metadata routes, so the
+  // old library host's /robots.txt and /sitemap.xml redirect too.
   matcher: ["/((?!api/|_next/|_vercel/|.*\\.[^/]+$).*)", "/robots.txt", "/sitemap.xml"],
 }

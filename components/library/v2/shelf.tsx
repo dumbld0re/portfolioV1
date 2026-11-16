@@ -82,7 +82,7 @@ export function ShelfLibrary({ entries, stats }: { entries: LibraryEntry[]; stat
   return (
     <main className="flex-1 px-6 md:px-12">
       <section className="mx-auto flex max-w-[72rem] flex-col items-center pt-8 text-center md:pt-14">
-        <p className={sectionLabel}>read.dannymiguel.com</p>
+        <p className={sectionLabel}>dannymiguel.com/read</p>
         <h1 className="mt-4 font-serif text-[clamp(2.25rem,1.5rem+3vw,4rem)] leading-[1.05] tracking-[-0.02em] lowercase">
           the shelf<span className="text-primary">.</span>
         </h1>

@@ -1,15 +1,11 @@
-// Host routing for the reading library (read.dannymiguel.com). Kept free of
-// Node APIs so proxy.ts can import it.
-export const ROOT_DOMAIN = "dannymiguel.com"
-export const LIBRARY_SUBDOMAIN = "read"
-export const LIBRARY_PATH = "/library"
-export const LIBRARY_URL = `https://${LIBRARY_SUBDOMAIN}.${ROOT_DOMAIN}`
+import { SITE_URL } from "@/lib/seo"
 
-export function isLibraryHost(host: string) {
-  return host.startsWith(`${LIBRARY_SUBDOMAIN}.`)
-}
+// The reading library lives at dannymiguel.com/read (app/read). It used to be
+// read.dannymiguel.com; proxy.ts sends that host's old links here. Kept free
+// of Node APIs so proxy.ts can import it.
+export const LIBRARY_PATH = "/read"
+export const LIBRARY_URL = `${SITE_URL}${LIBRARY_PATH}`
 
-// "www.dannymiguel.com" -> "read.dannymiguel.com", "dannymiguel.com" likewise.
-export function libraryHost(host: string) {
-  return `${LIBRARY_SUBDOMAIN}.${host.replace(/^www\./, "")}`
+export function isOldLibraryHost(host: string) {
+  return host.startsWith("read.")
 }

@@ -26,11 +26,10 @@ const SHARE_IMAGE = {
   alt: "read_ — Danny-Miguel's reading index: essays, papers and books",
 }
 
-// A second root layout: the library is served from read.dannymiguel.com
-// (proxy.ts rewrites it to /library), English-only, and without the
+// A second root layout: the library at /read is English-only, without the
 // portfolio's header and language handling.
 export const metadata: Metadata = {
-  metadataBase: new URL(LIBRARY_URL),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: `${libraryCopy.title} — ${SITE_NAME}`,
     template: `%s — ${libraryCopy.title}`,
@@ -39,12 +38,12 @@ export const metadata: Metadata = {
   applicationName: SITE_NAME,
   authors: [{ name: SITE_NAME, url: SITE_URL }],
   creator: SITE_NAME,
-  alternates: { canonical: "/" },
+  alternates: { canonical: LIBRARY_URL },
   robots: { index: true, follow: true },
   openGraph: {
     title: libraryCopy.title,
     description: libraryCopy.description,
-    url: "/",
+    url: LIBRARY_URL,
     siteName: SITE_NAME,
     locale: "en_US",
     type: "website",
