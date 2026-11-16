@@ -104,7 +104,7 @@ export function CornerControls() {
         <div
           inert={!floating}
           className={cn(
-            "fixed bottom-3 right-3 z-40 flex items-center rounded-full bg-background/85 px-2 font-mono text-sm text-muted-foreground backdrop-blur-sm lg:hidden print:hidden",
+            "fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom))] right-[calc(0.75rem+env(safe-area-inset-right))] z-40 flex items-center rounded-full bg-background/85 px-2 font-mono text-sm text-muted-foreground backdrop-blur-sm lg:hidden print:hidden",
             fade(floating),
           )}
         >

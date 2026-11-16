@@ -97,7 +97,7 @@ export function SiteFooter({ className }: { className?: string }) {
           <SecretsCount className="static whitespace-nowrap" buttonClassName={cn(tap, whole)} />
         </div>
         <GlobeHorizon className="mt-10">
-          <div className="absolute inset-x-4 bottom-[max(1rem,env(safe-area-inset-bottom))] flex items-center justify-between gap-3">
+          <div className="absolute inset-x-4 bottom-[calc(0.75rem+env(safe-area-inset-bottom))] flex items-center justify-between gap-3">
             <div className="flex items-center gap-2">
               <span className={cn(floating, "px-3.5")}>
                 <BoringToggle />

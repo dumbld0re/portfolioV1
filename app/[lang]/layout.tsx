@@ -78,6 +78,10 @@ export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Prom
 // Initial browser-chrome color by OS scheme; ThemeColorSync corrects it to the
 // site's chosen theme after hydration. Values mirror --background in globals.css.
 export const viewport: Viewport = {
+  // The page runs under Safari's floating bottom bar, so the footer's globe
+  // reaches the very bottom of the screen instead of stopping above a band
+  // of plain background. Safe-area insets keep text and controls clear of it.
+  viewportFit: "cover",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#ffffff" },
     { media: "(prefers-color-scheme: dark)", color: "#1a1a1a" },

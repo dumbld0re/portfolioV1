@@ -366,7 +366,7 @@ export function GlobeHorizon({ className, children }: { className?: string; chil
   const wide = useMediaQuery("(min-width: 64rem)")
 
   return (
-    <div className={cn("globe-horizon relative -mx-6 h-64 self-stretch overflow-hidden md:-mx-12", className)}>
+    <div className={cn("globe-horizon relative -mx-6 h-[calc(16rem+env(safe-area-inset-bottom))] self-stretch overflow-hidden md:-mx-12", className)}>
       {data && !wide && <GlobeCanvas mode="horizon" data={data} onTap={openGlobe} className="absolute inset-0" />}
       {/* The page's background fades in over the far edge, so the ball
           comes up out of the page rather than being cut off by it. */}

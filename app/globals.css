@@ -151,6 +151,12 @@
   }
 }
 
+/* viewport-fit=cover: phones on their side keep the page clear of the notch. */
+body {
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
 html {
   /* Safari tints its status bar and overscroll area from the root background. */
   background-color: var(--background);
