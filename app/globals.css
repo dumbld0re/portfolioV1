@@ -190,6 +190,12 @@ html.boring-plain body {
 
 /* Every other page (and the library) in plain mode: the same idea, laid over
    the styled layout instead of replacing it. */
+/* The footer's globe is all motion and colour: boring mode leaves it out
+   (the full globe still opens from the pill). */
+html.boring .globe-horizon .globe-canvas {
+  display: none;
+}
+
 html.boring-plain .site,
 html.boring-plain .site * {
   font-family: "Times New Roman", Times, serif !important;

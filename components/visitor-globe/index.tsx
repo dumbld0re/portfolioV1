@@ -10,7 +10,7 @@ import { lockScroll } from "@/lib/scroll"
 import { sectionLabel } from "@/lib/styles"
 import { useMediaQuery } from "@/lib/use-media-query"
 import { cn } from "@/lib/utils"
-import { BANDS, bandOf } from "@/lib/visitors"
+import { BANDS, SEED, bandOf } from "@/lib/visitors"
 
 import type { GlobeEngine, GlobeMode, Pick } from "./engine"
 
@@ -75,6 +75,7 @@ function GlobeCanvas({
   onEdge,
   engineRef,
   children,
+  label,
 }: {
   mode: GlobeMode
   data: Visitors
@@ -84,6 +85,8 @@ function GlobeCanvas({
   onEdge?: (right: number) => void
   engineRef?: React.RefObject<GlobeEngine | null>
   children?: ReactNode
+  /** What the full globe shows, for screen readers. */
+  label?: string
 }) {
   const canvas = useRef<HTMLCanvasElement>(null)
   const engine = useRef<GlobeEngine | null>(null)
@@ -120,7 +123,12 @@ function GlobeCanvas({
       const ro = new ResizeObserver(() => e.resize())
       ro.observe(el)
       // Colours follow the theme.
-      const mo = new MutationObserver(() => e.build())
+      let dark = document.documentElement.classList.contains("dark")
+      const mo = new MutationObserver(() => {
+        const now = document.documentElement.classList.contains("dark")
+        if (now !== dark) e.build()
+        dark = now
+      })
       mo.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
       stops.push(() => ro.disconnect(), () => mo.disconnect(), watchMotion(() => e.setStill(motionOff())), () => e.destroy())
     })
@@ -142,8 +150,11 @@ function GlobeCanvas({
     <div className={cn("relative", className)}>
       <canvas
         ref={canvas}
+        role={mode === "full" ? "img" : undefined}
+        aria-label={mode === "full" ? label : undefined}
+        aria-hidden={mode === "horizon" || undefined}
         className={cn(
-          "absolute inset-0 size-full opacity-0 transition-opacity duration-700 data-[ready]:opacity-100",
+          "globe-canvas absolute inset-0 size-full opacity-0 transition-opacity duration-700 data-[ready]:opacity-100",
           mode === "horizon" ? "touch-pan-y" : "touch-none cursor-grab active:cursor-grabbing",
         )}
       />
@@ -205,7 +216,8 @@ export function GlobeDialog() {
       if (!dialog || dialog.open) return
       // Fresh numbers each time it opens.
       request = null
-      fetchVisitors().then(setData)
+      // A failed fetch still opens on the analytics numbers.
+      fetchVisitors().then((d) => setData(d ?? { countries: SEED, you: null }))
       dialog.showModal()
       lockScroll(true)
       setOpen(true)
@@ -238,7 +250,7 @@ export function GlobeDialog() {
           {/* The globe fills the whole dialog, so zoomed in it runs off the
               edges of the screen rather than being cut along a line; the
               text floats over it and only its own parts catch the pointer. */}
-          <GlobeCanvas mode="full" data={data} engineRef={engine} onPick={setPick} onEdge={onEdge} className="absolute inset-0" />
+          <GlobeCanvas mode="full" data={data} engineRef={engine} onPick={setPick} onEdge={onEdge} label={totals ? `${t.title}: ${t.summary(number(totals.people, language), totals.countries)}` : t.title} className="absolute inset-0" />
 
           <header className="pointer-events-none relative z-10 flex items-start justify-between gap-6 px-6 pt-6 md:px-12 md:pt-10 [&>*]:pointer-events-auto">
             <div>
@@ -290,7 +302,7 @@ export function GlobeDialog() {
           </ol>
 
           <footer className="pointer-events-none relative z-10 flex flex-col [&>*]:pointer-events-auto items-center gap-4 px-6 pt-2 pb-[max(1.5rem,env(safe-area-inset-bottom))] text-center md:pb-10">
-            <p aria-live="polite" className="min-h-10 font-mono text-sm">
+            <p aria-live="polite" className="min-h-10 font-mono text-sm [@media(max-height:500px)]:min-h-0">
               {pick ? (
                 <span className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2">
                   <span
@@ -304,7 +316,7 @@ export function GlobeDialog() {
                   </span>
                 </span>
               ) : (
-                <span className="inline-block py-2 text-xs text-muted-foreground">{t.hint}</span>
+                <span className="inline-block py-2 text-xs text-muted-foreground [@media(max-height:500px)]:hidden">{t.hint}</span>
               )}
             </p>
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
@@ -354,7 +366,7 @@ export function GlobeHorizon({ className, children }: { className?: string; chil
   const wide = useMediaQuery("(min-width: 64rem)")
 
   return (
-    <div className={cn("relative -mx-6 h-64 self-stretch overflow-hidden md:-mx-12", className)}>
+    <div className={cn("globe-horizon relative -mx-6 h-64 self-stretch overflow-hidden md:-mx-12", className)}>
       {data && !wide && <GlobeCanvas mode="horizon" data={data} onTap={openGlobe} className="absolute inset-0" />}
       {/* The page's background fades in over the far edge, so the ball
           comes up out of the page rather than being cut off by it. */}

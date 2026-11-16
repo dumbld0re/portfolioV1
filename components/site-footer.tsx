@@ -112,7 +112,7 @@ export function SiteFooter({ className }: { className?: string }) {
               aria-label={copy.backToTop}
               className={cn(floating, "size-11 cursor-pointer justify-center text-primary transition-colors hover:text-foreground")}
             >
-              <span aria-hidden="true">↑</span>
+              ↑
             </button>
           </div>
         </GlobeHorizon>
