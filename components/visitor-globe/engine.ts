@@ -22,6 +22,8 @@ type Options = {
   still?: boolean
   onPick?: (pick: Pick) => void
   onTap?: () => void
+  /** The ball's right edge, in CSS pixels from the canvas's left: on zoom and resize. */
+  onEdge?: (right: number) => void
 }
 
 const G = Math.PI * (3 - Math.sqrt(5))
@@ -294,6 +296,7 @@ export class GlobeEngine {
     this.size = { w: r.width, h: r.height, dpr }
     this.canvas.width = Math.max(1, Math.round(r.width * dpr))
     this.canvas.height = Math.max(1, Math.round(r.height * dpr))
+    this.reportEdge()
     this.draw()
   }
 
@@ -304,7 +307,7 @@ export class GlobeEngine {
       const radius = Math.max(240, Math.min(w * 0.82, 720))
       return { cx: w / 2, cy: 22 + radius, radius }
     }
-    const radius = Math.min(w * 0.45, h * 0.4) * this.zoom
+    const radius = Math.min(w * 0.45, h * 0.34) * this.zoom
     return { cx: w / 2, cy: h / 2, radius }
   }
 
@@ -485,8 +488,14 @@ export class GlobeEngine {
   }
 
   setZoom(z: number) {
-    this.zoom = Math.max(0.75, Math.min(3, z))
+    this.zoom = Math.max(0.75, Math.min(2.4, z))
+    this.reportEdge()
     this.kick()
+  }
+
+  private reportEdge() {
+    const { cx, radius } = this.frame()
+    this.opts.onEdge?.(cx + radius)
   }
 
   zoomBy(f: number) {

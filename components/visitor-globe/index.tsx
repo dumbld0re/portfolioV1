@@ -30,6 +30,10 @@ function fetchVisitors() {
 
 export function useVisitors() {
   const [data, setData] = useState<Visitors | null>(null)
+  // The country list steps aside once the globe is zoomed in far enough to
+  // run under it.
+  const [listClear, setListClear] = useState(true)
+  const onEdge = (right: number) => setListClear(right < window.innerWidth - 48 - 224 - 32)
   useEffect(() => {
     let live = true
     fetchVisitors().then((d) => live && setData(d))
@@ -68,6 +72,7 @@ function GlobeCanvas({
   className,
   onTap,
   onPick,
+  onEdge,
   engineRef,
   children,
 }: {
@@ -76,14 +81,15 @@ function GlobeCanvas({
   className?: string
   onTap?: () => void
   onPick?: (p: Pick) => void
+  onEdge?: (right: number) => void
   engineRef?: React.RefObject<GlobeEngine | null>
   children?: ReactNode
 }) {
   const canvas = useRef<HTMLCanvasElement>(null)
   const engine = useRef<GlobeEngine | null>(null)
-  const callbacks = useRef({ onTap, onPick })
+  const callbacks = useRef({ onTap, onPick, onEdge })
   useEffect(() => {
-    callbacks.current = { onTap, onPick }
+    callbacks.current = { onTap, onPick, onEdge }
   })
 
   useEffect(() => {
@@ -103,6 +109,7 @@ function GlobeCanvas({
           still: motionOff(),
           onTap: () => callbacks.current.onTap?.(),
           onPick: (p) => callbacks.current.onPick?.(p),
+          onEdge: (r) => callbacks.current.onEdge?.(r),
         })
       } catch {
         return
@@ -187,6 +194,10 @@ export function GlobeDialog() {
   const [pick, setPick] = useState<Pick>(null)
   const engine = useRef<GlobeEngine | null>(null)
   const [data, setData] = useState<Visitors | null>(null)
+  // The country list steps aside once the globe is zoomed in far enough to
+  // run under it.
+  const [listClear, setListClear] = useState(true)
+  const onEdge = (right: number) => setListClear(right < window.innerWidth - 48 - 224 - 32)
 
   useEffect(() => {
     const show = () => {
@@ -224,7 +235,12 @@ export function GlobeDialog() {
     >
       {open && data && (
         <div className="relative flex h-full flex-col">
-          <header className="relative z-10 flex items-start justify-between gap-6 px-6 pt-6 md:px-12 md:pt-10">
+          {/* The globe fills the whole dialog, so zoomed in it runs off the
+              edges of the screen rather than being cut along a line; the
+              text floats over it and only its own parts catch the pointer. */}
+          <GlobeCanvas mode="full" data={data} engineRef={engine} onPick={setPick} onEdge={onEdge} className="absolute inset-0" />
+
+          <header className="pointer-events-none relative z-10 flex items-start justify-between gap-6 px-6 pt-6 md:px-12 md:pt-10 [&>*]:pointer-events-auto">
             <div>
               <h2 className={sectionLabel}>{t.title}</h2>
               {totals && (
@@ -243,13 +259,14 @@ export function GlobeDialog() {
             </button>
           </header>
 
-          <GlobeCanvas mode="full" data={data} engineRef={engine} onPick={setPick} className="min-h-0 flex-1" />
+          <div className="flex-1" />
 
           {/* Wide screens: every country, most visitors first; a click turns the globe to it. */}
           {/* Scrolls without a scrollbar; the bottom fades out instead. */}
           <ol
             data-lenis-prevent
-            className="absolute top-1/2 right-12 z-10 hidden max-h-[60vh] w-56 -translate-y-1/2 space-y-1 overflow-y-auto pb-8 font-mono text-xs [mask-image:linear-gradient(to_bottom,black_85%,transparent)] [scrollbar-width:none] lg:block [&::-webkit-scrollbar]:hidden"
+            inert={!listClear}
+            className={cn("absolute top-1/2 right-12 z-10 hidden max-h-[60vh] w-56 -translate-y-1/2 space-y-1 overflow-y-auto pb-8 font-mono text-xs transition-opacity duration-300 [mask-image:linear-gradient(to_bottom,black_85%,transparent)] [scrollbar-width:none] lg:block [&::-webkit-scrollbar]:hidden", !listClear && "pointer-events-none opacity-0")}
           >
             {ranked.map(([code, n]) => (
               <li key={code}>
@@ -272,7 +289,7 @@ export function GlobeDialog() {
             ))}
           </ol>
 
-          <footer className="relative z-10 flex flex-col items-center gap-4 px-6 pt-2 pb-[max(1.5rem,env(safe-area-inset-bottom))] text-center md:pb-10">
+          <footer className="pointer-events-none relative z-10 flex flex-col [&>*]:pointer-events-auto items-center gap-4 px-6 pt-2 pb-[max(1.5rem,env(safe-area-inset-bottom))] text-center md:pb-10">
             <p aria-live="polite" className="min-h-10 font-mono text-sm">
               {pick ? (
                 <span className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2">
