@@ -19,7 +19,7 @@ export function ContactSection() {
   const scribbled = language === "en"
 
   return (
-    <section id="contact" className="scroll-mt-10 px-6 pt-16 pb-10 md:px-12 md:pt-24 lg:pb-24">
+    <section id="contact" className="scroll-mt-10 px-6 pt-16 md:px-12 md:pt-24 lg:pb-24">
       <div data-reveal className={column}>
         {/* Phones and tablets: one centred column under the hero's centre
             line. Wide screens: the text on the left, the letter open beside it. */}

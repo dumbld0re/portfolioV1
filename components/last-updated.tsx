@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils"
  * the line (and loses its divider), so a long date never wraps it away.
  * German and Italian show the short form (09/11/26), which keeps their longer labels on one line.
  */
-export function LastUpdated({ className }: { className?: string }) {
+export function LastUpdated({ className, count = true }: { className?: string; count?: boolean }) {
   const { language } = useLanguage()
   const date = process.env.LAST_UPDATED
   if (!date) return null
@@ -21,7 +21,7 @@ export function LastUpdated({ className }: { className?: string }) {
       <span>
         {siteCopy[language].lastUpdated} <time dateTime={date} className="whitespace-nowrap">{language !== "en" ? formatShortDate(date) : formatPostDate(date, language).toLowerCase()}</time>
       </span>
-      <ViewCount />
+      {count && <ViewCount />}
     </p>
   )
 }

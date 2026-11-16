@@ -5,6 +5,7 @@ import { useEffect, useId, useState } from "react"
 import { useLanguage } from "@/components/language-provider"
 import { LOCALE } from "@/lib/i18n"
 import { siteCopy } from "@/content/site"
+import { openGlobe } from "@/components/visitor-globe"
 
 // The footer can render twice on one page (contact section + site footer), so
 // every instance shares a single request: one visit, one count.
@@ -36,11 +37,18 @@ export function ViewCount() {
   return (
     <span className="whitespace-nowrap">
       <span aria-hidden="true" className="mx-2 hidden opacity-50 lg:inline">|</span>
-      <span className="inline-flex items-center gap-1.5 align-middle" title={`${count} ${siteCopy[language].visitors}`}>
+      {/* Opens the globe of where they all came from. */}
+      <button
+        type="button"
+        onClick={openGlobe}
+        aria-haspopup="dialog"
+        className="inline-flex cursor-pointer items-center gap-1.5 align-middle transition-colors hover:text-foreground"
+        title={`${count} ${siteCopy[language].visitors}`}
+      >
         <BlinkingEye />
         <span>{count}</span>
         <span className="sr-only">{siteCopy[language].visitors}</span>
-      </span>
+      </button>
     </span>
   )
 }

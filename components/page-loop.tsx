@@ -7,6 +7,7 @@ import { ExperienceSection } from "@/components/sections/experience-section"
 import { HomeSection } from "@/components/sections/home-section"
 import * as loop from "@/lib/loop-store"
 import { getLenis } from "@/lib/scroll"
+import { useMediaQuery } from "@/lib/use-media-query"
 
 // The home page never ends: below the contact section the top of the page
 // comes round again (an inert echo of the header, hero and experience), and
@@ -19,7 +20,11 @@ import { getLenis } from "@/lib/scroll"
 // there is no echo and the page ends at the footer.
 export function PageLoop() {
   const echo = useRef<HTMLDivElement>(null)
-  const on = useSyncExternalStore(loop.subscribe, loop.getSnapshot, loop.getServerSnapshot)
+  // Wide screens only: the ∞ switch lives there, and on phones and tablets
+  // the page ends on the footer's globe. A choice saved on a wide window
+  // doesn't follow it down to a narrow one.
+  const wide = useMediaQuery("(min-width: 64rem)")
+  const on = useSyncExternalStore(loop.subscribe, loop.getSnapshot, loop.getServerSnapshot) && wide
 
   useEffect(() => {
     const el = echo.current

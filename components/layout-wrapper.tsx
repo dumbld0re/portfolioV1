@@ -11,6 +11,7 @@ import { Header } from "@/components/header"
 import { PageLoop } from "@/components/page-loop"
 import { LetterDialog } from "@/components/letter-form"
 import { SiteFooter } from "@/components/site-footer"
+import { GlobeDialog } from "@/components/visitor-globe"
 import { stripLanguage } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
 
@@ -40,9 +41,10 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
         {home && <PageLoop />}
         <CornerControls />
         <LetterDialog />
+        <GlobeDialog />
         <EasterEggs />
         {!home && (
-          <footer className="w-full px-6 md:px-12 pt-16 pb-8 lg:pb-16 print:hidden">
+          <footer className="w-full px-6 md:px-12 pt-16 lg:pb-16 print:hidden">
             <SiteFooter className="mx-auto max-w-[90rem]" />
           </footer>
         )}

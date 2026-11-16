@@ -2,6 +2,7 @@ import { createHash } from "node:crypto"
 import { NextResponse, type NextRequest } from "next/server"
 
 import { BOT, redis, redisReady } from "@/lib/redis"
+import { COUNTRIES_KEY } from "@/lib/visitors"
 
 // All-time visitor count, kept in Upstash Redis. Each device is counted once:
 // the first visit increments the counter and leaves a long-lived cookie, later
@@ -34,6 +35,10 @@ export async function POST(request: NextRequest) {
   try {
     const fresh = !seen && !bot && (await redis(["SET", addressKey(request), "1", "NX", "EX", String(ONE_DAY)])) === "OK"
     const views = Number((await redis(fresh ? ["INCR", KEY] : ["GET", KEY])) ?? 0)
+    // Where the visitor is, for the globe (app/api/visitors): the country
+    // code only, from Vercel's geolocation header.
+    const country = request.headers.get("x-vercel-ip-country")
+    if (fresh && country && /^[A-Z]{2}$/.test(country)) await redis(["HINCRBY", COUNTRIES_KEY, country, "1"]).catch(() => null)
     const response = NextResponse.json({ views: START + views }, { headers: { "Cache-Control": "no-store" } })
     if (!seen && !bot) {
       response.cookies.set(COOKIE, "1", {
