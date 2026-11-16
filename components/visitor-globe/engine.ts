@@ -304,7 +304,9 @@ export class GlobeEngine {
   private frame() {
     const { w, h } = this.size
     if (this.opts.mode === "horizon") {
-      const radius = Math.max(240, Math.min(w * 0.82, 720))
+      // Phones: nearly the screen's width. Wide screens: a smaller ball, so
+      // it rises under the footer rather than filling the whole bottom.
+      const radius = w >= 1024 ? Math.min(w * 0.3, 460) : Math.max(240, Math.min(w * 0.82, 720))
       return { cx: w / 2, cy: 22 + radius, radius }
     }
     const radius = Math.min(w * 0.45, h * 0.34) * this.zoom

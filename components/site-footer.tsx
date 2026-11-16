@@ -28,8 +28,9 @@ const floating =
 // changed and who has seen it, the link nobody should click, and a way back
 // up. Phones and tablets also get the boring toggle and the languages here
 // (wide screens have them in the corner, components/corner-controls.tsx),
-// floating over the visitor globe the page ends on.
-export function SiteFooter({ className }: { className?: string }) {
+// floating over the visitor globe the page ends on. Only the home page has
+// the globe (`globe`); elsewhere the same controls sit in a plain row.
+export function SiteFooter({ className, globe = false }: { className?: string; globe?: boolean }) {
   const { language, localize } = useLanguage()
   const copy = siteCopy[language]
   // "2086© (so i dont forget…)": the year can be clicked, and then the
@@ -57,6 +58,29 @@ export function SiteFooter({ className }: { className?: string }) {
     <button type="button" onClick={timeTravel} className="cursor-pointer tabular-nums transition-colors hover:text-foreground">
       {year === null ? stamp : stamp.replace(/\d+/, String(year))}
     </button>
+  )
+
+  // Phones and tablets: boring mode and languages on the left, back to top on
+  // the right; floating over the globe on the home page.
+  const controls = (
+    <div className="flex items-center justify-between gap-3">
+      <div className="flex items-center gap-2">
+        <span className={cn(floating, "px-3.5")}>
+          <BoringToggle />
+        </span>
+        <span className={cn(floating, "px-1.5")}>
+          <LanguageSwitch className={cn(quiet, "-my-3 px-2 py-3")} currentClassName="px-2" />
+        </span>
+      </div>
+      <button
+        type="button"
+        onClick={() => scrollPage(0)}
+        aria-label={copy.backToTop}
+        className={cn(floating, "size-11 cursor-pointer justify-center text-primary transition-colors hover:text-foreground")}
+      >
+        ↑
+      </button>
+    </div>
   )
 
   return (
@@ -96,26 +120,13 @@ export function SiteFooter({ className }: { className?: string }) {
           </Link>
           <SecretsCount className="static whitespace-nowrap" buttonClassName={cn(tap, whole)} />
         </div>
-        <GlobeHorizon className="mt-10">
-          <div className="absolute inset-x-4 bottom-[calc(0.75rem+env(safe-area-inset-bottom))] flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              <span className={cn(floating, "px-3.5")}>
-                <BoringToggle />
-              </span>
-              <span className={cn(floating, "px-1.5")}>
-                <LanguageSwitch className={cn(quiet, "-my-3 px-2 py-3")} currentClassName="px-2" />
-              </span>
-            </div>
-            <button
-              type="button"
-              onClick={() => scrollPage(0)}
-              aria-label={copy.backToTop}
-              className={cn(floating, "size-11 cursor-pointer justify-center text-primary transition-colors hover:text-foreground")}
-            >
-              ↑
-            </button>
-          </div>
-        </GlobeHorizon>
+        {globe ? (
+          <GlobeHorizon className="mt-10">
+            <div className="absolute inset-x-4 bottom-[calc(0.75rem+env(safe-area-inset-bottom))]">{controls}</div>
+          </GlobeHorizon>
+        ) : (
+          <div className="mt-10 w-full">{controls}</div>
+        )}
       </div>
     </div>
   )

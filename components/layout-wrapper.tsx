@@ -44,7 +44,7 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
         <GlobeDialog />
         <EasterEggs />
         {!home && (
-          <footer className="w-full px-6 md:px-12 pt-16 lg:pb-16 print:hidden">
+          <footer className="w-full px-6 md:px-12 pt-16 pb-[calc(1.5rem+env(safe-area-inset-bottom))] lg:pb-16 print:hidden">
             <SiteFooter className="mx-auto max-w-[90rem]" />
           </footer>
         )}

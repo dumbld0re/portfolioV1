@@ -4,6 +4,7 @@ import { contactContent } from "@/content/contact"
 import { LetterForm, openLetter } from "@/components/letter-form"
 import { useLanguage } from "@/components/language-provider"
 import { SiteFooter } from "@/components/site-footer"
+import { GlobeHorizon } from "@/components/visitor-globe"
 import { BrandIcon } from "@/components/social-links"
 import { TimeStatus } from "@/components/time-status"
 import { ReadingNow } from "@/components/reading-now"
@@ -14,7 +15,7 @@ export function ContactSection() {
   const t = contactContent[language]
 
   return (
-    <section id="contact" className="scroll-mt-10 px-6 pt-16 md:px-12 md:pt-24 lg:pb-24">
+    <section id="contact" className="scroll-mt-10 px-6 pt-16 md:px-12 md:pt-24">
       <div data-reveal className={column}>
         {/* Phones and tablets: one centred column under the hero's centre
             line. Wide screens: the text on the left, the letter open beside it. */}
@@ -69,8 +70,10 @@ export function ContactSection() {
         <LetterForm id="contact-letter" see className="mt-12 hidden lg:mt-0 lg:flex" />
         </div>
 
-        <SiteFooter className="mt-24" />
+        <SiteFooter className="mt-24" globe />
       </div>
+      {/* Wide screens: the globe rises under the footer row, edge to edge. */}
+      <GlobeHorizon screens="wide" className="mt-12 hidden h-64 lg:block" />
     </section>
   )
 }

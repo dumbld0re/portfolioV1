@@ -357,17 +357,27 @@ export function GlobeDialog() {
  * people came from, which opens the whole globe, and whatever controls the
  * footer hands in (`children`).
  */
-export function GlobeHorizon({ className, children }: { className?: string; children?: ReactNode }) {
+export function GlobeHorizon({
+  className,
+  children,
+  screens = "narrow",
+}: {
+  className?: string
+  children?: ReactNode
+  /** Which screens this one runs on: the phone footer's, or the wide one under the footer row. */
+  screens?: "narrow" | "wide"
+}) {
   const language = useLanguageOrDefault()
   const t = globeContent[language]
   const data = useVisitors()
   const totals = visitorTotals(data)
-  // Hidden on wide screens (the footer there is one row): no globe to run.
+  // Each copy only runs on the screens it is shown on.
   const wide = useMediaQuery("(min-width: 64rem)")
+  const shown = screens === "wide" ? wide : !wide
 
   return (
     <div className={cn("globe-horizon relative -mx-6 h-[calc(16rem+env(safe-area-inset-bottom))] self-stretch overflow-hidden md:-mx-12", className)}>
-      {data && !wide && <GlobeCanvas mode="horizon" data={data} onTap={openGlobe} className="absolute inset-0" />}
+      {data && shown && <GlobeCanvas mode="horizon" data={data} onTap={openGlobe} className="absolute inset-0" />}
       {/* The page's background fades in over the far edge, so the ball
           comes up out of the page rather than being cut off by it. */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-background to-transparent" />
