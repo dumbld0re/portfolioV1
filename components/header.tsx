@@ -47,9 +47,12 @@ export function Header() {
           boot && "m-block",
         )}
       >
-        {/* Posts: the way home starts the bar, at its left end. */}
-        {pathname.startsWith("/posts") && (
-          <BackHome href={localize("/")} label={labels.nav.backHome} compact className="md:mr-auto" />
+        {/* Posts: the way back starts the bar, at its left end. A post goes
+            back to the list, the list goes home. */}
+        {pathname.startsWith("/posts/") ? (
+          <BackHome href={localize("/posts")} label={labels.nav.posts.toLowerCase()} compact className="md:mr-auto" />
+        ) : (
+          pathname === "/posts" && <BackHome href={localize("/")} label={labels.nav.backHome} compact className="md:mr-auto" />
         )}
         {/* One row on every width: on narrow phones the links scroll sideways
             under the language and theme controls instead of wrapping. */}
@@ -72,10 +75,15 @@ export function Header() {
         </div>
 
         <span className="flex shrink-0 items-center gap-x-3">
-          <span className="hidden text-muted-foreground/40 md:inline" aria-hidden="true">
-            /
-          </span>
-          <LanguageCycle className={cn(navLink, "-mx-2 px-2 after:inset-x-2 md:mx-0 md:px-0 md:after:inset-x-0")} />
+          {/* Posts are English-only, so a post has no language switch. */}
+          {!pathname.startsWith("/posts/") && (
+            <>
+              <span className="hidden text-muted-foreground/40 md:inline" aria-hidden="true">
+                /
+              </span>
+              <LanguageCycle className={cn(navLink, "-mx-2 px-2 after:inset-x-2 md:mx-0 md:px-0 md:after:inset-x-0")} />
+            </>
+          )}
           <ThemeToggle />
         </span>
       </nav>

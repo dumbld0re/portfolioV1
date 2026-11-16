@@ -328,7 +328,7 @@ html.paused [class*="animate-caret-blink"] {
 /* Markdown post bodies (components/sections/post-section.tsx), styled to
    match the site's typography without pulling in @tailwindcss/typography. */
 .post-prose {
-  color: var(--muted-foreground);
+  color: var(--foreground);
   line-height: 1.75;
 }
 

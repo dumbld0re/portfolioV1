@@ -25,10 +25,15 @@ const control = "text-muted-foreground transition-colors hover:text-foreground"
 // anywhere on the page.
 export function CornerControls() {
   const labels = siteCopy[useLanguageOrDefault()]
-  const languages = useHasLanguages()
+  const hasLanguages = useHasLanguages()
   const loopOn = useSyncExternalStore(loop.subscribe, loop.getSnapshot, loop.getServerSnapshot)
+  const path = stripLanguage(usePathname())
   // Only the home page loops (components/page-loop.tsx).
-  const home = stripLanguage(usePathname()) === "/"
+  const home = path === "/"
+  // A post's text runs down the left edge, so "say hello" stays out of it there.
+  const reading = path.startsWith("/posts/")
+  // Posts are English-only, so on one the language switch would do nothing.
+  const languages = hasLanguages && !reading
 
   // The hero has its own email icon in this corner of the screen, so "say
   // hello" only comes in once that row has scrolled away. Hidden until the
@@ -87,8 +92,8 @@ export function CornerControls() {
   return (
     <>
       <div
-        className={cn(corner, "left-3 transition-opacity duration-300", !hello && "pointer-events-none opacity-0")}
-        inert={!hello}
+        className={cn(corner, "left-3 transition-opacity duration-300", (!hello || reading) && "pointer-events-none opacity-0")}
+        inert={!hello || reading}
       >
         <button type="button" onClick={openLetter} aria-haspopup="dialog" className={control}>
           {labels.sayHello}

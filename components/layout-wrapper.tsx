@@ -25,6 +25,8 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
   // The home page ends with the ContactSection, which carries the footer line
   // itself, so it only renders here on the other routes.
   const home = stripLanguage(pathname) === "/"
+  // A post ends on its last line: no footer under it.
+  const post = stripLanguage(pathname).startsWith("/posts/")
 
   // .site: restyled as plain HTML in boring mode (globals.css). The home page
   // goes further: boring mode swaps it for a whole other document.
@@ -43,7 +45,7 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
         <LetterDialog />
         <GlobeDialog />
         <EasterEggs />
-        {!home && (
+        {!home && !post && (
           <footer className="w-full px-6 md:px-12 pt-16 pb-[calc(1.5rem+env(safe-area-inset-bottom))] lg:pb-16 print:hidden">
             <SiteFooter className="mx-auto max-w-[90rem]" />
           </footer>
