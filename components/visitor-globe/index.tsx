@@ -246,7 +246,11 @@ export function GlobeDialog() {
           <GlobeCanvas mode="full" data={data} engineRef={engine} onPick={setPick} className="min-h-0 flex-1" />
 
           {/* Wide screens: every country, most visitors first; a click turns the globe to it. */}
-          <ol className="absolute top-1/2 right-12 z-10 hidden max-h-[60vh] w-56 -translate-y-1/2 space-y-1 overflow-y-auto font-mono text-xs lg:block">
+          {/* Scrolls without a scrollbar; the bottom fades out instead. */}
+          <ol
+            data-lenis-prevent
+            className="absolute top-1/2 right-12 z-10 hidden max-h-[60vh] w-56 -translate-y-1/2 space-y-1 overflow-y-auto pb-8 font-mono text-xs [mask-image:linear-gradient(to_bottom,black_85%,transparent)] [scrollbar-width:none] lg:block [&::-webkit-scrollbar]:hidden"
+          >
             {ranked.map(([code, n]) => (
               <li key={code}>
                 <button
