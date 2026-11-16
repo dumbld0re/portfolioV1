@@ -22,6 +22,8 @@ export type LibraryEntry = {
   status: EntryStatus
   added: string
   finished: string | null
+  /** Its cover in public/ (scripts/library-covers.mjs), or null for a drawn one. */
+  cover: string | null
   /** Rendered markdown body — personal notes, empty when there are none. */
   notesHtml: string
 }

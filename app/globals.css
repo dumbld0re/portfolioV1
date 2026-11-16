@@ -894,3 +894,23 @@ button.pill { line-height: 1.2; }
   border-right: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
 }
+
+/* ------------------------------------------------------------ library covers
+   A cover develops as it's read (components/library/v2/shelf.tsx): up next
+   it shows only through a screen of dots, reading now the screen covers its
+   top half, read it is whole. The screen is the page's own colour, so the
+   cover reads as dots on the page. */
+.cover-dots[data-dots]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle, transparent 0 1.05px, var(--background) 1.3px) 0 0 / 3px 3px;
+}
+.cover-dots[data-dots="half"]::after {
+  bottom: 50%;
+}
+/* Pale pages would vanish into a pale page: a touch darker behind the screen. */
+:root:not(.dark) .cover-dots[data-dots] img {
+  filter: brightness(0.86) contrast(1.1);
+}

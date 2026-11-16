@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 
-import { LibraryShell } from "@/components/library/library-shell"
+import { LibraryFrame } from "@/components/library/v2/shared"
 
 export const metadata: Metadata = {
   title: "404",
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <LibraryShell>
+    <LibraryFrame>
       <main className="flex-1 flex items-center justify-center px-6 py-12 md:py-16">
         <div className="text-center space-y-6">
           <h1 className="font-mono text-label uppercase tracking-[0.3em] text-muted-foreground">
@@ -27,6 +27,6 @@ export default function NotFound() {
           </Link>
         </div>
       </main>
-    </LibraryShell>
+    </LibraryFrame>
   )
 }

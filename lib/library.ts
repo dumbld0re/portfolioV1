@@ -7,6 +7,7 @@ import { libraryTopics, type TopicId } from "@/content/library-topics"
 import { ENTRY_KINDS, ENTRY_STATUSES, type LibraryEntry, type LibraryStats } from "@/lib/library-types"
 
 const LIBRARY_DIR = path.join(process.cwd(), "content/library")
+const COVERS_DIR = path.join(process.cwd(), "public/library/covers")
 
 // Frontmatter is hand-written, so fail the build loudly on a typo rather than
 // rendering an entry with a missing topic or a NaN reading time.
@@ -38,6 +39,7 @@ function parseEntry(slug: string): Omit<LibraryEntry, "callNumber"> {
     status: data.status,
     added: toDateString(data.added),
     finished: data.finished ? toDateString(data.finished) : null,
+    cover: fs.existsSync(path.join(COVERS_DIR, `${slug}.jpg`)) ? `/library/covers/${slug}.jpg` : null,
     notesHtml: content.trim() ? marked.parse(content, { async: false }) : "",
   }
 }
