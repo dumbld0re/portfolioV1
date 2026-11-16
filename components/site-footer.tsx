@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useState } from "react"
 
 import { BoringToggle } from "@/components/boring-toggle"
+import { ModeSwitches } from "@/components/corner-controls"
 import { useLanguage } from "@/components/language-provider"
 import { LanguageSwitch } from "@/components/language-switch"
 import { LastUpdated } from "@/components/last-updated"
@@ -25,11 +26,10 @@ const floating =
   "inline-flex h-11 items-center rounded-full border border-border/70 bg-background/80 text-muted-foreground shadow-[0_6px_20px_-10px_rgb(0_0_0/0.3)] backdrop-blur-md"
 
 // The last line of every page: the copyright joke, when the site last
-// changed and who has seen it, the link nobody should click, and a way back
-// up. Phones and tablets also get the boring toggle and the languages here
-// (wide screens have them in the corner, components/corner-controls.tsx),
-// floating over the visitor globe the page ends on. Only the home page has
-// the globe (`globe`); elsewhere the same controls sit in a plain row.
+// changed and who has seen it, the link nobody should click, and the boring
+// and sound switches (all on one row on wide screens). Phones and tablets get
+// the boring toggle, the languages and a way back up instead, floating over
+// the visitor globe on the home page and in a plain row everywhere else.
 export function SiteFooter({ className, globe = false }: { className?: string; globe?: boolean }) {
   const { language, localize } = useLanguage()
   const copy = siteCopy[language]
@@ -97,13 +97,9 @@ export function SiteFooter({ className, globe = false }: { className?: string; g
           </Link>
           <SecretsCount className="whitespace-nowrap" buttonClassName={whole} />
         </span>
-        <button type="button" onClick={() => scrollPage(0)} className={cn(quiet, whole, "cursor-pointer")}>
-          {copy.backToTop}
-          <span className="text-primary" aria-hidden="true">
-            {" "}
-            ↑
-          </span>
-        </button>
+        <span className="flex items-baseline gap-x-6">
+          <ModeSwitches className={cn(quiet, whole, "cursor-pointer")} />
+        </span>
       </div>
 
       {/* Phones and tablets: a few quiet centred lines, then the page ends on

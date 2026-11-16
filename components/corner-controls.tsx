@@ -26,11 +26,9 @@ const control = "text-muted-foreground transition-colors hover:text-foreground"
 export function CornerControls() {
   const labels = siteCopy[useLanguageOrDefault()]
   const languages = useHasLanguages()
-  const boring = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot) !== "off"
   const loopOn = useSyncExternalStore(loop.subscribe, loop.getSnapshot, loop.getServerSnapshot)
   // Only the home page loops (components/page-loop.tsx).
   const home = stripLanguage(usePathname()) === "/"
-  const soundOn = useSyncExternalStore(sound.subscribe, sound.getSnapshot, sound.getServerSnapshot)
 
   // The hero has its own email icon in this corner of the screen, so "say
   // hello" only comes in once that row has scrolled away. Hidden until the
@@ -117,27 +115,10 @@ export function CornerControls() {
             <LanguageSwitch className={control} />
           </span>
         )}
-        <button
-          type="button"
-          role="switch"
-          aria-checked={boring}
-          aria-label={labels.boringLabel}
-          onClick={() => setBoring(!boring)}
-          className={control}
-        >
-          {labels.boring.toLowerCase()}: <span className={boring ? "text-primary" : undefined}>{boring ? labels.on : labels.off}</span>
-        </button>
-        <button
-          type="button"
-          role="switch"
-          aria-checked={soundOn}
-          aria-label={labels.soundLabel}
-          data-sound-switch=""
-          onClick={() => sound.setSound(!soundOn)}
-          className={control}
-        >
-          {labels.sound}: <span className={soundOn ? "text-primary" : undefined}>{soundOn ? labels.on : labels.off}</span>
-        </button>
+        {/* The footer row has its own pair; these step aside when it's in view. */}
+        <span inert={footerHere} className={cn("flex items-center gap-6", fade(!footerHere))}>
+          <ModeSwitches />
+        </span>
         {home && (
           <button
             type="button"
@@ -152,6 +133,40 @@ export function CornerControls() {
           </button>
         )}
       </div>
+    </>
+  )
+}
+
+/** "boring: off  sound: off": the two switches shared by the wide screens'
+ *  corner and the footer row (components/site-footer.tsx). */
+export function ModeSwitches({ className = control }: { className?: string }) {
+  const labels = siteCopy[useLanguageOrDefault()]
+  const boring = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot) !== "off"
+  const soundOn = useSyncExternalStore(sound.subscribe, sound.getSnapshot, sound.getServerSnapshot)
+
+  return (
+    <>
+      <button
+        type="button"
+        role="switch"
+        aria-checked={boring}
+        aria-label={labels.boringLabel}
+        onClick={() => setBoring(!boring)}
+        className={className}
+      >
+        {labels.boring.toLowerCase()}: <span className={boring ? "text-primary" : undefined}>{boring ? labels.on : labels.off}</span>
+      </button>
+      <button
+        type="button"
+        role="switch"
+        aria-checked={soundOn}
+        aria-label={labels.soundLabel}
+        data-sound-switch=""
+        onClick={() => sound.setSound(!soundOn)}
+        className={className}
+      >
+        {labels.sound}: <span className={soundOn ? "text-primary" : undefined}>{soundOn ? labels.on : labels.off}</span>
+      </button>
     </>
   )
 }
