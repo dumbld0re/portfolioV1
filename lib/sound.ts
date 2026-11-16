@@ -88,6 +88,8 @@ let verbIn: GainNode
 let noise: AudioBuffer
 let voices = 0
 const MAX_VOICES = 90
+/** Set while a click or tap is being played: those always get through the voice cap. */
+let priority = false
 let bed: { set: (density: number) => void } | null = null
 let printQueue = 0
 let printNext = 0
@@ -151,7 +153,7 @@ function finish(src: AudioScheduledSourceNode, t: number) {
 
 /** A tiny square blip, high-passed to a click. */
 function blip(t: number, f: number, dur: number, g: number, pan: number, wet = 0) {
-  if (!ac || voices > MAX_VOICES) return
+  if (!ac || (voices > MAX_VOICES && !priority)) return
   const o = ac.createOscillator()
   o.type = "square"
   o.frequency.value = f
@@ -169,7 +171,7 @@ function blip(t: number, f: number, dur: number, g: number, pan: number, wet = 0
 
 /** A few milliseconds of band-passed noise: one grain of sand. */
 function grain(t: number, f: number, q: number, dur: number, g: number, pan: number, wet = 0) {
-  if (!ac || voices > MAX_VOICES) return
+  if (!ac || (voices > MAX_VOICES && !priority)) return
   const s = ac.createBufferSource()
   s.buffer = noise
   const bp = ac.createBiquadFilter()
@@ -205,7 +207,7 @@ function sweep(
   pan: number,
   opts: { crush?: number; lp?: number; attack?: number; wet?: number } = {},
 ) {
-  if (!ac || voices > MAX_VOICES) return
+  if (!ac || (voices > MAX_VOICES && !priority)) return
   const o = ac.createOscillator()
   o.type = type
   o.frequency.setValueAtTime(f0, t)
@@ -332,7 +334,26 @@ export type SoundEvent = "hover" | "click" | "tap" | "throw" | "open" | "found"
 
 /** amount: 0..1 (how much was thrown); u: 0..1, where across the screen. */
 export function soundEvent(name: SoundEvent, amount = 0.5, u = 0.5) {
+  const press = name === "click" || name === "tap"
+  // A press can come before the audio has woken up (the first one after a
+  // page load, or after the tab slept): wake it, then play, instead of
+  // dropping the sound.
+  if (press && on && ac && ac.state !== "running" && !document.documentElement.classList.contains("boring")) {
+    void ac.resume().then(() => {
+      if (ac?.state === "running") soundEvent(name, amount, u)
+    })
+    return
+  }
   if (!soundOn()) return
+  priority = press
+  try {
+    play(name, amount, u)
+  } finally {
+    priority = false
+  }
+}
+
+function play(name: SoundEvent, amount: number, u: number) {
   const t = ac!.currentTime + 0.01
   const pan = panTo(Math.max(0, Math.min(1, u)))
 
