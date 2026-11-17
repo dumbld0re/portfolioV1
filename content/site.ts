@@ -9,6 +9,8 @@ export const siteCopy: Record<
       contact: string
       cv: string
       posts: string
+      /** The work-in-progress page at the end of the nav. */
+      things: string
       /** The "← home" link at the start of the top bar on posts and the shelf. */
       backHome: string
     }
@@ -39,6 +41,7 @@ export const siteCopy: Record<
       contact: "Kontakt",
       cv: "Lebenslauf",
       posts: "Beiträge",
+      things: "Dinge",
       backHome: "start",
     },
     cvDownload: "pdf herunterladen",
@@ -67,6 +70,7 @@ export const siteCopy: Record<
       contact: "Contact",
       cv: "CV",
       posts: "Posts",
+      things: "Things",
       backHome: "home",
     },
     cvDownload: "download pdf",
@@ -95,6 +99,7 @@ export const siteCopy: Record<
       contact: "Contatti",
       cv: "CV",
       posts: "Articoli",
+      things: "Cose",
       backHome: "home",
     },
     cvDownload: "scarica il pdf",

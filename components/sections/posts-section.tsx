@@ -15,7 +15,7 @@ export function PostsSection({ posts }: { posts: PostMeta[] }) {
   const t = postsContent[language]
 
   return (
-    <main className="flex-1 px-6 md:px-12 py-24 md:py-32">
+    <main className="flex-1 px-6 md:px-12 pt-14 pb-24 md:pt-20 md:pb-32 short:pt-8">
       <div className={column}>
         <div className="max-w-2xl">
           <header>
@@ -26,7 +26,7 @@ export function PostsSection({ posts }: { posts: PostMeta[] }) {
           {posts.length === 0 ? (
             <p className="mt-16 text-muted-foreground">{t.emptyState}</p>
           ) : (
-            <ol className="mt-16 space-y-8">
+            <ol className="mt-12 space-y-6 short:mt-8">
               {posts.map((post) => (
                 <li key={post.slug}>
                   <Link href={localize(`/posts/${post.slug}`)} className="group block">

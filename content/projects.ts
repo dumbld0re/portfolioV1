@@ -29,6 +29,8 @@ export type Project = {
   /** Stable key for the project. */
   slug?: string
   title: string
+  /** One short line under the title on the projects list. */
+  short?: string
   tagline?: string
   description: string
   tech: string[]
@@ -38,6 +40,10 @@ export type Project = {
   githubHref?: string
   internalTool?: boolean
   status?: ProjectStatus
+  /** A phone capture of a web project, for layouts that show one beside the wide screens. */
+  phone?: Screen
+  /** More captures for the project's case study, after the preview screens and the phone. */
+  gallery?: Screen[]
 }
 
 // Personal and engineering work only. All web design and client work (sites,
@@ -56,6 +62,8 @@ export const projectsContent: Record<
   Language,
   {
     heading: string
+    /** The one muted line under the heading, like the posts page's. */
+    tagline: string
     /** Shown on the projects page while it is being reworked. */
     updating: string
     /** The switch between the two layouts: "view: stage / index". */
@@ -65,12 +73,17 @@ export const projectsContent: Record<
     viewSiteLabel: string
     viewSourceLabel: string
     internalToolLabel: string
+    /** The hint on a project's picture, the case study's way back, and its link onward. */
+    openLabel: string
+    backLabel: string
+    nextLabel: string
     statusLabels: Record<ProjectStatus, string>
     projects: Project[]
   }
 > = {
   de: {
     heading: "ausgewählte projekte",
+    tagline: "kleine tools und websites, die ich gebaut habe.",
     updating: "diese seite überarbeite ich gerade. schau bald wieder vorbei.",
     viewLabel: "ansicht",
     views: { stage: "bühne", index: "liste" },
@@ -78,14 +91,37 @@ export const projectsContent: Record<
     viewSiteLabel: "Website ansehen",
     viewSourceLabel: "Quellcode",
     internalToolLabel: "Internes Tool",
+    openLabel: "projekt ansehen",
+    backLabel: "projekte",
+    nextLabel: "nächstes projekt",
     statusLabels: {
       inDevelopment: "In Entwicklung",
       inUse: "Im Einsatz",
     },
     projects: [
       {
+        slug: "fairhour",
+        title: "Fairhour",
+        short: "die fairste meeting-zeit über zeitzonen hinweg.",
+        tagline: "Findet die fairste Uhrzeit für ein Meeting, wenn das Team über Zeitzonen verteilt ist.",
+        description:
+          "Gerade kam eine neue Schrift raus (Allo, von Josh Puckett), und ich habe mit möglichen künftigen Kollegen in ganz verschiedenen Zeitzonen geschrieben. Statt weiter Uhrzeiten im Kopf umzurechnen, habe ich das hier gebaut: Leute auswählen, und es zeigt die Stunde, die allen am wenigsten abverlangt.",
+        tech: ["HTML", "CSS", "JavaScript", "Intl API", "Web Audio"],
+        demoHref: "https://fairhour-one.vercel.app/",
+        preview: {
+          kind: "screens",
+          screens: [
+            { src: "/projects/fairhour-home.webp", width: 2880, height: 1800, name: "Startseite" },
+            { src: "/projects/fairhour-people.webp", width: 2880, height: 1800, name: "Teilnehmer wählen" },
+          ],
+        },
+        phone: { src: "/projects/fairhour-mobile.webp", width: 1170, height: 2532, name: "Handy" },
+        status: "inUse",
+      },
+      {
         slug: "finance-tracker",
         title: "Finance Tracker",
+        short: "ausgaben und ersparnisse im blick, auf allen geräten.",
         description:
           "Eine Finanz-App für Einnahmen, Ausgaben und Sparziele, die auch offline funktioniert – fürs Handy gemacht, aber auf allen Geräten synchron.",
         tech: ["React", "Vite", "Vercel Functions", "Upstash Redis"],
@@ -94,16 +130,23 @@ export const projectsContent: Record<
         preview: {
           kind: "screens",
           screens: [
-            { src: "/projects/finance-tracker-home.webp", width: 1170, height: 2532, name: "home" },
-            { src: "/projects/finance-tracker-insights.webp", width: 1170, height: 2532, name: "insights" },
+            { src: "/projects/finance-tracker-desktop.webp", width: 2880, height: 1800, name: "Übersicht" },
+            { src: "/projects/finance-tracker-desktop-entry.webp", width: 2880, height: 1800, name: "neuer Eintrag" },
           ],
         },
+        phone: { src: "/projects/finance-tracker-home.webp", width: 1170, height: 2532, name: "Handy" },
+        gallery: [
+          { src: "/projects/finance-tracker-desktop-dark.webp", width: 2880, height: 1800, name: "dunkles Design" },
+          { src: "/projects/finance-tracker-insights.webp", width: 1170, height: 2532, name: "Monatsauswertung" },
+          { src: "/projects/finance-tracker-entry.webp", width: 1170, height: 2532, name: "neuer Eintrag auf dem Handy" },
+        ],
         internalTool: true,
         status: "inUse",
       },
       {
         slug: "uni",
         title: "uni — Werkzeugkasten für Nachhilfe & Studium",
+        short: "eine typst-datei, ein arbeitsblatt und sein lösungsschlüssel.",
         tagline:
           "Ein Kommandozeilen-Tool, das aus einer einzigen Typst-Datei das Arbeitsblatt und das passende Lösungsblatt erzeugt.",
         description:
@@ -116,6 +159,7 @@ export const projectsContent: Record<
       {
         slug: "ae",
         title: "æ design studio",
+        short: "mein designstudio und seine website.",
         description:
           "Mein Designstudio, die Website dazu habe ich von Grund auf selbst gebaut. Alle meine Webdesign- und Kundenprojekte, samt Case Studies, findest du dort.",
         tech: ["Next.js", "TypeScript", "Canvas", "CSS"],
@@ -135,6 +179,7 @@ export const projectsContent: Record<
   },
   en: {
     heading: "selected work",
+    tagline: "small tools and sites i've built.",
     updating: "i'm currently reworking this page. check back soon.",
     viewLabel: "view",
     views: { stage: "stage", index: "index" },
@@ -142,14 +187,37 @@ export const projectsContent: Record<
     viewSiteLabel: "View site",
     viewSourceLabel: "View source",
     internalToolLabel: "Internal tool",
+    openLabel: "view project",
+    backLabel: "projects",
+    nextLabel: "next project",
     statusLabels: {
       inDevelopment: "In development",
       inUse: "In use",
     },
     projects: [
       {
+        slug: "fairhour",
+        title: "Fairhour",
+        short: "the fairest meeting time across time zones.",
+        tagline: "Finds the fairest meeting time for a team spread across time zones.",
+        description:
+          "A new font had just dropped (Allo, by Josh Puckett), and I'd been messaging potential colleagues in very different time zones. Instead of doing the time maths in my head one more time, I built this: pick who's joining, and it finds the hour that asks the least of everyone.",
+        tech: ["HTML", "CSS", "JavaScript", "Intl API", "Web Audio"],
+        demoHref: "https://fairhour-one.vercel.app/",
+        preview: {
+          kind: "screens",
+          screens: [
+            { src: "/projects/fairhour-home.webp", width: 2880, height: 1800, name: "home" },
+            { src: "/projects/fairhour-people.webp", width: 2880, height: 1800, name: "choosing people" },
+          ],
+        },
+        phone: { src: "/projects/fairhour-mobile.webp", width: 1170, height: 2532, name: "phone" },
+        status: "inUse",
+      },
+      {
         slug: "finance-tracker",
         title: "Finance Tracker",
+        short: "spending and savings at a glance, on every device.",
         description:
           "An offline-first app for tracking income, expenses, and savings goals – made for mobile, but syncs across devices.",
         tech: ["React", "Vite", "Vercel Functions", "Upstash Redis"],
@@ -158,16 +226,23 @@ export const projectsContent: Record<
         preview: {
           kind: "screens",
           screens: [
-            { src: "/projects/finance-tracker-home.webp", width: 1170, height: 2532, name: "home" },
-            { src: "/projects/finance-tracker-insights.webp", width: 1170, height: 2532, name: "insights" },
+            { src: "/projects/finance-tracker-desktop.webp", width: 2880, height: 1800, name: "overview" },
+            { src: "/projects/finance-tracker-desktop-entry.webp", width: 2880, height: 1800, name: "new entry" },
           ],
         },
+        phone: { src: "/projects/finance-tracker-home.webp", width: 1170, height: 2532, name: "phone" },
+        gallery: [
+          { src: "/projects/finance-tracker-desktop-dark.webp", width: 2880, height: 1800, name: "dark mode" },
+          { src: "/projects/finance-tracker-insights.webp", width: 1170, height: 2532, name: "month view" },
+          { src: "/projects/finance-tracker-entry.webp", width: 1170, height: 2532, name: "new entry on the phone" },
+        ],
         internalTool: true,
         status: "inUse",
       },
       {
         slug: "uni",
         title: "uni — tutoring & coursework ops suite",
+        short: "one typst file, a worksheet and its answer key.",
         tagline:
           "A CLI that turns one Typst source into both a student worksheet and its answer key.",
         description:
@@ -180,6 +255,7 @@ export const projectsContent: Record<
       {
         slug: "ae",
         title: "æ design studio",
+        short: "my design studio and its site.",
         description:
           "My design studio, and its site, built from scratch. All my web design and client work, case studies included, lives there.",
         tech: ["Next.js", "TypeScript", "Canvas", "CSS"],
@@ -199,6 +275,7 @@ export const projectsContent: Record<
   },
   it: {
     heading: "progetti scelti",
+    tagline: "piccoli strumenti e siti che ho costruito.",
     updating: "sto rifacendo questa pagina. ripassa presto.",
     viewLabel: "vista",
     views: { stage: "palco", index: "elenco" },
@@ -206,14 +283,37 @@ export const projectsContent: Record<
     viewSiteLabel: "Vai al sito",
     viewSourceLabel: "Codice sorgente",
     internalToolLabel: "Strumento interno",
+    openLabel: "vedi progetto",
+    backLabel: "progetti",
+    nextLabel: "prossimo progetto",
     statusLabels: {
       inDevelopment: "In sviluppo",
       inUse: "In uso",
     },
     projects: [
       {
+        slug: "fairhour",
+        title: "Fairhour",
+        short: "l'orario di riunione più equo tra i fusi orari.",
+        tagline: "Trova l'orario più equo per una riunione quando il team è sparso tra fusi orari diversi.",
+        description:
+          "Era appena uscito un nuovo font (Allo, di Josh Puckett) e stavo scrivendo a possibili futuri colleghi in fusi orari molto diversi. Invece di rifare i conti degli orari a mente, ho costruito questo: scegli chi partecipa e trova l'ora che chiede meno a tutti.",
+        tech: ["HTML", "CSS", "JavaScript", "Intl API", "Web Audio"],
+        demoHref: "https://fairhour-one.vercel.app/",
+        preview: {
+          kind: "screens",
+          screens: [
+            { src: "/projects/fairhour-home.webp", width: 2880, height: 1800, name: "home" },
+            { src: "/projects/fairhour-people.webp", width: 2880, height: 1800, name: "scelta delle persone" },
+          ],
+        },
+        phone: { src: "/projects/fairhour-mobile.webp", width: 1170, height: 2532, name: "telefono" },
+        status: "inUse",
+      },
+      {
         slug: "finance-tracker",
         title: "Finance Tracker",
+        short: "spese e risparmi a colpo d’occhio, su ogni dispositivo.",
         description:
           "Un'app per entrate, spese e obiettivi di risparmio che funziona anche offline – pensata per il telefono, ma sincronizzata su tutti i dispositivi.",
         tech: ["React", "Vite", "Vercel Functions", "Upstash Redis"],
@@ -222,16 +322,23 @@ export const projectsContent: Record<
         preview: {
           kind: "screens",
           screens: [
-            { src: "/projects/finance-tracker-home.webp", width: 1170, height: 2532, name: "home" },
-            { src: "/projects/finance-tracker-insights.webp", width: 1170, height: 2532, name: "insights" },
+            { src: "/projects/finance-tracker-desktop.webp", width: 2880, height: 1800, name: "panoramica" },
+            { src: "/projects/finance-tracker-desktop-entry.webp", width: 2880, height: 1800, name: "nuova voce" },
           ],
         },
+        phone: { src: "/projects/finance-tracker-home.webp", width: 1170, height: 2532, name: "telefono" },
+        gallery: [
+          { src: "/projects/finance-tracker-desktop-dark.webp", width: 2880, height: 1800, name: "tema scuro" },
+          { src: "/projects/finance-tracker-insights.webp", width: 1170, height: 2532, name: "vista del mese" },
+          { src: "/projects/finance-tracker-entry.webp", width: 1170, height: 2532, name: "nuova voce sul telefono" },
+        ],
         internalTool: true,
         status: "inUse",
       },
       {
         slug: "uni",
         title: "uni — kit per ripetizioni e università",
+        short: "un file typst, una scheda e le sue soluzioni.",
         tagline:
           "Una CLI che da un unico file Typst genera sia la scheda per lo studente sia le soluzioni.",
         description:
@@ -244,6 +351,7 @@ export const projectsContent: Record<
       {
         slug: "ae",
         title: "æ design studio",
+        short: "il mio studio di design e il suo sito.",
         description:
           "Il mio studio di design, con un sito costruito da zero. Tutti i miei lavori di web design e per clienti, casi studio compresi, sono lì.",
         tech: ["Next.js", "TypeScript", "Canvas", "CSS"],
@@ -262,3 +370,14 @@ export const projectsContent: Record<
     ],
   },
 }
+
+/** Every capture a case study shows: preview screens, the phone, then the extras. */
+export function projectShots(project: Project): Screen[] {
+  const shots: Screen[] = []
+  if (project.preview.kind === "screens") shots.push(...project.preview.screens)
+  if (project.phone) shots.push(project.phone)
+  if (project.gallery) shots.push(...project.gallery)
+  return shots.filter((s, i) => shots.findIndex((o) => o.src === s.src) === i)
+}
+
+export const projectPath = (slug: string) => `/projects/${slug}`

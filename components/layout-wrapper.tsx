@@ -27,6 +27,9 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
   const home = stripLanguage(pathname) === "/"
   // A post ends on its last line: no footer under it.
   const post = stripLanguage(pathname).startsWith("/posts/")
+  // The posts list and the projects pages end on their last item too, with
+  // only the language pill left.
+  const projects = ["/posts", "/things"].includes(stripLanguage(pathname)) || stripLanguage(pathname).startsWith("/projects")
 
   // .site: restyled as plain HTML in boring mode (globals.css). The home page
   // goes further: boring mode swaps it for a whole other document.
@@ -45,7 +48,7 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
         <LetterDialog />
         <GlobeDialog />
         <EasterEggs />
-        {!home && !post && (
+        {!home && !post && !projects && (
           <footer className="w-full px-6 md:px-12 pt-16 pb-[calc(1.5rem+env(safe-area-inset-bottom))] lg:pb-16 print:hidden">
             <SiteFooter className="mx-auto max-w-[90rem]" />
           </footer>

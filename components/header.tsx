@@ -10,7 +10,7 @@ import { useLanguage } from "@/components/language-provider"
 import { LanguageCycle } from "@/components/language-switch"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { BackHome } from "@/components/back-home"
-import { SHOW_POSTS } from "@/lib/features"
+import { PROJECTS_LIVE, SHOW_POSTS } from "@/lib/features"
 import { stripLanguage } from "@/lib/i18n"
 import { hasBootPlayed, markBootPlayed } from "@/lib/motion"
 import { cn } from "@/lib/utils"
@@ -35,7 +35,6 @@ export function Header() {
 
   const links = [
     { href: "/projects", label: labels.nav.projects, current: pathname.startsWith("/projects") },
-    { href: "/#contact", label: labels.nav.contact },
     ...(SHOW_POSTS ? [{ href: "/posts", label: labels.nav.posts, current: pathname.startsWith("/posts") }] : []),
   ]
 
@@ -47,12 +46,21 @@ export function Header() {
           boot && "m-block",
         )}
       >
-        {/* Posts: the way back starts the bar, at its left end. A post goes
-            back to the list, the list goes home. */}
+        {/* Posts and projects: the way back starts the bar, at its left end.
+            A post or project goes back to its list, a list goes home. */}
         {pathname.startsWith("/posts/") ? (
           <BackHome href={localize("/posts")} label={labels.nav.posts.toLowerCase()} compact className="md:mr-auto" />
+        ) : pathname.startsWith("/projects/") ? (
+          <BackHome
+            href={localize("/projects") + (PROJECTS_LIVE ? "" : "?preview")}
+            label={labels.nav.projects.toLowerCase()}
+            compact
+            className="md:mr-auto"
+          />
         ) : (
-          pathname === "/posts" && <BackHome href={localize("/")} label={labels.nav.backHome} compact className="md:mr-auto" />
+          (pathname === "/posts" || pathname === "/projects" || pathname === "/things") && (
+            <BackHome href={localize("/")} label={labels.nav.backHome} compact className="md:mr-auto" />
+          )
         )}
         {/* One row on every width: on narrow phones the links scroll sideways
             under the language and theme controls instead of wrapping. */}
@@ -72,6 +80,9 @@ export function Header() {
           <span className="md:hidden">cv</span>
           <span className="hidden md:inline">{labels.nav.cv}</span>
         </CvMenu>
+        <Link href={localize("/things")} className={navLink} aria-current={pathname === "/things" ? "page" : undefined}>
+          {labels.nav.things}
+        </Link>
         </div>
 
         <span className="flex shrink-0 items-center gap-x-3">

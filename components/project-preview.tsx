@@ -60,13 +60,14 @@ export function Window({ className, style, children }: { className?: string; sty
 
 // Served at full resolution (images are unoptimised), so the capture itself
 // sets the sharpness: export at 2-3x the size it shows here.
-export function Shot({ screen, alt }: { screen: Screen; alt: string }) {
+export function Shot({ screen, alt, eager }: { screen: Screen; alt: string; eager?: boolean }) {
   return (
     <Image
       src={screen.src}
       alt={alt}
       width={screen.width}
       height={screen.height}
+      loading={eager ? "eager" : undefined}
       sizes="(min-width: 1024px) 32rem, 100vw"
       className="block h-auto w-full"
     />

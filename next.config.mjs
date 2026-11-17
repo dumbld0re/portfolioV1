@@ -18,6 +18,8 @@ const nextConfig = {
   // Metadata is static here, so always render it in <head> instead of streaming it
   // into <body> — some crawlers and Lighthouse only read tags inside <head>.
   htmlLimitedBots: /.*/,
+  // Dev previews are opened over Tailscale (arch) as well as localhost.
+  allowedDevOrigins: ["127.0.0.1", "arch", "arch.taildae856.ts.net"],
   experimental: {
     // The stylesheet is small; inlining it removes the render-blocking CSS request.
     inlineCss: true,

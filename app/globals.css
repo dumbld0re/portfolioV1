@@ -914,3 +914,36 @@ button.pill { line-height: 1.2; }
 :root:not(.dark) .cover-dots[data-dots] img {
   filter: brightness(0.86) contrast(1.1);
 }
+
+/* Project pictures morph between the list, a case study's hero and its
+   "next project" block (components/projects/morph.tsx). A long, soft settle;
+   the slight blur mid-flight hides the snapshots' resampling. */
+::view-transition-group(.project-morph) {
+  animation-duration: 700ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+::view-transition-image-pair(.project-morph) {
+  animation-name: project-morph-soften;
+  animation-duration: 700ms;
+}
+@keyframes project-morph-soften {
+  35% {
+    filter: blur(2px);
+  }
+}
+/* Everything else on the page crossfades underneath. */
+::view-transition-old(root) {
+  animation-duration: 220ms;
+}
+::view-transition-new(root) {
+  animation-duration: 420ms;
+  animation-delay: 80ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-image-pair(*) {
+    animation: none !important;
+  }
+}

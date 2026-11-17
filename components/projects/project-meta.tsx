@@ -15,26 +15,14 @@ export function ProjectStatus({ project, t }: { project: Project; t: ProjectsCop
   )
 }
 
-/** "view demo ↗ / view source ↗" */
+/** "view demo ↗" (or "view site ↗"). Source links aren't shown. */
 export function ProjectLinks({ project, t }: { project: Project; t: ProjectsCopy }) {
-  if (!project.demoHref && !project.githubHref) return null
+  if (!project.demoHref) return null
   return (
     <p className="flex flex-wrap gap-x-3 font-mono text-base text-muted-foreground">
-      {project.demoHref && (
-        <a href={project.demoHref} target="_blank" rel="noreferrer" className={inlineLink}>
-          {(project.demoKind === "site" ? t.viewSiteLabel : t.viewDemoLabel).toLowerCase()} ↗
-        </a>
-      )}
-      {project.demoHref && project.githubHref && (
-        <span className="text-muted-foreground/40" aria-hidden="true">
-          /
-        </span>
-      )}
-      {project.githubHref && (
-        <a href={project.githubHref} target="_blank" rel="noreferrer" className={inlineLink}>
-          {t.viewSourceLabel.toLowerCase()} ↗
-        </a>
-      )}
+      <a href={project.demoHref} target="_blank" rel="noreferrer" className={inlineLink}>
+        {(project.demoKind === "site" ? t.viewSiteLabel : t.viewDemoLabel).toLowerCase()} ↗
+      </a>
     </p>
   )
 }
