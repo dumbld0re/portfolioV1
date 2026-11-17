@@ -19,6 +19,8 @@ export const contactContent: Record<
     blurbAfter: string
     /** After the WhatsApp link. */
     blurbEnd: string
+    /** The one line under "say hi." above the open letter. */
+    letterLine: string
     phone: string
     /** Names the letter dialog for screen readers. */
     writeLabel: string
@@ -62,6 +64,7 @@ export const contactContent: Record<
     email: "dannymiiguel@gmail.com",
     blurbAfter: ". oder schreib mir direkt auf",
     blurbEnd: ".",
+    letterLine: "schreib hier, ich antworte per e-mail.",
     phone: "+264 85 800 0433",
     writeLabel: "Schreib mir",
     form: {
@@ -99,6 +102,7 @@ export const contactContent: Record<
     email: "dannymiiguel@gmail.com",
     blurbAfter: ". or shoot me a text directly at",
     blurbEnd: ".",
+    letterLine: "write here, and i'll answer by email.",
     phone: "+264 85 800 0433",
     writeLabel: "Write to me",
     form: {
@@ -136,6 +140,7 @@ export const contactContent: Record<
     email: "dannymiiguel@gmail.com",
     blurbAfter: ". oppure scrivimi direttamente su",
     blurbEnd: ".",
+    letterLine: "scrivi qui, ti rispondo per email.",
     phone: "+264 85 800 0433",
     writeLabel: "Scrivimi",
     form: {

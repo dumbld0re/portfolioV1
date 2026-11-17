@@ -123,6 +123,7 @@ export function LetterForm({
   className,
   onClose,
   onSent,
+  variant = "card",
 }: {
   /** Prefix for the fields' ids, so two letters can share a page. */
   id?: string
@@ -133,7 +134,11 @@ export function LetterForm({
   className?: string
   onClose?: () => void
   onSent?: () => void
+  /** "card": the letter as a sheet. "open": written straight onto the page,
+   *  between two hairlines, in the serif (the contact section). */
+  variant?: "card" | "open"
 }) {
+  const open = variant === "open"
   const language = useLanguageOrDefault()
   const t = contactContent[language]
   const f = t.form
@@ -230,13 +235,17 @@ export function LetterForm({
         if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) e.currentTarget.requestSubmit()
       }}
       noValidate
-      className={cn("flex w-full max-w-xl flex-col items-center", className)}
+      className={cn("flex w-full flex-col items-center", open ? "max-w-[40rem]" : "max-w-xl", className)}
     >
       <div
         ref={sheet}
         className={cn(
-          "relative flex min-h-[26rem] w-full flex-col rounded-[3px] border border-border/70 px-7 pt-8 pb-7 md:min-h-[30rem] md:px-12 md:pt-12 md:pb-10",
-          see === "always"
+          open
+            ? "relative flex w-full flex-col border-y border-border/70 py-10 text-left md:py-12"
+            : "relative flex min-h-[26rem] w-full flex-col rounded-[3px] border border-border/70 px-7 pt-8 pb-7 md:min-h-[30rem] md:px-12 md:pt-12 md:pb-10",
+          open
+            ? undefined
+            : see === "always"
             ? "bg-transparent"
             : see && !message && !email && !sent
             ? "bg-transparent transition-[background-color,box-shadow] duration-300 focus-within:bg-card focus-within:shadow-[0_1px_2px_rgb(0_0_0/0.04),0_12px_32px_-12px_rgb(0_0_0/0.12)] dark:focus-within:shadow-none"
@@ -261,8 +270,16 @@ export function LetterForm({
           </div>
         ) : (
           <>
-            <p className="pr-10 text-xl font-medium text-foreground md:text-2xl" aria-hidden="true">
+            <p
+              className={cn(
+                open
+                  ? "font-serif text-2xl lowercase tracking-[-0.01em] text-foreground md:text-3xl"
+                  : "pr-10 text-xl font-medium text-foreground md:text-2xl",
+              )}
+              aria-hidden="true"
+            >
               {f.greeting}
+              {open && ","}
             </p>
             <label htmlFor={`${id}-message`} className="sr-only">
               {f.messageLabel}
@@ -284,7 +301,9 @@ export function LetterForm({
               aria-describedby={problem?.field === "message" ? `${id}-problem` : undefined}
               className={cn(
                 field,
-                "mt-5 flex-1 resize-none text-lg leading-relaxed [field-sizing:content] md:text-xl",
+                open
+                  ? "mt-4 min-h-[6.5rem] resize-none font-serif text-xl leading-relaxed [field-sizing:content] md:text-2xl"
+                  : "mt-5 flex-1 resize-none text-lg leading-relaxed [field-sizing:content] md:text-xl",
               )}
             />
             <label htmlFor={`${id}-email`} className="sr-only">
@@ -308,7 +327,13 @@ export function LetterForm({
               placeholder={f.emailPlaceholder}
               aria-invalid={problem?.field === "email" || undefined}
               aria-describedby={problem?.field === "email" ? `${id}-problem` : undefined}
-              className={cn(field, "mt-8 text-lg md:text-xl", problem?.field === "email" && wrong)}
+              className={cn(
+                field,
+                open
+                  ? "mt-8 max-w-[calc(100%-6.5rem)] border-b border-border/70 pb-1 font-mono text-sm transition-colors focus:border-primary sm:max-w-xs"
+                  : "mt-8 text-lg md:text-xl",
+                problem?.field === "email" && wrong,
+              )}
             />
             {/* honeypot: people never see it, bots tick it */}
             <input type="checkbox" name="botcheck" tabIndex={-1} aria-hidden="true" className="hidden" />
@@ -321,7 +346,11 @@ export function LetterForm({
           type={sent ? "button" : "submit"}
           onClick={sent ? again : undefined}
           disabled={busy}
-          className="group mt-8 inline-flex cursor-pointer items-center gap-2 self-end py-1 font-mono text-sm lowercase text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary disabled:cursor-default disabled:opacity-60 md:text-base"
+          className={cn(
+            "group inline-flex cursor-pointer items-center gap-2 self-end py-1 font-mono text-sm lowercase text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary disabled:cursor-default disabled:opacity-60 md:text-base",
+            // the open letter sends from the same line as the email field
+            open && !sent ? "-mt-8" : "mt-8",
+          )}
         >
           <span className="underline decoration-border decoration-1 underline-offset-[6px] transition-colors group-hover:decoration-primary">
             {sent ? f.again : busy ? f.sending : f.send}
