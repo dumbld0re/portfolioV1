@@ -7,7 +7,6 @@ import { useState } from "react"
 import { BoringToggle } from "@/components/boring-toggle"
 import { ModeSwitches } from "@/components/corner-controls"
 import { useLanguage } from "@/components/language-provider"
-import { LanguageSwitch } from "@/components/language-switch"
 import { LastUpdated } from "@/components/last-updated"
 import { siteCopy } from "@/content/site"
 import { motionOff } from "@/lib/eggs"
@@ -17,7 +16,6 @@ import { BandStack, GlobeHorizon, openGlobe, useVisitors, visitorTotals } from "
 import { BlinkingEye, useViews } from "@/components/view-count"
 import { globeContent } from "@/content/globe"
 import { LOCALE, type Language } from "@/lib/i18n"
-import { scrollPage } from "@/lib/scroll"
 import { cn } from "@/lib/utils"
 
 const quiet = "w-fit transition-colors hover:text-foreground"
@@ -32,33 +30,20 @@ const floating =
 // The last line of every page: the copyright joke, when the site last
 // changed and who has seen it, the link nobody should click, and the boring
 // and sound switches (all on one row on wide screens). Phones and tablets get
-// the boring toggle, the languages and a way back up instead, floating over
+// the boring toggle instead, floating over
 // the visitor globe on the home page and in a plain row everywhere else.
 export function SiteFooter({ className, globe = false }: { className?: string; globe?: boolean }) {
   const { language, localize } = useLanguage()
   const copy = siteCopy[language]
   const joke = <YearJoke />
 
-  // Phones and tablets: boring mode and languages on the left, back to top on
-  // the right; floating over the globe on the home page.
+  // Phones and tablets: the boring toggle, floating over the globe on the
+  // home page. The languages are at the top of the page, so not here too.
   const controls = (
-    <div className="flex items-center justify-between gap-3">
-      <div className="flex items-center gap-2">
-        <span className={cn(floating, "px-3.5")}>
-          <BoringToggle />
-        </span>
-        <span className={cn(floating, "px-1.5")}>
-          <LanguageSwitch className={cn(quiet, "-my-3 px-2 py-3")} currentClassName="px-2" />
-        </span>
-      </div>
-      <button
-        type="button"
-        onClick={() => scrollPage(0)}
-        aria-label={copy.backToTop}
-        className={cn(floating, "size-11 cursor-pointer justify-center text-primary transition-colors hover:text-foreground")}
-      >
-        ↑
-      </button>
+    <div className="flex items-center justify-center">
+      <span className={cn(floating, "px-3.5")}>
+        <BoringToggle />
+      </span>
     </div>
   )
 
@@ -71,9 +56,6 @@ export function SiteFooter({ className, globe = false }: { className?: string; g
           <VisitorLine />
           <div className="mt-12 flex items-center gap-x-8">
             <ModeSwitches className={cn(quiet, whole, "cursor-pointer")} />
-            <button type="button" onClick={() => scrollPage(0)} className={cn(quiet, whole, "cursor-pointer")}>
-              {copy.backToTop} <span className="text-primary">↑</span>
-            </button>
           </div>
           <div className="mt-4 flex items-center gap-x-3 text-xs text-muted-foreground/80">
             <p>{joke}</p>

@@ -160,8 +160,9 @@ export const projectsContent: Record<
         slug: "ae",
         title: "æ design studio",
         short: "mein designstudio und seine website.",
+        tagline: "Mein Designstudio und seine Website.",
         description:
-          "Mein Designstudio, die Website dazu habe ich von Grund auf selbst gebaut. Alle meine Webdesign- und Kundenprojekte, samt Case Studies, findest du dort.",
+          "Von Grund auf selbst gebaut. Alle meine Webdesign- und Kundenprojekte, samt Case Studies, findest du dort.",
         tech: ["Next.js", "TypeScript", "Canvas", "CSS"],
         demoHref: "https://www.aestudio.site/",
         demoKind: "site",
@@ -256,8 +257,9 @@ export const projectsContent: Record<
         slug: "ae",
         title: "æ design studio",
         short: "my design studio and its site.",
+        tagline: "My design studio and its site.",
         description:
-          "My design studio, and its site, built from scratch. All my web design and client work, case studies included, lives there.",
+          "Built from scratch. All my web design and client work, case studies included, lives there.",
         tech: ["Next.js", "TypeScript", "Canvas", "CSS"],
         demoHref: "https://www.aestudio.site/",
         demoKind: "site",
@@ -352,8 +354,9 @@ export const projectsContent: Record<
         slug: "ae",
         title: "æ design studio",
         short: "il mio studio di design e il suo sito.",
+        tagline: "Il mio studio di design e il suo sito.",
         description:
-          "Il mio studio di design, con un sito costruito da zero. Tutti i miei lavori di web design e per clienti, casi studio compresi, sono lì.",
+          "Costruito da zero. Tutti i miei lavori di web design e per clienti, casi studio compresi, sono lì.",
         tech: ["Next.js", "TypeScript", "Canvas", "CSS"],
         demoHref: "https://www.aestudio.site/",
         demoKind: "site",

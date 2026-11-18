@@ -58,7 +58,18 @@ function layout() {
   return { dots, wedge }
 }
 
-export function NamibiaWord({ word, place, coords }: { word: string; place: string; coords: string }) {
+export function NamibiaWord({
+  word,
+  place,
+  coords,
+  underline = false,
+}: {
+  word: string
+  place: string
+  coords: string
+  /** Set as an underlined word instead of a pill (the home sentence). */
+  underline?: boolean
+}) {
   const [open, setOpen] = useState(false)
   const [shown, setShown] = useState(false) // mounted, including while flying back
   // Where the card sits on the screen (it is drawn on top of everything, so
@@ -175,20 +186,22 @@ export function NamibiaWord({ word, place, coords }: { word: string; place: stri
     <span ref={anchor} className="relative inline">
       <button
         type="button"
-        className="pill"
-        data-tone="coral"
+        className={underline ? "explore-underline" : "pill"}
+        data-tone={underline ? "orange" : "coral"}
         aria-expanded={open}
         aria-controls="namibia-card"
         onPointerEnter={(e) => e.pointerType === "mouse" && show(true)}
         onPointerLeave={(e) => e.pointerType === "mouse" && setOpen(false)}
-        onFocus={() => show(true)}
+        // Keyboard focus only: a tap focuses the button too (on Android), and
+        // the click right after would toggle the card shut again.
+        onFocus={(e) => e.currentTarget.matches(":focus-visible") && show(true)}
         onBlur={() => setOpen(false)}
         onClick={(e) => {
           // A mouse already opened it on the way in; a tap toggles it.
           if ((e.nativeEvent as PointerEvent).pointerType !== "mouse") show(!open)
         }}
       >
-        <DotMark name="pin" />
+        {!underline && <DotMark name="pin" />}
         {word}
       </button>
       {shown &&

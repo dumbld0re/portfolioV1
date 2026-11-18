@@ -11,3 +11,8 @@ export const SHOW_TIMELINE = false
 // note unless ?preview is in the URL, and the case studies are noindex and left
 // out of the sitemap. Flip it to put them live.
 export const PROJECTS_LIVE = true
+
+// The bookshelf on the home page (the sentence's "bookshelf" pill). While this
+// is false the place opens on a "currently working on it" line with no books;
+// flip it to list the reading library there again.
+export const BOOKSHELF_LIVE = false

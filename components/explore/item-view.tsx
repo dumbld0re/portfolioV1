@@ -37,7 +37,8 @@ export function ItemView({ item, className }: { item: ShelfItem; className?: str
       <article className={className}>
         <h2 className="font-serif text-3xl leading-tight tracking-[-0.02em] md:text-4xl">{p.title}</h2>
         {p.short && <p className="mt-3 text-muted-foreground">{p.short}</p>}
-        <div className="mt-8 space-y-4">
+        {/* Screens only: a tool without a UI goes straight to its text. */}
+        <div className={cn("space-y-4", screens.length > 0 && "mt-8")}>
           {screens.slice(0, 2).map((s) => (
             <Image
               key={s.src}
@@ -49,11 +50,6 @@ export function ItemView({ item, className }: { item: ShelfItem; className?: str
               className="w-full rounded-lg border border-border"
             />
           ))}
-          {p.preview.kind === "terminal" && (
-            <pre className="overflow-x-auto rounded-lg border border-border bg-muted/40 p-5 font-mono text-xs leading-6 text-muted-foreground normal-case">
-              {p.preview.lines.join("\n")}
-            </pre>
-          )}
         </div>
         <p className="mt-8 text-lg leading-relaxed">{p.description}</p>
         <p className={cn(note, "mt-6")}>{p.tech.join(" · ").toLowerCase()}</p>

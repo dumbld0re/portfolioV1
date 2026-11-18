@@ -1,4 +1,4 @@
-// The real marks of the two places in the hero, sized like the text around them.
+// The real marks of the places I work at, sized like the text around them.
 
 /** aestudio's mark (from the brand files), in the text's own colour. */
 export function AestudioLogo() {
@@ -14,4 +14,19 @@ export function AestudioLogo() {
 export function OratoresLogo() {
   // eslint-disable-next-line @next/next/no-img-element
   return <img src="/logos/oratores-novi.png" alt="" aria-hidden="true" width={96} height={88} className="logo-mark logo-oratores" />
+}
+
+/** Fluent Academy's mark: the open "A" of its FLAC wordmark with the colour
+ *  bar under it (colours sampled from fluentacademy.co's logo), the letter in
+ *  the text's own colour so it reads on both themes. */
+export function FluentLogo() {
+  return (
+    <svg viewBox="0 0 24 20" className="logo-mark" aria-hidden="true">
+      <path d="M3.5 15 12 2.2 20.5 15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="miter" />
+      <rect x="3" y="17" width="6.6" height="1.8" fill="#ec0008" />
+      <rect x="9.6" y="17" width="2.3" height="1.8" fill="#fa2400" />
+      <rect x="11.9" y="17" width="2.8" height="1.8" fill="#fb7d00" />
+      <rect x="14.7" y="17" width="6.3" height="1.8" fill="#fcb400" />
+    </svg>
+  )
 }

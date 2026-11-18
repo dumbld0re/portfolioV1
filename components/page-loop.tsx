@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useSyncExternalStore } from "react"
 
-import { Header } from "@/components/header"
+import { HomeBar } from "@/components/home-bar"
 import { SentenceLanding } from "@/components/explore/sentence-view"
 import * as loop from "@/lib/loop-store"
 import { getLenis } from "@/lib/scroll"
@@ -105,7 +105,7 @@ export function PageLoop() {
 
   return (
     <div ref={echo} aria-hidden="true" inert data-loop-echo className="print:hidden">
-      <Header />
+      <HomeBar />
       <SentenceLanding echo />
     </div>
   )

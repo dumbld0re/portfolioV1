@@ -8,6 +8,7 @@ import { EasterEggs } from "@/components/easter-eggs"
 import { BoringHome } from "@/components/boring/boring-home"
 import { CornerControls } from "@/components/corner-controls"
 import { Header } from "@/components/header"
+import { HomeBar } from "@/components/home-bar"
 import { PageLoop } from "@/components/page-loop"
 import { LetterDialog } from "@/components/letter-form"
 import { GlobeDialog } from "@/components/visitor-globe"
@@ -34,7 +35,8 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
     <div className={cn("site relative flex min-h-screen flex-col bg-background lowercase", home && "fancy-only")}>
       <DotGround />
       <div className="relative z-10 flex flex-col min-h-screen">
-        <Header />
+        {/* The home page has no links up top: the sentence is the way around. */}
+        {home ? <HomeBar /> : <Header />}
         {children}
         {/* The home page loops: the top comes round again below the contact section. */}
         {home && <PageLoop />}

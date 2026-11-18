@@ -4,6 +4,7 @@ import { useEffect, useState, type ReactNode } from "react"
 
 import { exploreContent, type SectionId } from "@/content/explore"
 import { useLanguage } from "@/components/language-provider"
+import { AboutProse } from "@/components/explore/about-prose"
 import { ItemView } from "@/components/explore/item-view"
 import type { ShelfItem, ShelfSection } from "@/components/explore/shelf"
 import { cn } from "@/lib/utils"
@@ -65,7 +66,12 @@ export function ListRow({
         {item.title}
       </span>
       {item.meta && <span className="ml-3 font-mono text-xs text-muted-foreground">{item.meta}</span>}
-      {item.external && <span className="ml-1 font-mono text-xs text-muted-foreground">↗</span>}
+      {item.external && (
+        <span className="explore-arrow ml-1.5 font-mono text-xs text-muted-foreground" aria-hidden="true">
+          <span>↗</span>
+          <span>↗</span>
+        </span>
+      )}
     </>
   )
   const cls = cn("group block py-1.5 text-left lowercase transition-opacity duration-300", dim && !active && "opacity-35 hover:opacity-100")
@@ -101,14 +107,13 @@ export function SectionPanel({
       <h2 className="font-serif text-4xl lowercase leading-none tracking-[-0.03em] md:text-5xl">
         <TypeIn text={section.title} speed={1} />
       </h2>
-      <p className="mt-5 text-muted-foreground md:text-lg md:leading-relaxed">
-        <TypeIn text={section.line} speed={3} />
-      </p>
-      {section.body?.map((p) => (
-        <p key={p} className="mt-4 leading-relaxed lowercase">
-          {p}
+      {section.line && (
+        <p className="mt-5 text-muted-foreground md:text-lg md:leading-relaxed">
+          <TypeIn text={section.line} speed={3} />
         </p>
-      ))}
+      )}
+      {/* "me" tells what I do instead of a line. */}
+      {section.id === "about" && <AboutProse />}
       <ul key={section.id} className="explore-rise mt-8 space-y-1">
         {section.items.map((item) => (
           <ListRow
@@ -189,7 +194,7 @@ export function Reader({
         {lead && <div className="explore-lead sticky top-28 shrink-0">{lead}</div>}
         <div className="sticky top-28 w-[24rem] shrink-0">
           <BackButton onClick={onClose}>{closeLabel ?? t.back}</BackButton>
-          <SectionPanel section={section} itemId={itemId} onOpenItem={(id) => onOpenItem(section.id, id)} className="mt-8" />
+          <SectionPanel section={section} itemId={itemId} onOpenItem={(id) => onOpenItem(section.id, id)} className="explore-panel mt-8" />
         </div>
         <div className="explore-item shrink-0 overflow-hidden">
           {item && (
@@ -211,7 +216,7 @@ export function Reader({
           <div key={section.id} className="explore-rise">
             <BackButton onClick={onClose}>{closeLabel ?? t.back}</BackButton>
             {lead && <div className={cn("mt-6", leadPhoneClassName)}>{lead}</div>}
-            <SectionPanel section={section} itemId={null} onOpenItem={(id) => onOpenItem(section.id, id)} className="mt-6" />
+            <SectionPanel section={section} itemId={null} onOpenItem={(id) => onOpenItem(section.id, id)} className="explore-panel mt-6" />
           </div>
         )}
       </div>

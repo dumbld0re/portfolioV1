@@ -6,6 +6,7 @@ import { exploreContent, type SectionId } from "@/content/explore"
 import { homeContent } from "@/content/home"
 import { DotMark } from "@/components/dot-mark"
 import { useLanguage } from "@/components/language-provider"
+import { openLetter } from "@/components/letter-form"
 import { NamibiaWord } from "@/components/namibia-word"
 import { ParticleText } from "@/components/particle-text"
 import { ThingsWord } from "@/components/play-words"
@@ -20,7 +21,9 @@ import { cn } from "@/lib/utils"
 // into the left column, small, with the pill you came through lit and the
 // others faded but still clickable, so you can walk from place to place by
 // the sentence alone. The sentence and its pills morph between the two (view
-// transitions, named below). Inside a place there is no footer.
+// transitions: each pill and underlined word flies to its new spot like a
+// piece across a board, the words between them fade). Inside a place there
+// is no footer.
 
 const name = (id: string): CSSProperties => ({ viewTransitionName: id })
 
@@ -38,13 +41,12 @@ function Sentence({
   onPick: (id: SectionId) => void
 }) {
   const { language } = useLanguage()
-  const { sentence, sentenceWords: words } = exploreContent[language]
+  const { sentence, sentenceWords: words, hi } = exploreContent[language]
   const hero = homeContent[language].hero
   const byId = Object.fromEntries(sections.map((s) => [s.id, s])) as Record<SectionId, ShelfSection>
 
   return (
     <p
-      style={name("explore-sentence")}
       className={cn(
         "font-serif text-balance lowercase",
         compact
@@ -55,24 +57,50 @@ function Sentence({
       {sentence.split(/(\{\w+\}[.,]?)/).map((bit, i) => {
         const m = bit.match(/^\{(\w+)\}([.,]?)$/)
         if (!m) return <Fragment key={i}>{bit}</Fragment>
-        // The two words that aren't places: the map, and the word that changes.
+        // The two words that aren't places: the map, and the word that
+        // changes. Both underlined, like most of the places.
         if (m[1] === "namibia" || m[1] === "things") {
-          // The punctuation after it stays in the sentence's own type.
           return (
             <span key={i} className="whitespace-nowrap">
               <span
+                style={name(`explore-word-${m[1]}`)}
                 className={cn(
-                  "font-mono transition-opacity",
+                  "explore-vt inline-block transition-opacity",
+                  active && (m[1] === "namibia" ? "opacity-45" : "opacity-45 hover:opacity-100"),
+                )}
+              >
+                {m[1] === "namibia" && compact ? (
+                  // Inside a place it's just the word: the map belongs to the first screen.
+                  <span className="explore-underline pointer-events-none" data-tone="orange">
+                    {hero.namibia.word}
+                  </span>
+                ) : m[1] === "namibia" ? (
+                  <NamibiaWord word={hero.namibia.word} place={hero.namibia.place} coords={hero.namibia.coords} underline />
+                ) : (
+                  <ThingsWord words={hero.things} underline />
+                )}
+              </span>
+              {m[2]}
+            </span>
+          )
+        }
+        if (m[1] === "hi") {
+          // The one filled button: writing to me (the letter form).
+          return (
+            <span key={i} className="whitespace-nowrap">
+              <button
+                type="button"
+                onClick={openLetter}
+                style={name("explore-hi")}
+                className={cn(
+                  "explore-vt pill explore-hi align-baseline font-mono",
                   compact ? "text-sm" : "text-[0.62em]",
                   active && "opacity-45 hover:opacity-100",
                 )}
               >
-                {m[1] === "namibia" ? (
-                  <NamibiaWord word={hero.namibia.word} place={hero.namibia.place} coords={hero.namibia.coords} />
-                ) : (
-                  <ThingsWord words={hero.things} />
-                )}
-              </span>
+                <DotMark name="letter" />
+                {hi}
+              </button>
               {m[2]}
             </span>
           )
@@ -80,6 +108,8 @@ function Sentence({
         const s = byId[m[1] as SectionId]
         if (!s) return <Fragment key={i}>{bit}</Fragment>
         const on = active === s.id
+        // Projects is the one place on a pill; the others are underlined.
+        const underline = s.id !== "projects"
         return (
           <span key={i} className="whitespace-nowrap">
             <button
@@ -90,12 +120,13 @@ function Sentence({
               data-tone={s.tone}
               style={name(`explore-pill-${s.id}`)}
               className={cn(
-                "pill align-baseline font-mono",
-                compact ? "text-sm" : "text-[0.62em]",
+                "explore-vt",
+                underline ? "explore-underline" : cn("pill explore-plain align-baseline font-mono", compact ? "text-sm" : "text-[0.62em]"),
                 active && !on && "opacity-45 hover:opacity-100",
               )}
             >
-              <DotMark name={s.mark} />
+              {/* Pills carry their mark; an underlined word is just the word. */}
+              {!underline && <DotMark name={s.mark} />}
               {words[s.id]}
             </button>
             {m[2]}

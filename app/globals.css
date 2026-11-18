@@ -918,7 +918,7 @@ button.pill { line-height: 1.2; }
   }
 }
 
-/* Explore: the home page prototypes behind ?view= (components/explore/).
+/* Explore: the home page's sentence and the places it opens (components/explore/).
    The reader's three columns: the lead, the list (24rem) and the open item,
    which grows from nothing so the other two slide left to make room. Below
    xl the lead steps aside while an item is open. */
@@ -929,12 +929,12 @@ button.pill { line-height: 1.2; }
 .explore-lead {
   width: calc(var(--lead) + 2.5rem);
   padding-right: 2.5rem;
-  transition: width 500ms cubic-bezier(0.2, 0.7, 0.2, 1), opacity 300ms, padding 500ms;
+  transition: width 800ms cubic-bezier(0.65, 0.05, 0.25, 1), opacity 400ms, padding 800ms;
 }
 .explore-item {
   width: 0;
   opacity: 0;
-  transition: width 500ms cubic-bezier(0.2, 0.7, 0.2, 1), opacity 400ms;
+  transition: width 800ms cubic-bezier(0.65, 0.05, 0.25, 1), opacity 600ms 150ms;
 }
 .explore-row[data-open] .explore-item {
   width: var(--item);
@@ -976,4 +976,110 @@ button.pill { line-height: 1.2; }
 /* Inside a place on the home page, the page is the reader alone. */
 html[data-place-open] [data-loop-echo] {
   display: none;
+}
+
+/* The sentence's words (components/explore/sentence-view.tsx), in two plain
+   tones: an underline in the text's own colour, softer until pointed at;
+   "projects" on a quiet grey pill; and "say hi" on a solid one, the single
+   strongest thing on the page. */
+.explore-underline {
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 0.24em;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  transition: text-decoration-color 200ms, text-decoration-thickness 200ms, opacity 300ms;
+}
+.explore-underline:hover,
+.explore-underline:focus-visible,
+.explore-underline[aria-current],
+.group:hover > .explore-underline {
+  text-decoration-color: currentColor;
+  text-decoration-thickness: 2px;
+  outline: none;
+}
+.pill.explore-plain {
+  --pill-tone: color-mix(in srgb, var(--foreground) 10%, transparent);
+  color: var(--foreground);
+}
+.pill.explore-hi {
+  --pill-tone: var(--foreground);
+  color: var(--background);
+}
+
+/* The sentence, its pills and the place's panel glide between the first
+   screen and the reader, slowly enough to follow (like a piece across a
+   board), instead of the site's quick snap. */
+.explore-vt,
+.explore-panel {
+  view-transition-class: explore;
+}
+.explore-panel {
+  view-transition-name: explore-panel;
+}
+::view-transition-group(.explore) {
+  animation-duration: 850ms;
+  animation-timing-function: cubic-bezier(0.65, 0.05, 0.25, 1);
+}
+/* A piece with nowhere to go (the other screen doesn't show it) leaves at
+   once, instead of hanging over what comes next. */
+::view-transition-old(.explore):only-child {
+  animation: explore-gone 160ms ease-in both;
+}
+::view-transition-new(.explore):only-child {
+  animation: explore-come 400ms 300ms ease-out both;
+}
+@keyframes explore-gone {
+  to { opacity: 0; }
+}
+@keyframes explore-come {
+  from { opacity: 0; }
+}
+::view-transition-new(explore-panel):only-child {
+  animation: explore-panel-in 700ms 220ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+::view-transition-old(explore-panel):only-child {
+  animation: explore-panel-out 220ms ease-in both;
+}
+@keyframes explore-panel-in {
+  from {
+    opacity: 0;
+    transform: translateX(56px);
+  }
+}
+@keyframes explore-panel-out {
+  to {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+}
+
+/* An arrow that leaves: pointed at, the ↗ flies off up and right and a new
+   one comes in from below left. */
+.explore-arrow {
+  display: inline-flex;
+  position: relative;
+  overflow: hidden;
+  vertical-align: baseline;
+}
+.explore-arrow > span {
+  display: inline-block;
+  transition: transform 420ms cubic-bezier(0.65, 0.05, 0.25, 1);
+}
+.explore-arrow > span + span {
+  position: absolute;
+  inset: 0;
+  transform: translate(-110%, 110%);
+}
+.group:hover .explore-arrow > span:first-child,
+.group:focus-visible .explore-arrow > span:first-child {
+  transform: translate(110%, -110%);
+}
+.group:hover .explore-arrow > span + span,
+.group:focus-visible .explore-arrow > span + span {
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .explore-arrow > span {
+    transition: none;
+  }
 }

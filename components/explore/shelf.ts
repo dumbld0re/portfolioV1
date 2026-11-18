@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { flushSync } from "react-dom"
 import { useSearchParams } from "next/navigation"
 
@@ -12,6 +12,7 @@ import type { MarkName } from "@/components/dot-mark"
 import { formatPostDate } from "@/lib/format-date"
 import type { LibraryEntry } from "@/lib/library-types"
 import type { Post } from "@/lib/posts"
+import { BOOKSHELF_LIVE } from "@/lib/features"
 import { soundEvent } from "@/lib/sound"
 import { INSTAGRAM_URL, PINTEREST_URL, X_URL } from "@/lib/styles"
 
@@ -39,12 +40,12 @@ export type ShelfItem = {
 export type ShelfSection = {
   id: SectionId
   title: string
-  line: string
-  tone: "sun" | "sky" | "mint" | "grape" | "coral"
+  /** One line under the title; a place can go without. */
+  line?: string
+  /** Its colour in the sentence (app/globals.css, "The sentence's palette"). */
+  tone: "amber" | "orange" | "red" | "purple" | "blue"
   mark: MarkName
   items: ShelfItem[]
-  /** Extra paragraphs (about me). */
-  body?: string[]
   more?: { label: string; href: string }
 }
 
@@ -62,9 +63,8 @@ export function useShelf({ posts, library }: ExploreData): ShelfSection[] {
       about: {
         id: "about",
         ...t.sections.about,
-        tone: "sun",
+        tone: "red",
         mark: "face",
-        body: [hero.intro, hero.description],
         items: [
           { id: "cv", title: t.cv, href: "/cv.pdf", external: true },
           { id: "things", title: t.things, href: localize("/things") },
@@ -73,8 +73,8 @@ export function useShelf({ posts, library }: ExploreData): ShelfSection[] {
       posts: {
         id: "posts",
         ...t.sections.posts,
-        tone: "sky",
-        mark: "letter",
+        tone: "red",
+        mark: "page",
         items: posts.map((post) => ({
           id: post.slug,
           title: post.title,
@@ -85,7 +85,7 @@ export function useShelf({ posts, library }: ExploreData): ShelfSection[] {
       projects: {
         id: "projects",
         ...t.sections.projects,
-        tone: "mint",
+        tone: "red",
         mark: "window",
         items: projects.map((project) => ({
           id: project.slug ?? project.title,
@@ -95,33 +95,36 @@ export function useShelf({ posts, library }: ExploreData): ShelfSection[] {
           project,
         })),
       },
-      reading: {
-        id: "reading",
-        ...t.sections.reading,
-        tone: "grape",
-        mark: "cap",
-        more: { label: t.fullLibrary, href: "/read" },
-        items: [...library]
-          .sort((a, b) => (a.added < b.added ? 1 : -1))
-          .map((book) => ({
-            id: book.slug,
-            title: book.title,
-            meta: book.author.toLowerCase(),
-            image: book.cover ?? undefined,
-            book,
-          })),
-      },
+      reading: BOOKSHELF_LIVE
+        ? {
+            id: "reading",
+            ...t.sections.reading,
+            tone: "purple",
+            mark: "cap",
+            more: { label: t.fullLibrary, href: "/read" },
+            items: [...library]
+              .sort((a, b) => (a.added < b.added ? 1 : -1))
+              .map((book) => ({
+                id: book.slug,
+                title: book.title,
+                meta: book.author.toLowerCase(),
+                image: book.cover ?? undefined,
+                book,
+              })),
+          }
+        : // Still being built: the place opens on one line and nothing else.
+          { id: "reading", title: t.sections.reading.title, line: t.bookshelfSoon, tone: "purple", mark: "cap", items: [] },
       elsewhere: {
         id: "elsewhere",
         ...t.sections.elsewhere,
-        tone: "coral",
+        tone: "blue",
         mark: "penguin",
         items: [
-          { id: "github", title: "github", meta: "code", href: "https://github.com/dumbld0re", external: true },
-          { id: "pinterest", title: "pinterest", meta: "pictures", href: PINTEREST_URL, external: true },
-          { id: "x", title: "x", meta: "words", href: X_URL, external: true },
-          { id: "instagram", title: "instagram", meta: "photos", href: INSTAGRAM_URL, external: true },
-          { id: "aestudio", title: "æ design studio", meta: "client work", href: "https://www.aestudio.site/", external: true },
+          { id: "github", title: "github", href: "https://github.com/dumbld0re", external: true },
+          { id: "pinterest", title: "pinterest", href: PINTEREST_URL, external: true },
+          { id: "x", title: "x", href: X_URL, external: true },
+          { id: "instagram", title: "instagram", href: INSTAGRAM_URL, external: true },
+          { id: "aestudio", title: "æ design studio", href: "https://www.aestudio.site/", external: true },
         ],
       },
     }
@@ -135,6 +138,8 @@ export function useShelf({ posts, library }: ExploreData): ShelfSection[] {
  * run inside a view transition where the browser has them, so a prototype can
  * name the parts that should travel (the sentence, a pill) and they morph.
  */
+const depthOf = (s: { section: SectionId | null; item: string | null }) => (s.item ? 2 : s.section ? 1 : 0)
+
 export function useExploreState() {
   const params = useSearchParams()
   const read = (q: URLSearchParams = new URLSearchParams(window.location.search)) => ({
@@ -144,10 +149,36 @@ export function useExploreState() {
   // The first render matches the server's (both read the request's params).
   const [state, setState] = useState(() => read(new URLSearchParams(params.toString())))
 
+  // Moving between places runs a view transition, so the pills fly to
+  // their new spots. Opening or closing an item inside one doesn't: the
+  // item's column slides in by itself, and on phones the sentence isn't
+  // there to fly anywhere.
+  const show = (next: ReturnType<typeof read>, from: ReturnType<typeof read>) => {
+    const apply = () => flushSync(() => setState(next))
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    if (next.section !== from.section && document.startViewTransition && !still) {
+      // A second change that comes in mid-glide (two quick Escapes) skips
+      // the first one's animation; that's fine, so its promises may reject quietly.
+      const t = document.startViewTransition(apply)
+      t.ready.catch(() => {})
+      t.finished.catch(() => {})
+      t.updateCallbackDone.catch(() => {})
+    } else apply()
+    // Deeper (or across to another place) steps up; back out steps down.
+    const d = depthOf(next) - depthOf(from)
+    if (d !== 0 || next.section !== from.section) soundEvent(d < 0 ? "leave" : "enter", 0.5, 0.5)
+  }
+  const current = useRef(state)
   useEffect(() => {
-    const onPop = () => setState(read())
+    current.current = state
+  })
+
+  // The back and forward buttons land here, with the same glide.
+  useEffect(() => {
+    const onPop = () => show(read(), current.current)
     window.addEventListener("popstate", onPop)
     return () => window.removeEventListener("popstate", onPop)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // While a place is open the page is the reader alone: the footer and the
@@ -159,28 +190,46 @@ export function useExploreState() {
     return () => root.removeAttribute("data-place-open")
   }, [state.section])
 
-  const go = (next: { s?: SectionId | null; i?: string | null }) => {
-    const deeper = Object.values(next).some(Boolean)
-    soundEvent(deeper ? "enter" : "leave", 0.5, 0.5)
+  /** How many steps in from the first screen this history entry is (0 when
+   *  the page was opened here directly). */
+  const steps = () => (window.history.state?.exploreSteps as number | undefined) ?? 0
+
+  const urlFor = (next: { s?: SectionId | null; i?: string | null }) => {
     const q = new URLSearchParams(window.location.search)
     for (const [key, value] of Object.entries(next)) {
       if (value) q.set(key, value)
       else q.delete(key)
     }
-    window.history.pushState(null, "", `${window.location.pathname}${q.size ? `?${q}` : ""}`)
-    const apply = () => flushSync(() => setState(read()))
-    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    if (document.startViewTransition && !still) document.startViewTransition(apply)
-    else apply()
-    // Opening a place starts at its top.
-    if (next.s !== undefined) window.scrollTo({ top: 0 })
+    return `${window.location.pathname}${q.size ? `?${q}` : ""}`
+  }
+
+  // Going in adds a history entry; coming out walks back over the ones we
+  // added, so back, Escape and the "← back" buttons all agree.
+  const goIn = (next: { s: SectionId; i?: string | null }) => {
+    const from = current.current
+    window.history.pushState({ ...window.history.state, exploreSteps: steps() + 1 }, "", urlFor(next))
+    show(read(), from)
+    if (next.s !== from.section) window.scrollTo({ top: 0 })
+  }
+  const goOut = (to: { s?: SectionId | null; i?: string | null }, back: number) => {
+    const from = current.current
+    if (back > 0 && steps() >= back) {
+      window.history.go(-back)
+      return
+    }
+    // Opened here directly: nothing of ours to go back over.
+    window.history.pushState({ ...window.history.state, exploreSteps: 0 }, "", urlFor(to))
+    show(read(), from)
   }
 
   return {
     ...state,
-    open: (s: SectionId) => go({ s, i: null }),
-    openItem: (s: SectionId, i: string) => go({ s, i }),
-    closeItem: () => go({ i: null }),
-    close: () => go({ s: null, i: null }),
+    open: (s: SectionId) => goIn({ s, i: null }),
+    openItem: (s: SectionId, i: string) => goIn({ s, i }),
+    // An item opened from its place is one step back; opened directly, it
+    // falls back to the place's own URL.
+    closeItem: () => goOut({ i: null }, current.current.item ? 1 : 0),
+    // Back to the first screen: over every step taken since it.
+    close: () => goOut({ s: null, i: null }, steps()),
   }
 }

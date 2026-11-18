@@ -27,7 +27,6 @@ export const siteCopy: Record<
     themeLabel: string
     notFound: string
     home: string
-    backToTop: string
     sayHello: string
     on: string
     off: string
@@ -57,7 +56,6 @@ export const siteCopy: Record<
     themeLabel: "Farbschema wechseln",
     notFound: "nicht gefunden",
     home: "zurück zur startseite",
-    backToTop: "nach oben",
     sayHello: "sag hallo",
     on: "an",
     off: "aus",
@@ -86,7 +84,6 @@ export const siteCopy: Record<
     themeLabel: "Toggle theme",
     notFound: "not found",
     home: "back to the start",
-    backToTop: "back to top",
     sayHello: "say hello",
     on: "on",
     off: "off",
@@ -115,7 +112,6 @@ export const siteCopy: Record<
     themeLabel: "Cambia tema",
     notFound: "non trovata",
     home: "torna all'inizio",
-    backToTop: "torna su",
     sayHello: "dimmi ciao",
     on: "sì",
     off: "no",

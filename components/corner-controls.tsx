@@ -10,7 +10,6 @@ import {
   useLanguageOrDefault,
 } from "@/components/language-provider";
 import { LanguageSwitch } from "@/components/language-switch";
-import { openLetter } from "@/components/letter-form";
 import {
   getServerSnapshot,
   getSnapshot,
@@ -26,11 +25,10 @@ const corner =
   "fixed bottom-4 z-40 hidden lg:flex items-center gap-6 rounded-full bg-background/85 px-4 py-1.5 font-mono text-sm backdrop-blur-sm print:hidden";
 const control = "text-muted-foreground transition-colors hover:text-foreground";
 
-// Small text controls pinned to the bottom corners on wide screens. Phones and
-// tablets get the boring toggle in the page footer instead, where it can't
-// cover the content; there, only the language switch sits in the corner. It
-// shows once the header is out of sight, so the language can be changed from
-// anywhere on the page.
+// Small text controls pinned to the bottom right: the language switch, which
+// shows once the header is out of sight so the language can be changed from
+// anywhere on the page, and on the home page's first screen the ∞ loop
+// switch. Boring mode and sound are in the home page's footer.
 export function CornerControls() {
   const labels = siteCopy[useLanguageOrDefault()];
   const hasLanguages = useHasLanguages();
@@ -50,32 +48,17 @@ export function CornerControls() {
   // Posts are English-only, so on one the language switch would do nothing.
   const languages = hasLanguages && !reading;
 
-  // The hero has its own email icon in this corner of the screen, so "say
-  // hello" only comes in once that row has scrolled away. Hidden until the
-  // page has been checked, so it never flashes over the hero on load.
-  const [hello, setHello] = useState(false);
-
+  // Inside a place on the home page there is no loop, so no ∞ either
+  // (components/explore/shelf.ts marks <html> while one is open).
+  const [placeOpen, setPlaceOpen] = useState(false);
   useEffect(() => {
-    // On the home page there are two: the hero and its loop echo at the foot
-    // (components/page-loop.tsx); "say hello" waits until neither is in view.
-    const links = [...document.querySelectorAll("[data-hero-links]")];
-    if (!links.length) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setHello(true);
-      return;
-    }
-    const seen = new Set<Element>();
-    const observer = new IntersectionObserver((entries) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting) seen.add(entry.target);
-        else seen.delete(entry.target);
-      }
-      setHello(seen.size === 0);
-    });
-    links.forEach((el) => observer.observe(el));
+    const root = document.documentElement;
+    const read = () => setPlaceOpen(root.hasAttribute("data-place-open"));
+    read();
+    const observer = new MutationObserver(read);
+    observer.observe(root, { attributes: true, attributeFilter: ["data-place-open"] });
     return () => observer.disconnect();
-    // Looked up again when the loop's echo comes or goes.
-  }, [loopOn]);
+  }, []);
 
   // The header has its own language link, so the one down here only comes
   // in once the header has scrolled off the screen. On phones and tablets the
@@ -110,33 +93,14 @@ export function CornerControls() {
 
   return (
     <>
-      <div
-        className={cn(
-          corner,
-          "left-3 transition-opacity duration-300",
-          (!hello || reading || projects) && "pointer-events-none opacity-0",
-        )}
-        inert={!hello || reading || projects}
-      >
-        <button
-          type="button"
-          onClick={openLetter}
-          aria-haspopup="dialog"
-          className={control}
-        >
-          {labels.sayHello}
-          <span className="text-primary" aria-hidden="true">
-            {" "}
-            ↗
-          </span>
-        </button>
-      </div>
       {languages && (
         <div
           inert={!floating}
           className={cn(
             "fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom))] right-[calc(0.75rem+env(safe-area-inset-right))] z-40 flex items-center rounded-full bg-background/85 px-2 font-mono text-sm text-muted-foreground backdrop-blur-sm print:hidden",
             !projects && "lg:hidden",
+            // The home page has the languages at its top and in its footer already.
+            home && "hidden",
             fade(floating),
           )}
         >
@@ -146,8 +110,13 @@ export function CornerControls() {
           />
         </div>
       )}
+      {/* Wide screens: the languages and the loop, nothing else; the boring
+          and sound switches live in the home page's footer. */}
       {!projects && (
-        <div className={`${corner} right-3`}>
+        <div
+          className={cn(corner, "right-3", fade(languageSwitch || (home && !placeOpen)))}
+          inert={!languageSwitch && !(home && !placeOpen)}
+        >
           {languages && (
             <span
               inert={!languageSwitch}
@@ -159,14 +128,7 @@ export function CornerControls() {
               <LanguageSwitch className={control} />
             </span>
           )}
-          {/* The footer row has its own pair; these step aside when it's in view. */}
-          <span
-            inert={footerHere}
-            className={cn("flex items-center gap-6", fade(!footerHere))}
-          >
-            <ModeSwitches />
-          </span>
-          {home && (
+          {home && !placeOpen && (
             <button
               type="button"
               role="switch"
@@ -182,7 +144,7 @@ export function CornerControls() {
             >
               <InfinityIcon
                 aria-hidden="true"
-                className="size-[1.15em]"
+                className="size-[1.6em]"
                 strokeWidth={1.75}
               />
             </button>
@@ -193,8 +155,8 @@ export function CornerControls() {
   );
 }
 
-/** "boring: off  sound: off": the two switches shared by the wide screens'
- *  corner and the footer row (components/site-footer.tsx). */
+/** "boring: off  sound: off": the two switches in the footer
+ *  (components/site-footer.tsx). */
 export function ModeSwitches({ className = control }: { className?: string }) {
   const labels = siteCopy[useLanguageOrDefault()];
   const boring =

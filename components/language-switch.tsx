@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 
 import { rememberLanguage, useLanguage } from "@/components/language-provider"
 import { cn } from "@/lib/utils"
@@ -25,10 +25,19 @@ function LanguageLink({
   children: React.ReactNode
 }) {
   const pathname = stripLanguage(usePathname())
+  const router = useRouter()
+  const href = localizePath(code, pathname)
   return (
     <Link
-      href={localizePath(code, pathname)}
-      onClick={() => rememberLanguage(code)}
+      href={href}
+      onClick={(e) => {
+        rememberLanguage(code)
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return
+        // Whatever is open stays open (the home page keeps it in the query:
+        // ?s=projects&i=ae), and the page doesn't reload or jump to the top.
+        e.preventDefault()
+        router.push(href + window.location.search + window.location.hash, { scroll: false })
+      }}
       // A prefetch would run before the click stores the cookie, and
       // proxy.ts could answer it with a redirect back to this language.
       prefetch={false}
