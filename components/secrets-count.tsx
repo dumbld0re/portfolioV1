@@ -7,7 +7,7 @@ import { eggsContent } from "@/content/eggs"
 import { SECRETS, getServerSnapshot, getSnapshot, resetSecrets, subscribe } from "@/lib/secrets"
 import { cn } from "@/lib/utils"
 
-// "secrets 3/15" in the footer. Opened, it lists what has been found (the
+// "secrets 3/9" in the footer. Opened, it lists what has been found (the
 // rest stay "???"); with all of them found it offers a wallpaper of the name.
 export function SecretsCount({ className, buttonClassName }: { className?: string; buttonClassName?: string }) {
   const { language } = useLanguage()

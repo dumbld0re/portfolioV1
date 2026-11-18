@@ -2,12 +2,9 @@
 
 import { Fragment } from "react"
 
-import { contactContent } from "@/content/contact"
-import { experienceContent } from "@/content/experience"
+import { exploreContent } from "@/content/explore"
 import { homeContent } from "@/content/home"
-import { projectsContent } from "@/content/projects"
 import { useLanguage } from "@/components/language-provider"
-import { formatPeriod, monthStart } from "@/lib/format-date"
 import { setBoring } from "@/lib/boring-store"
 import { INSTAGRAM_URL, PINTEREST_URL, X_URL } from "@/lib/styles"
 
@@ -15,78 +12,60 @@ const copy = {
   en: {
     notice: "Boring mode is on.",
     off: "Make it fun again",
-    projects: "Projects",
-    experience: "Experience",
-    when: "When",
-    role: "Role",
-    where: "Where",
-    contact: "Contact",
-    email: "E-mail",
     cv: "CV",
     viewed: "Best viewed in Netscape Navigator 3.0 at 800×600.",
   },
   de: {
     notice: "Der langweilige Modus ist an.",
     off: "Mach es wieder schön",
-    projects: "Projekte",
-    experience: "Erfahrung",
-    when: "Wann",
-    role: "Rolle",
-    where: "Wo",
-    contact: "Kontakt",
-    email: "E-Mail",
     cv: "Lebenslauf",
     viewed: "Am besten in Netscape Navigator 3.0 bei 800×600.",
   },
   it: {
     notice: "La modalità noiosa è attiva.",
     off: "Rendilo di nuovo divertente",
-    projects: "Progetti",
-    experience: "Esperienza",
-    when: "Quando",
-    role: "Ruolo",
-    where: "Dove",
-    contact: "Contatti",
-    email: "E-mail",
     cv: "CV",
     viewed: "Visualizzazione ottimale con Netscape Navigator 3.0 a 800×600.",
   },
 }
 
-/** The hero's {tokens} as 1996 would have them: names as plain links, the rest as words. */
-function plainFill(text: string, hero: (typeof homeContent)["en"]["hero"]) {
-  const links: Record<string, [string, string]> = {
-    pinterest: ["Pinterest", PINTEREST_URL],
-    x: ["X", X_URL],
-    instagram: ["Instagram", INSTAGRAM_URL],
-  }
-  const words: Record<string, string> = {
-    manual: hero.manual.word,
-    breaks: hero.breaks,
-    unam: "UNAM",
-    linux: "Linux",
-    namibia: "Namibia",
-    things: hero.things[0],
-  }
-  return text.split(/(\{\w+\})/).map((bit, i) => {
-    const key = bit.match(/^\{(\w+)\}$/)?.[1]
-    if (key && links[key]) return <a key={i} href={links[key][1]}>{links[key][0]}</a>
-    if (key && words[key]) return <Fragment key={i}>{words[key]}</Fragment>
-    return <Fragment key={i}>{bit}</Fragment>
-  })
-}
-
 // Boring mode, plain: the home page as an HTML document from 1996. Same
 // content, no design at all: everything here is reset to the browser's own
 // default styles (.plain-doc in globals.css), so the markup is all it has.
+// The sentence's pills become plain links: to the pages, or down the page.
 export function PlainHome() {
   const { language, localize } = useLanguage()
   const t = copy[language]
+  const e = exploreContent[language]
   const hero = homeContent[language].hero
-  const projects = projectsContent[language]
-  const experience = experienceContent[language]
-  const contact = contactContent[language]
-  const roles = [...experience.experiences].sort((a, b) => monthStart(b.start) - monthStart(a.start))
+
+  const links: Record<string, string> = {
+    posts: localize("/posts"),
+    projects: localize("/projects"),
+    reading: "/read",
+    elsewhere: "#elsewhere",
+    about: "#about",
+  }
+  const sentence = e.sentence.split(/(\{\w+\})/).map((bit, i) => {
+    const key = bit.match(/^\{(\w+)\}$/)?.[1]
+    if (key === "namibia") return <Fragment key={i}>Namibia</Fragment>
+    if (key === "things") return <Fragment key={i}>{hero.things[0]}</Fragment>
+    if (key && key in links)
+      return (
+        <a key={i} href={links[key]}>
+          {e.sentenceWords[key as keyof typeof e.sentenceWords]}
+        </a>
+      )
+    return <Fragment key={i}>{bit}</Fragment>
+  })
+
+  const elsewhere: [string, string][] = [
+    ["GitHub", "https://github.com/dumbld0re"],
+    ["Pinterest", PINTEREST_URL],
+    ["X", X_URL],
+    ["Instagram", INSTAGRAM_URL],
+    ["æ design studio", "https://www.aestudio.site/"],
+  ]
 
   return (
     <div className="plain-doc">
@@ -101,57 +80,25 @@ export function PlainHome() {
       </p>
 
       <h1>Danny-Miguel Mittelberger</h1>
-      <p>
-        <i>
-          {hero.tagline} {hero.things[0]}
-        </i>
-      </p>
-      {/* The same lines as the styled hero, as plain text and plain links. */}
-      {hero.lines.map((line) => (
-        <p key={line}>{plainFill(line, hero)}</p>
-      ))}
-      <p>{plainFill(hero.socials, hero)}</p>
+      <p>{sentence}</p>
 
       <hr />
-      <h2>{t.projects}</h2>
+      <h2 id="about">{e.sections.about.title}</h2>
+      <p>{hero.intro}</p>
+      <p>{hero.description}</p>
       <p>
-        <a href={localize("/projects")}>{projects.heading}</a>: {projects.updating}
-      </p>
-
-      <hr />
-      <h2>{t.experience}</h2>
-      <table border={1} cellPadding={4}>
-        <thead>
-          <tr>
-            <th>{t.when}</th>
-            <th>{t.role}</th>
-            <th>{t.where}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {roles.map((role) => (
-            <tr key={role.company + role.start}>
-              <td>{formatPeriod(role.start, role.end, language, experience.present)}</td>
-              <td>{role.role}</td>
-              <td>{role.companyHref ? <a href={role.companyHref}>{role.company}</a> : role.company}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      <hr />
-      <h2>{t.contact}</h2>
-      <p>
-        {t.email}: <a href={`mailto:${contact.email}`}>{contact.email}</a>
-        <br />
-        WhatsApp: <a href={`https://wa.me/${contact.phone.replace(/[^\d]/g, "")}`}>{contact.phone}</a>
-        <br />
-        GitHub: <a href="https://github.com/dumbld0re">github.com/dumbld0re</a>
-        <br />
-        X: <a href={X_URL}>{X_URL.replace("https://", "")}</a>
-        <br />
         {t.cv}: <a href="/cv.pdf">cv.pdf</a>
       </p>
+
+      <hr />
+      <h2 id="elsewhere">{e.sections.elsewhere.title}</h2>
+      <ul>
+        {elsewhere.map(([label, href]) => (
+          <li key={label}>
+            <a href={href}>{label}</a>
+          </li>
+        ))}
+      </ul>
 
       <hr />
       <address>

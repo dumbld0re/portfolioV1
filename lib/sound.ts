@@ -330,7 +330,7 @@ export function soundDots(f: DotFrame) {
 
 // ---------------------------------------------------------------- one-off sounds
 
-export type SoundEvent = "hover" | "click" | "tap" | "throw" | "open" | "found"
+export type SoundEvent = "hover" | "click" | "tap" | "throw" | "open" | "found" | "enter" | "leave"
 
 /** amount: 0..1 (how much was thrown); u: 0..1, where across the screen. */
 export function soundEvent(name: SoundEvent, amount = 0.5, u = 0.5) {
@@ -389,6 +389,10 @@ function play(name: SoundEvent, amount: number, u: number) {
   }
 
   if (name === "hover") blip(t, 3300, 0.006, 0.16, pan)
+  // Stepping into a place on the home page, and back out: two pixels a fifth
+  // apart, up on the way in, down on the way out, after the press's click.
+  if (name === "enter") [1980, 2970].forEach((f, i) => blip(t + 0.05 + i * 0.06, f, 0.04, 0.1, pan, 0.3))
+  if (name === "leave") [2970, 1980].forEach((f, i) => blip(t + 0.05 + i * 0.06, f, 0.04, 0.08, pan, 0.3))
   if (name === "found") {
     // a secret: three rising pixels, like a high score
     ;[1760, 2350, 3520].forEach((f, i) => blip(t + i * 0.075, f, 0.06, 0.13, 0, 0.35))

@@ -1,7 +1,7 @@
 import { soundEvent } from "@/lib/sound"
 
 // The easter eggs, counted. Each one found is kept in this browser
-// (localStorage), the footer shows "secrets 3/11", and finding them all
+// (localStorage), the footer shows "secrets 3/9", and finding them all
 // unlocks a wallpaper of the dot name. Order here is the order in the list.
 
 export const SECRETS = [
@@ -13,8 +13,6 @@ export const SECRETS = [
   "doze", // leave the page alone for a minute
   "dizzy", // switch the theme five times in a row
   "things", // click "things" until it has been everything
-  "manual", // click "manual"
-  "breaks", // point at "breaks"
   "2086", // the year in the footer
 ] as const
 

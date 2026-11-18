@@ -1,14 +1,14 @@
 "use client"
 
-import { useEffect, useRef, useState, type CSSProperties } from "react"
+import { useRef, useState } from "react"
 
 import { DotMark } from "@/components/dot-mark"
 import { markFound } from "@/lib/secrets"
 
-// Words in the hero you can play with. Each one is also a secret
-// (lib/secrets.ts) the first time it is found.
+// A word in the home page's sentence you can play with. Finding all it can
+// be is a secret (lib/secrets.ts).
 
-/** "things" in "20, i make things": a click makes it something else. Seeing
+/** "things" in "making things": a click makes it something else. Seeing
  *  every one of them counts as the secret. */
 export function ThingsWord({ words }: { words: readonly string[] }) {
   const [at, setAt] = useState(0)
@@ -30,78 +30,5 @@ export function ThingsWord({ words }: { words: readonly string[] }) {
         {words[at]}
       </span>
     </button>
-  )
-}
-
-/** "manual": clicked, it answers. */
-export function ManualWord({ word, answer }: { word: string; answer: string }) {
-  const [open, setOpen] = useState(false)
-  useEffect(() => {
-    if (!open) return
-    const t = window.setTimeout(() => setOpen(false), 2600)
-    return () => window.clearTimeout(t)
-  }, [open])
-  return (
-    <span className="relative inline">
-      <button
-        type="button"
-        className="play-word"
-        aria-describedby={open ? "manual-note" : undefined}
-        onClick={() => {
-          setOpen(true)
-          markFound("manual")
-        }}
-      >
-        {word}
-      </button>
-      {open && (
-        <span id="manual-note" role="status" className="manual-note">
-          {answer}
-        </span>
-      )}
-    </span>
-  )
-}
-
-/** "breaks": under the pointer (or a tap) its letters fall apart, then climb back. */
-export function BreaksWord({ word }: { word: string }) {
-  const [broken, setBroken] = useState(false)
-  const timer = useRef(0)
-  const breakIt = () => {
-    if (broken) return
-    setBroken(true)
-    markFound("breaks")
-    window.clearTimeout(timer.current)
-    timer.current = window.setTimeout(() => setBroken(false), 1100)
-  }
-  useEffect(() => () => window.clearTimeout(timer.current), [])
-  return (
-    <span
-      className="breaks play-word"
-      data-broken={broken}
-      role="button"
-      tabIndex={0}
-      aria-label={word}
-      onPointerEnter={breakIt}
-      onClick={breakIt}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault()
-          breakIt()
-        }
-      }}
-    >
-      {[...word].map((c, i) => (
-        <span
-          key={i}
-          aria-hidden="true"
-          className="breaks-letter"
-          // Each letter falls its own way, the same on every render.
-          style={{ "--fall-y": `${0.5 + ((i * 37) % 11) / 9}em`, "--fall-r": `${((i * 53) % 70) - 35}deg` } as CSSProperties}
-        >
-          {c}
-        </span>
-      ))}
-    </span>
   )
 }

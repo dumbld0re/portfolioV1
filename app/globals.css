@@ -496,7 +496,7 @@ html.paused .eye-mark-iris {
   }
 }
 
-/* Hero name (components/sections/home-section.tsx): each letter rises out of
+/* A heading set letter by letter (components/split-chars.tsx): each letter rises out of
    its own clipping box. */
 @keyframes char-rise {
   from {
@@ -742,8 +742,8 @@ html.booting *::after {
 }
 
 /* ---------------------------------------------------------------- hero pills
-   Names and links in the hero's sentences sit on a bright pill, each its own
-   colour (components/sections/hero-copy.tsx). */
+   The home sentence's words sit on bright pills, each its own colour
+   (components/explore/sentence-view.tsx). */
 .pill {
   display: inline;
   padding: 0.04em 0.32em 0.1em;
@@ -810,37 +810,7 @@ button.pill { line-height: 1.2; }
   animation: mark-hop 420ms cubic-bezier(0.3, 1.6, 0.5, 1);
 }
 
-/* Words to play with: a dotted underline says "try me". */
-.play-word {
-  text-decoration: underline dotted;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 0.22em;
-  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
-  cursor: pointer;
-}
-.play-word:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 4px; }
-/* "breaks": its letters fall apart under the pointer and climb back. */
-.breaks-letter { display: inline-block; transition: transform 700ms cubic-bezier(0.2, 1.4, 0.4, 1); }
-.breaks[data-broken="true"] .breaks-letter {
-  transition: transform 380ms cubic-bezier(0.5, 0, 0.9, 0.5);
-  transform: translateY(var(--fall-y)) rotate(var(--fall-r));
-}
-/* "manual": the answer it gives. */
-.manual-note {
-  position: absolute;
-  left: 50%;
-  bottom: calc(100% + 8px);
-  translate: -50% 0;
-  white-space: nowrap;
-  font-family: var(--font-geist-mono), ui-monospace, monospace;
-  font-size: 12px;
-  padding: 6px 10px;
-  border-radius: 8px;
-  color: var(--background);
-  background: var(--foreground);
-  pointer-events: none;
-  animation: note-in 240ms cubic-bezier(0.2, 1.4, 0.4, 1);
-}
+/* A word that pops in when it changes ("things" in the home sentence). */
 @keyframes note-in {
   from { opacity: 0; transform: translateY(6px) scale(0.96); }
 }
@@ -946,4 +916,64 @@ button.pill { line-height: 1.2; }
   ::view-transition-image-pair(*) {
     animation: none !important;
   }
+}
+
+/* Explore: the home page prototypes behind ?view= (components/explore/).
+   The reader's three columns: the lead, the list (24rem) and the open item,
+   which grows from nothing so the other two slide left to make room. Below
+   xl the lead steps aside while an item is open. */
+.explore-row {
+  --lead: clamp(12rem, 18vw, 20rem);
+  --item: min(44rem, calc(100vw - 33rem - var(--lead)));
+}
+.explore-lead {
+  width: calc(var(--lead) + 2.5rem);
+  padding-right: 2.5rem;
+  transition: width 500ms cubic-bezier(0.2, 0.7, 0.2, 1), opacity 300ms, padding 500ms;
+}
+.explore-item {
+  width: 0;
+  opacity: 0;
+  transition: width 500ms cubic-bezier(0.2, 0.7, 0.2, 1), opacity 400ms;
+}
+.explore-row[data-open] .explore-item {
+  width: var(--item);
+  opacity: 1;
+}
+.explore-item-inner {
+  width: var(--item);
+  padding-left: clamp(1.5rem, 4vw, 4rem);
+}
+@media (max-width: 79.99rem) {
+  .explore-row[data-open] {
+    --lead: 0rem;
+  }
+  .explore-row[data-open] .explore-lead {
+    width: 0;
+    padding-right: 0;
+    opacity: 0;
+    overflow: hidden;
+  }
+}
+.explore-rise {
+  animation: explore-rise 500ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes explore-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .explore-rise {
+    animation: none;
+  }
+  .explore-row *,
+  .explore-row {
+    transition: none !important;
+  }
+}
+/* Inside a place on the home page, the page is the reader alone. */
+html[data-place-open] [data-loop-echo] {
+  display: none;
 }

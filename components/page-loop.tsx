@@ -3,14 +3,13 @@
 import { useEffect, useRef, useSyncExternalStore } from "react"
 
 import { Header } from "@/components/header"
-import { ExperienceSection } from "@/components/sections/experience-section"
-import { HomeSection } from "@/components/sections/home-section"
+import { SentenceLanding } from "@/components/explore/sentence-view"
 import * as loop from "@/lib/loop-store"
 import { getLenis } from "@/lib/scroll"
 import { useMediaQuery } from "@/lib/use-media-query"
 
 // The home page never ends: below the contact section the top of the page
-// comes round again (an inert echo of the header, hero and experience), and
+// comes round again (an inert echo of the header and the name with its sentence), and
 // the moment the echo reaches the top of the screen the scroll quietly jumps
 // back to the real top, which looks exactly the same. Scrolling up past the
 // top does the opposite. The echo is longer than a screen on every width, so
@@ -31,7 +30,10 @@ export function PageLoop() {
     if (!el || !on) return
     const root = document.documentElement
     const held = () =>
-      root.classList.contains("boring") || root.classList.contains("tl-html") || root.style.overflow === "hidden"
+      root.classList.contains("boring") ||
+      root.classList.contains("tl-html") ||
+      root.style.overflow === "hidden" ||
+      root.hasAttribute("data-place-open")
 
     // How far down the echo starts, measured from the top of the real page
     // (both sit in the same column, so offsetTop compares like with like).
@@ -102,10 +104,9 @@ export function PageLoop() {
   if (!on) return null
 
   return (
-    <div ref={echo} aria-hidden="true" inert className="print:hidden">
+    <div ref={echo} aria-hidden="true" inert data-loop-echo className="print:hidden">
       <Header />
-      <HomeSection echo />
-      <ExperienceSection echo />
+      <SentenceLanding echo />
     </div>
   )
 }
