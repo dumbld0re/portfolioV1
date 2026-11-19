@@ -87,6 +87,12 @@ let master: GainNode
 let verbIn: GainNode
 let noise: AudioBuffer
 let voices = 0
+// How far ahead a sound is scheduled. Firefox reports a currentTime that runs
+// 20-30ms (more on a busy page) behind what it is actually playing, so a 6ms
+// blip scheduled 10ms out has already ended by the time it gets there and
+// plays silent. It gets 60ms there; elsewhere 10ms keeps presses snappy.
+let leadTime: number | undefined
+const lead = () => (leadTime ??= /firefox/i.test(navigator.userAgent) ? 0.06 : 0.01)
 const MAX_VOICES = 90
 /** Set while a click or tap is being played: those always get through the voice cap. */
 let priority = false
@@ -293,7 +299,7 @@ export type DotFrame = {
 /** Called once per animation frame by the dot name while sound is on. */
 export function soundDots(f: DotFrame) {
   if (!soundOn()) return
-  const t = ac!.currentTime + 0.01
+  const t = ac!.currentTime + lead()
   smooth += (f.density - smooth) * 0.2
   bed?.set(smooth)
 
@@ -354,7 +360,7 @@ export function soundEvent(name: SoundEvent, amount = 0.5, u = 0.5) {
 }
 
 function play(name: SoundEvent, amount: number, u: number) {
-  const t = ac!.currentTime + 0.01
+  const t = ac!.currentTime + lead()
   const pan = panTo(Math.max(0, Math.min(1, u)))
 
   if (KIT === "grain") {
