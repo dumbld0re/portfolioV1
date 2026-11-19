@@ -6,6 +6,7 @@ import { exploreContent, type SectionId } from "@/content/explore"
 import { useLanguage } from "@/components/language-provider"
 import { AboutProse } from "@/components/explore/about-prose"
 import { ItemView } from "@/components/explore/item-view"
+import { PopWord } from "@/components/explore/pop-word"
 import type { ShelfItem, ShelfSection } from "@/components/explore/shelf"
 import { cn } from "@/lib/utils"
 
@@ -57,21 +58,22 @@ export function ListRow({
 }) {
   const label = (
     <>
-      <span
-        className={cn(
-          "font-serif text-xl underline decoration-1 underline-offset-[6px] transition-[text-decoration-color] md:text-[1.375rem]",
-          active ? "decoration-primary decoration-2" : "decoration-border group-hover:decoration-primary",
-        )}
-      >
-        {item.title}
-      </span>
-      {item.meta && <span className="ml-3 font-mono text-xs text-muted-foreground">{item.meta}</span>}
-      {item.external && (
-        <span className="explore-arrow ml-1.5 font-mono text-xs text-muted-foreground" aria-hidden="true">
-          <span>↗</span>
-          <span>↗</span>
+      {item.external ? (
+        // Links that leave the site hop instead of showing an arrow.
+        <span className="font-serif text-xl md:text-[1.375rem]">
+          <PopWord text={item.title} />
+        </span>
+      ) : (
+        <span
+          className={cn(
+            "font-serif text-xl underline decoration-1 underline-offset-[6px] transition-[text-decoration-color] md:text-[1.375rem]",
+            active ? "decoration-primary decoration-2" : "decoration-border group-hover:decoration-primary",
+          )}
+        >
+          {item.title}
         </span>
       )}
+      {item.meta && <span className="ml-3 font-mono text-xs text-muted-foreground">{item.meta}</span>}
     </>
   )
   const cls = cn("group block py-1.5 text-left lowercase transition-opacity duration-300", dim && !active && "opacity-35 hover:opacity-100")

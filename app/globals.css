@@ -1075,33 +1075,41 @@ html[data-place-open] [data-loop-echo] {
   }
 }
 
-/* An arrow that leaves: pointed at, the ↗ flies off up and right and a new
-   one comes in from below left. */
-.explore-arrow {
-  display: inline-flex;
-  position: relative;
-  overflow: hidden;
-  vertical-align: baseline;
-}
-.explore-arrow > span {
+/* Links that leave the site (PopWord): pointed at, the letters hop up off the
+   line one after another, the line holding still and warming to amber. One
+   line is drawn under the whole word, since per-letter underlines notch; it
+   sits on the same pixel row as a text underline at underline-offset 6px. */
+.explore-pop {
   display: inline-block;
-  transition: transform 420ms cubic-bezier(0.65, 0.05, 0.25, 1);
+  position: relative;
 }
-.explore-arrow > span + span {
+.explore-pop::after {
+  content: "";
   position: absolute;
-  inset: 0;
-  transform: translate(-110%, 110%);
+  left: 0;
+  right: 0;
+  bottom: 1px;
+  height: 1px;
+  background: var(--border);
+  transition: background-color 150ms;
 }
-.group:hover .explore-arrow > span:first-child,
-.group:focus-visible .explore-arrow > span:first-child {
-  transform: translate(110%, -110%);
+.group:hover .explore-pop::after,
+.group:focus-visible .explore-pop::after {
+  background: var(--primary);
 }
-.group:hover .explore-arrow > span + span,
-.group:focus-visible .explore-arrow > span + span {
-  transform: none;
+.explore-pop > span {
+  position: relative;
+  top: 0;
+  transition: top 360ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition-delay: calc(var(--i) * 18ms);
+}
+.group:hover .explore-pop > span,
+.group:focus-visible .explore-pop > span {
+  top: -4px;
 }
 @media (prefers-reduced-motion: reduce) {
-  .explore-arrow > span {
+  .explore-pop > span,
+  .explore-pop::after {
     transition: none;
   }
 }

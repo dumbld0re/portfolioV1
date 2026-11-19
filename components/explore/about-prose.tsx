@@ -3,6 +3,7 @@
 import type { ReactNode } from "react"
 
 import { AestudioLogo, FluentLogo, OratoresLogo } from "@/components/brand-marks"
+import { PopWord } from "@/components/explore/pop-word"
 import { experienceContent } from "@/content/experience"
 import { useLanguage } from "@/components/language-provider"
 import { formatPeriod } from "@/lib/format-date"
@@ -29,7 +30,7 @@ export function AboutProse() {
           const name = (
             <span className="whitespace-nowrap">
               {LOGOS[exp.company]}
-              {exp.company}
+              {exp.companyHref ? <PopWord text={exp.company} /> : exp.company}
             </span>
           )
           return (
@@ -41,7 +42,7 @@ export function AboutProse() {
                       href={exp.companyHref}
                       target="_blank"
                       rel="noreferrer"
-                      className="underline decoration-border decoration-1 underline-offset-[6px] transition-colors hover:decoration-primary"
+                      className="group"
                     >
                       {name}
                     </a>
