@@ -1,22 +1,21 @@
 "use client"
 
-import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
 
 import { siteCopy } from "@/content/site"
-import { CvMenu } from "@/components/cv-menu"
 import { useLanguage } from "@/components/language-provider"
-import { LanguageCycle } from "@/components/language-switch"
+import { LanguageSwitch } from "@/components/language-switch"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { BackHome } from "@/components/back-home"
-import { PROJECTS_LIVE, SHOW_POSTS } from "@/lib/features"
+import { PROJECTS_LIVE } from "@/lib/features"
 import { stripLanguage } from "@/lib/i18n"
 import { hasBootPlayed, markBootPlayed } from "@/lib/motion"
 import { cn } from "@/lib/utils"
 
-// A quiet row of lowercase links on the right edge of the home frame. It scrolls away with the page;
-// the boring toggle and friends live in the corners (components/corner-controls.tsx).
+// Every page but home: the way back at the left end, and the same corner as
+// the home page on the right (languages and theme, no links: the home
+// sentence is the way around). It scrolls away with the page.
 export function Header() {
   const { language, localize } = useLanguage()
   const pathname = stripLanguage(usePathname())
@@ -27,73 +26,23 @@ export function Header() {
     markBootPlayed()
   }, [])
 
-  // Underline sweeps in from the left on hover and stays under the current page.
-  // On phones each link gets a taller (and the short ones a wider) invisible
-  // tap area; the negative margins keep the visible spacing the same.
-  const navLink =
-    "relative -my-3 py-3 md:my-0 md:py-0 lowercase text-muted-foreground transition-colors hover:text-foreground after:absolute after:inset-x-0 after:bottom-2 md:after:-bottom-1 after:h-px after:origin-left after:scale-x-0 after:bg-primary after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100 aria-[current=page]:text-foreground aria-[current=page]:after:scale-x-100"
-
-  const links = [
-    { href: "/projects", label: labels.nav.projects, current: pathname.startsWith("/projects") },
-    ...(SHOW_POSTS ? [{ href: "/posts", label: labels.nav.posts, current: pathname.startsWith("/posts") }] : []),
-  ]
+  // A post or project goes back to its list; everything else goes home.
+  const back = pathname.startsWith("/posts/")
+    ? { href: localize("/posts"), label: labels.nav.posts.toLowerCase() }
+    : pathname.startsWith("/projects/")
+      ? { href: localize("/projects") + (PROJECTS_LIVE ? "" : "?preview"), label: labels.nav.projects.toLowerCase() }
+      : { href: localize("/"), label: labels.nav.backHome }
 
   return (
-    <header className="relative z-30 w-full px-6 md:px-12 pt-5 pb-4 md:pt-12 short:pt-6! print:hidden">
-      <nav
-        className={cn(
-          "mx-auto flex max-w-[90rem] items-center gap-x-4 font-mono text-[13px] md:justify-end md:gap-x-8 md:text-base",
-          boot && "m-block",
-        )}
-      >
-        {/* Posts and projects: the way back starts the bar, at its left end.
-            A post or project goes back to its list, a list goes home. */}
-        {pathname.startsWith("/posts/") ? (
-          <BackHome href={localize("/posts")} label={labels.nav.posts.toLowerCase()} compact className="md:mr-auto" />
-        ) : pathname.startsWith("/projects/") ? (
-          <BackHome
-            href={localize("/projects") + (PROJECTS_LIVE ? "" : "?preview")}
-            label={labels.nav.projects.toLowerCase()}
-            compact
-            className="md:mr-auto"
-          />
-        ) : (
-          (pathname === "/posts" || pathname === "/projects" || pathname === "/things") && (
-            <BackHome href={localize("/")} label={labels.nav.backHome} compact className="md:mr-auto" />
-          )
-        )}
-        {/* One row on every width: on narrow phones the links scroll sideways
-            under the language and theme controls instead of wrapping. */}
-        <div className="-my-3 flex min-w-0 flex-1 gap-x-3.5 overflow-x-auto py-3 whitespace-nowrap [scrollbar-width:none] md:-my-2 md:flex-none md:gap-x-8 md:overflow-visible md:py-2">
-        {links.map((link) => (
-          <Link
-            key={link.href}
-            href={localize(link.href)}
-            className={navLink}
-            aria-current={link.current ? "page" : undefined}
-          >
-            {link.label}
-          </Link>
-        ))}
-        {/* "Lebenslauf" is too long for the one-row phone bar; "cv" reads in both languages. */}
-        <CvMenu className={cn(navLink, "-mx-2 cursor-pointer px-2 after:inset-x-2 aria-expanded:text-foreground aria-expanded:after:scale-x-100 md:mx-0 md:px-0 md:after:inset-x-0")}>
-          <span className="md:hidden">cv</span>
-          <span className="hidden md:inline">{labels.nav.cv}</span>
-        </CvMenu>
-        <Link href={localize("/things")} className={navLink} aria-current={pathname === "/things" ? "page" : undefined}>
-          {labels.nav.things}
-        </Link>
-        </div>
-
-        <span className="flex shrink-0 items-center gap-x-3">
+    <header className="relative z-30 w-full px-6 md:px-12 pt-5 pb-4 md:pt-10 short:pt-6! print:hidden">
+      <nav className={cn("mx-auto flex max-w-[90rem] items-center justify-between gap-x-4 font-mono text-sm md:text-base", boot && "m-block")}>
+        <BackHome href={back.href} label={back.label} />
+        <span className="flex shrink-0 items-center gap-x-4">
           {/* Posts are English-only, so a post has no language switch. */}
           {!pathname.startsWith("/posts/") && (
-            <>
-              <span className="hidden text-muted-foreground/40 md:inline" aria-hidden="true">
-                /
-              </span>
-              <LanguageCycle className={cn(navLink, "-mx-2 px-2 after:inset-x-2 md:mx-0 md:px-0 md:after:inset-x-0")} />
-            </>
+            <span className="flex items-center gap-x-3 text-muted-foreground">
+              <LanguageSwitch className="-my-3 py-3 transition-colors hover:text-foreground" />
+            </span>
           )}
           <ThemeToggle />
         </span>
