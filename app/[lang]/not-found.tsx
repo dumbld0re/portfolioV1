@@ -1,29 +1,22 @@
 import type { Metadata } from "next"
 
 import { LayoutWrapper } from "@/components/layout-wrapper"
-import { NotFoundHomeLink, NotFoundLabel } from "@/components/not-found-copy"
-import { column, sectionLabel } from "@/lib/styles"
+import { NotFoundSlam } from "@/components/not-found/slam"
+import { column } from "@/lib/styles"
 
 export const metadata: Metadata = {
   title: "404",
   robots: { index: false },
 }
 
-// Set like a home section: a mono label, a serif line, and a way home.
+// A 404 as wide as the screen slams down onto the page (components/not-found/slam.tsx).
+// The same top as the home page: languages and theme, no links.
 export default function NotFound() {
   return (
-    <LayoutWrapper>
-      <main className="flex flex-1 items-center px-6 py-24 md:px-12">
+    <LayoutWrapper bar="home">
+      <main className="flex flex-1 items-center overflow-x-clip px-6 py-24 md:px-12">
         <div className={column}>
-          <h1 className={sectionLabel}>
-            <span className="text-primary">404</span> / <NotFoundLabel />
-          </h1>
-          <p className="mt-6 font-serif text-5xl lowercase leading-tight tracking-[-0.02em] text-balance md:text-7xl">
-            no such file or directory<span className="text-primary">.</span>
-          </p>
-          <p className="mt-10 font-mono text-sm text-muted-foreground">
-            <NotFoundHomeLink />
-          </p>
+          <NotFoundSlam />
         </div>
       </main>
     </LayoutWrapper>

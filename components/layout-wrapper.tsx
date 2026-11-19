@@ -17,9 +17,12 @@ import { cn } from "@/lib/utils"
 
 interface LayoutWrapperProps {
   children: React.ReactNode
+  /** "home": the home page's top (languages and theme, no links), for pages
+   *  that should look like home, such as the 404. */
+  bar?: "home" | "nav"
 }
 
-export function LayoutWrapper({ children }: LayoutWrapperProps) {
+export function LayoutWrapper({ children, bar }: LayoutWrapperProps) {
   const pathname = usePathname()
 
   // Only the home page has a footer: its HomeFooter carries the footer
@@ -36,7 +39,7 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
       <DotGround />
       <div className="relative z-10 flex flex-col min-h-screen">
         {/* The home page has no links up top: the sentence is the way around. */}
-        {home ? <HomeBar /> : <Header />}
+        {home || bar === "home" ? <HomeBar /> : <Header />}
         {children}
         {/* The home page loops: the top comes round again below the contact section. */}
         {home && <PageLoop />}
