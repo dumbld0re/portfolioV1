@@ -28,6 +28,16 @@ export type Post = Omit<PostMeta, "translations"> & {
   translations: Partial<Record<Language, Text & { html: string }>>
 }
 
+// A friend's name is written as [[redacted]] in the markdown, never the name
+// itself (the repo is public). It renders as a fixed-width black bar marked
+// (b)(6), like a released FOIA file, so the bar's length gives nothing away.
+const REDACTED = /\[\[redacted\]\]/gi
+const REDACTED_BAR = '<span class="redacted" role="img" aria-label="name redacted"></span>'
+
+function render(markdown: string): string {
+  return marked.parse(markdown.replace(REDACTED, REDACTED_BAR), { async: false })
+}
+
 function readSlugs(): string[] {
   if (!fs.existsSync(POSTS_DIR)) return []
   return fs
@@ -83,7 +93,7 @@ export function getPostBySlug(slug: string): Post | null {
     ...text,
     date: data.date ?? "",
     pinned: data.pinned === true,
-    html: marked.parse(content, { async: false }),
-    translations: readTranslations(slug, text, (t, body) => ({ ...t, html: marked.parse(body, { async: false }) })),
+    html: render(content),
+    translations: readTranslations(slug, text, (t, body) => ({ ...t, html: render(body) })),
   }
 }

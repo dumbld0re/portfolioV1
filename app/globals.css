@@ -396,6 +396,35 @@ html.paused [class*="animate-caret-blink"] {
   color: var(--foreground);
 }
 
+/* A friend's name, blacked out (lib/posts.ts). Same width for every name. */
+.post-prose .redacted {
+  display: inline-block;
+  position: relative;
+  width: 5.2em;
+  height: 1.15em;
+  vertical-align: -0.2em;
+  background: #111111;
+  border-radius: 1px;
+  user-select: none;
+}
+
+.dark .post-prose .redacted {
+  background: #000000;
+  outline: 1px solid #2e2e2e;
+}
+
+.post-prose .redacted::after {
+  content: "(b)(6)";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  color: #8a8a8a;
+}
+
 /* Printing a page: swap to ink-friendly tokens. */
 @media print {
   :root,

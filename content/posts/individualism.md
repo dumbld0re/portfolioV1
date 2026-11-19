@@ -4,7 +4,7 @@ date: "2026-09-24"
 summary: "a whole crew of people smoothed down until nothing sticks out."
 ---
 
-mike said something that made me think: something something… dubai airways… something about their flight attendants looking similar to eachother, no individualism.. and yea.
+[[redacted]] said something that made me think: something something… dubai airways… something about their flight attendants looking similar to eachother, no individualism.. and yea.
 
 i kept picturing it. a whole crew of people smoothed down until nothing sticks out. it's their job, and the sameness is the point. you're meant to get the exact same experience on your first flight as on your fiftieth, and that only works if the person handing you the hot towel is interchangeable.
 
