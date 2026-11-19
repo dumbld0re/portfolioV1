@@ -150,6 +150,9 @@ export function useShelf({ posts, library }: ExploreData): ShelfSection[] {
 /** Counts glides, so one cut short by the next doesn't end the next's pause. */
 let glides = 0
 
+/** Below lg the reader shows one column at a time (components/explore/reader.tsx). */
+const oneColumn = () => window.matchMedia("(max-width: 1023.98px)").matches
+
 const depthOf = (s: { section: SectionId | null; item: string | null }) => (s.item ? 2 : s.section ? 1 : 0)
 
 export function useExploreState() {
@@ -196,9 +199,16 @@ export function useExploreState() {
     current.current = state
   })
 
-  // The back and forward buttons land here, with the same glide.
+  // The back and forward buttons land here, with the same glide. On a phone
+  // each entry comes back where it was scrolled to (an item opens at the top).
   useEffect(() => {
-    const onPop = () => show(read(), current.current)
+    const onPop = () => {
+      show(read(), current.current)
+      if (oneColumn()) {
+        const y = (window.history.state?.exploreScrollY as number | undefined) ?? 0
+        requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo({ top: y })))
+      }
+    }
     window.addEventListener("popstate", onPop)
     return () => window.removeEventListener("popstate", onPop)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -228,11 +238,15 @@ export function useExploreState() {
 
   // Going in adds a history entry; coming out walks back over the ones we
   // added, so back, Escape and the "← back" buttons all agree.
+  // Phones see one column at a time, so an opened item replaces the list and
+  // has to start at the top; the list's scroll is kept for the way back.
   const goIn = (next: { s: SectionId; i?: string | null }) => {
     const from = current.current
-    window.history.pushState({ ...window.history.state, exploreSteps: steps() + 1 }, "", urlFor(next))
+    window.history.replaceState({ ...window.history.state, exploreScrollY: window.scrollY }, "")
+    const { exploreScrollY: _, ...rest } = window.history.state ?? {}
+    window.history.pushState({ ...rest, exploreSteps: steps() + 1 }, "", urlFor(next))
     show(read(), from)
-    if (next.s !== from.section) window.scrollTo({ top: 0 })
+    if (next.s !== from.section || (next.i && oneColumn())) window.scrollTo({ top: 0 })
   }
   const goOut = (to: { s?: SectionId | null; i?: string | null }, back: number) => {
     const from = current.current
