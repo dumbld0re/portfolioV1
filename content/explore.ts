@@ -34,6 +34,12 @@ export const exploreContent: Record<
     status: Record<"read" | "reading" | "queued", string>
     /** The bookshelf's line while it's being built (lib/features.ts). */
     bookshelfSoon: string
+    /** The heading over the projects place's second list. */
+    tools: string
+    /** The label on a tool's install line. */
+    install: string
+    copy: string
+    copied: string
   }
 > = {
   en: {
@@ -60,6 +66,10 @@ export const exploreContent: Record<
     things: "things i like",
     status: { read: "read", reading: "reading now", queued: "next up" },
     bookshelfSoon: "currently working on it.",
+    tools: "internal tools",
+    install: "install",
+    copy: "copy",
+    copied: "copied",
   },
   de: {
     sections: {
@@ -85,6 +95,10 @@ export const exploreContent: Record<
     things: "dinge, die ich mag",
     status: { read: "gelesen", reading: "lese ich gerade", queued: "als nächstes" },
     bookshelfSoon: "gerade in arbeit.",
+    tools: "interne tools",
+    install: "installieren",
+    copy: "kopieren",
+    copied: "kopiert",
   },
   it: {
     sections: {
@@ -110,5 +124,9 @@ export const exploreContent: Record<
     things: "cose che mi piacciono",
     status: { read: "letto", reading: "sto leggendo", queued: "il prossimo" },
     bookshelfSoon: "ci sto ancora lavorando.",
+    tools: "strumenti interni",
+    install: "installa",
+    copy: "copia",
+    copied: "copiato",
   },
 }

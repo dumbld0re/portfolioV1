@@ -12,6 +12,9 @@ export type Screen = {
   height: number
   /** Names the screen in its image's alt text. */
   name?: string
+  /** A capture of one panel with its own edge (a bar widget): no frame, shown
+   *  at half its pixel size (it was taken at 2x). */
+  bare?: boolean
 }
 
 export type ProjectPreview =
@@ -39,6 +42,10 @@ export type Project = {
   demoKind?: "demo" | "site"
   githubHref?: string
   internalTool?: boolean
+  /** "tools": listed under "internal tools", below the main projects. */
+  group?: "tools"
+  /** The shell lines that install it, in order, shown on its page. */
+  install?: string[]
   status?: ProjectStatus
   /** A phone capture of a web project, for layouts that show one beside the wide screens. */
   phone?: Screen
@@ -154,7 +161,40 @@ export const projectsContent: Record<
         tech: ["Python", "typer", "Typst", "pytest"],
         preview: { kind: "terminal", lines: UNI_SESSION },
         internalTool: true,
+        group: "tools",
         status: "inDevelopment",
+      },
+      {
+        slug: "localsend-drop",
+        title: "LocalSend Drop",
+        short: "dateien auf die leiste ziehen, schon landen sie auf dem gerät nebenan.",
+        description:
+          "Ein Omarchy-Leisten-Widget für LocalSend. Dateien aufs Symbol ziehen, ein Gerät wählen, und sie gehen direkt übers lokale Netz – ohne die LocalSend-App zu öffnen. Darunter steckt ein kleiner LocalSend-Client in reinem Python, ganz ohne Abhängigkeiten.",
+        tech: ["QML", "Quickshell", "Python", "LocalSend"],
+        githubHref: "https://github.com/dumbld0re/omarchy-localsend-drop",
+        install: ["omarchy plugin add https://github.com/dumbld0re/omarchy-localsend-drop.git --enable"],
+        preview: {
+          kind: "screens",
+          screens: [{ src: "/projects/localsend-drop.webp", width: 872, height: 530, bare: true, name: "Panel" }],
+        },
+        group: "tools",
+        status: "inUse",
+      },
+      {
+        slug: "speed",
+        title: "Speed",
+        short: "fast.com-speedtests direkt in der leiste.",
+        description:
+          "Ein Omarchy-Leisten-Widget, das meine letzte Download-Geschwindigkeit zeigt. Ein Klick öffnet Upload, Latenz im Leerlauf und unter Last, eine Bufferbloat-Note und ein Diagramm der letzten Tests. Es nutzt einen eigenen fast.com-Client, in TypeScript auf Bun geschrieben, und testet auf Wunsch nach Zeitplan.",
+        tech: ["QML", "Quickshell", "TypeScript", "Bun", "SQLite"],
+        githubHref: "https://github.com/dumbld0re/omarchy-speed",
+        install: ["omarchy pkg add bun", "omarchy plugin add https://github.com/dumbld0re/omarchy-speed.git --enable"],
+        preview: {
+          kind: "screens",
+          screens: [{ src: "/projects/speed.webp", width: 822, height: 754, bare: true, name: "Panel" }],
+        },
+        group: "tools",
+        status: "inUse",
       },
       {
         slug: "ae",
@@ -251,7 +291,40 @@ export const projectsContent: Record<
         tech: ["Python", "typer", "Typst", "pytest"],
         preview: { kind: "terminal", lines: UNI_SESSION },
         internalTool: true,
+        group: "tools",
         status: "inDevelopment",
+      },
+      {
+        slug: "localsend-drop",
+        title: "LocalSend Drop",
+        short: "drop files on the bar and they land on the device next to you.",
+        description:
+          "An Omarchy bar widget for LocalSend. Drag files onto the icon, pick a device, and they go straight over the local network, without opening the LocalSend app. Underneath is a small LocalSend client in plain Python, with no dependencies.",
+        tech: ["QML", "Quickshell", "Python", "LocalSend"],
+        githubHref: "https://github.com/dumbld0re/omarchy-localsend-drop",
+        install: ["omarchy plugin add https://github.com/dumbld0re/omarchy-localsend-drop.git --enable"],
+        preview: {
+          kind: "screens",
+          screens: [{ src: "/projects/localsend-drop.webp", width: 872, height: 530, bare: true, name: "panel" }],
+        },
+        group: "tools",
+        status: "inUse",
+      },
+      {
+        slug: "speed",
+        title: "Speed",
+        short: "fast.com speed tests, right in the bar.",
+        description:
+          "An Omarchy bar widget that shows my last download speed. Click it for upload, idle and loaded latency, a bufferbloat grade and a chart of recent tests. It runs its own fast.com client, written in TypeScript on Bun, and can test on a timer.",
+        tech: ["QML", "Quickshell", "TypeScript", "Bun", "SQLite"],
+        githubHref: "https://github.com/dumbld0re/omarchy-speed",
+        install: ["omarchy pkg add bun", "omarchy plugin add https://github.com/dumbld0re/omarchy-speed.git --enable"],
+        preview: {
+          kind: "screens",
+          screens: [{ src: "/projects/speed.webp", width: 822, height: 754, bare: true, name: "panel" }],
+        },
+        group: "tools",
+        status: "inUse",
       },
       {
         slug: "ae",
@@ -348,7 +421,40 @@ export const projectsContent: Record<
         tech: ["Python", "typer", "Typst", "pytest"],
         preview: { kind: "terminal", lines: UNI_SESSION },
         internalTool: true,
+        group: "tools",
         status: "inDevelopment",
+      },
+      {
+        slug: "localsend-drop",
+        title: "LocalSend Drop",
+        short: "trascina i file sulla barra e arrivano al dispositivo accanto.",
+        description:
+          "Un widget per la barra di Omarchy che usa LocalSend. Trascini i file sull'icona, scegli un dispositivo e partono direttamente sulla rete locale, senza aprire l'app LocalSend. Sotto c'è un piccolo client LocalSend in Python puro, senza dipendenze.",
+        tech: ["QML", "Quickshell", "Python", "LocalSend"],
+        githubHref: "https://github.com/dumbld0re/omarchy-localsend-drop",
+        install: ["omarchy plugin add https://github.com/dumbld0re/omarchy-localsend-drop.git --enable"],
+        preview: {
+          kind: "screens",
+          screens: [{ src: "/projects/localsend-drop.webp", width: 872, height: 530, bare: true, name: "pannello" }],
+        },
+        group: "tools",
+        status: "inUse",
+      },
+      {
+        slug: "speed",
+        title: "Speed",
+        short: "speed test di fast.com, direttamente nella barra.",
+        description:
+          "Un widget per la barra di Omarchy che mostra la mia ultima velocità di download. Un clic apre upload, latenza a riposo e sotto carico, un voto sul bufferbloat e un grafico dei test recenti. Usa un client fast.com tutto suo, scritto in TypeScript su Bun, e può fare test a intervalli.",
+        tech: ["QML", "Quickshell", "TypeScript", "Bun", "SQLite"],
+        githubHref: "https://github.com/dumbld0re/omarchy-speed",
+        install: ["omarchy pkg add bun", "omarchy plugin add https://github.com/dumbld0re/omarchy-speed.git --enable"],
+        preview: {
+          kind: "screens",
+          screens: [{ src: "/projects/speed.webp", width: 822, height: 754, bare: true, name: "pannello" }],
+        },
+        group: "tools",
+        status: "inUse",
       },
       {
         slug: "ae",

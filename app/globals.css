@@ -973,6 +973,20 @@ button.pill { line-height: 1.2; }
     transition: none !important;
   }
 }
+/* While the pills glide between places (components/explore/shelf.ts), the
+   columns jump to their new widths instead of sliding a second time. */
+html[data-explore-glide] .explore-row,
+html[data-explore-glide] .explore-row * {
+  transition: none !important;
+}
+html[data-explore-glide="across"] .explore-lead {
+  view-transition-name: explore-lead;
+  view-transition-class: explore;
+}
+html[data-explore-glide="across"] .explore-mid {
+  view-transition-name: explore-mid;
+  view-transition-class: explore;
+}
 /* Inside a place on the home page, the page is the reader alone. */
 html[data-place-open] [data-loop-echo] {
   display: none;
@@ -1033,6 +1047,14 @@ html[data-place-open] [data-loop-echo] {
 }
 @keyframes explore-come {
   from { opacity: 0; }
+}
+/* From one place's list to another's: the old one gets out of the way
+   before the new one comes in, so the two lists never read over each other. */
+::view-transition-old(explore-panel) {
+  animation: explore-gone 180ms ease-in both;
+}
+::view-transition-new(explore-panel) {
+  animation: explore-come 450ms 200ms ease-out both;
 }
 ::view-transition-new(explore-panel):only-child {
   animation: explore-panel-in 700ms 220ms cubic-bezier(0.2, 0.7, 0.2, 1) both;

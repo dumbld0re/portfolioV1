@@ -7,8 +7,9 @@ export const eggsContent: Record<
     words: { hello: string[]; gravity: string[] }
     /** What the name spells back after "hello". */
     greeting: string[]
-    /** The tab's title while the visitor is away. */
-    away: string
+    /** The tab's title while the visitor is away: one at random, then
+     *  another every few seconds until they're back. */
+    away: string[]
     broke: { title: string; note: string }
     /** What the name spells after five theme switches in a row. */
     dizzy: string[]
@@ -19,7 +20,14 @@ export const eggsContent: Record<
   en: {
     words: { hello: ["hello", "hallo"], gravity: ["gravity", "schwerkraft"] },
     greeting: ["hello", "you."],
-    away: "● ● ● come back",
+    away: [
+      "hello? anyone?",
+      "i'll wait here",
+      "the dots miss you",
+      "psst. still here",
+      "don't go chasing other tabs",
+      "come back, there's cake",
+    ],
     broke: { title: "you broke it.", note: "putting it back together" },
     dizzy: ["make up", "your mind"],
     secrets: {
@@ -43,7 +51,14 @@ export const eggsContent: Record<
   de: {
     words: { hello: ["hallo", "hello"], gravity: ["schwerkraft", "gravity"] },
     greeting: ["hallo", "du."],
-    away: "● ● ● komm zurück",
+    away: [
+      "hallo? jemand da?",
+      "ich warte hier",
+      "die punkte vermissen dich",
+      "psst. bin noch da",
+      "nicht fremdgehen mit anderen tabs",
+      "komm zurück, es gibt kuchen",
+    ],
     broke: { title: "kaputt gemacht.", note: "wird wieder zusammengesetzt" },
     dizzy: ["entscheid", "dich mal"],
     secrets: {
@@ -67,7 +82,14 @@ export const eggsContent: Record<
   it: {
     words: { hello: ["ciao", "hello"], gravity: ["gravità", "gravita", "gravity"] },
     greeting: ["ciao", "a te."],
-    away: "● ● ● torna qui",
+    away: [
+      "ehi? c'è qualcuno?",
+      "ti aspetto qui",
+      "i puntini sentono la tua mancanza",
+      "psst. sono ancora qui",
+      "non tradirmi con altre schede",
+      "torna, c'è la torta",
+    ],
     broke: { title: "l'hai rotto.", note: "lo sto rimettendo insieme" },
     dizzy: ["deciditi", "su, dai"],
     secrets: {

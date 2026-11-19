@@ -91,6 +91,13 @@ export function ListRow({
   )
 }
 
+/** The ungrouped items first, then each group under its own heading. */
+function groupItems(items: ShelfItem[]): [string | undefined, ShelfItem[]][] {
+  const groups = new Map<string | undefined, ShelfItem[]>([[undefined, []]])
+  for (const item of items) groups.set(item.group, [...(groups.get(item.group) ?? []), item])
+  return [...groups].filter(([, list]) => list.length > 0)
+}
+
 export function SectionPanel({
   section,
   itemId,
@@ -114,17 +121,22 @@ export function SectionPanel({
       )}
       {/* "me" tells what I do instead of a line. */}
       {section.id === "about" && <AboutProse />}
-      <ul key={section.id} className="explore-rise mt-8 space-y-1">
-        {section.items.map((item) => (
-          <ListRow
-            key={item.id}
-            item={item}
-            active={item.id === itemId}
-            dim={!!itemId}
-            onOpen={() => onOpenItem(item.id)}
-          />
-        ))}
-      </ul>
+      {groupItems(section.items).map(([group, items]) => (
+        <div key={`${section.id}-${group ?? ""}`} className="explore-rise">
+          {group && <h3 className="mt-12 font-mono text-xs lowercase text-muted-foreground">{group}</h3>}
+          <ul className={cn("space-y-1", group ? "mt-3" : "mt-8")}>
+            {items.map((item) => (
+              <ListRow
+                key={item.id}
+                item={item}
+                active={item.id === itemId}
+                dim={!!itemId}
+                onOpen={() => onOpenItem(item.id)}
+              />
+            ))}
+          </ul>
+        </div>
+      ))}
       {section.more && (
         <a href={section.more.href} className="mt-6 inline-block font-mono text-xs text-muted-foreground hover:text-foreground">
           {section.more.label} →
@@ -192,7 +204,7 @@ export function Reader({
           app/globals.css, "Explore"). */}
       <div data-open={item ? "" : undefined} className="explore-row mx-auto hidden w-fit items-start lg:flex">
         {lead && <div className="explore-lead sticky top-28 shrink-0">{lead}</div>}
-        <div className="sticky top-28 w-[24rem] shrink-0">
+        <div className="explore-mid sticky top-28 w-[24rem] shrink-0">
           <BackButton onClick={onClose}>{closeLabel ?? t.back}</BackButton>
           <SectionPanel section={section} itemId={itemId} onOpenItem={(id) => onOpenItem(section.id, id)} className="explore-panel mt-8" />
         </div>

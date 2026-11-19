@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation"
 
 import { exploreContent, type SectionId } from "@/content/explore"
 import { homeContent } from "@/content/home"
+import { postsContent } from "@/content/posts"
 import { projectsContent, type Project } from "@/content/projects"
 import { useLanguage } from "@/components/language-provider"
 import type { MarkName } from "@/components/dot-mark"
@@ -35,6 +36,8 @@ export type ShelfItem = {
   post?: Post
   project?: Project
   book?: LibraryEntry
+  /** Set for items listed under a second heading below the rest. */
+  group?: string
 }
 
 export type ShelfSection = {
@@ -78,7 +81,11 @@ export function useShelf({ posts, library }: ExploreData): ShelfSection[] {
         items: posts.map((post) => ({
           id: post.slug,
           title: post.title,
-          meta: post.date ? formatPostDate(post.date, language) : undefined,
+          meta: post.pinned
+            ? postsContent[language].pinned
+            : post.date
+              ? formatPostDate(post.date, language)
+              : undefined,
           post,
         })),
       },
@@ -93,6 +100,7 @@ export function useShelf({ posts, library }: ExploreData): ShelfSection[] {
           meta: project.tech[0]?.toLowerCase(),
           image: project.preview.kind === "screens" ? project.preview.screens[0].src : undefined,
           project,
+          group: project.group === "tools" ? t.tools : undefined,
         })),
       },
       reading: BOOKSHELF_LIVE
@@ -138,6 +146,9 @@ export function useShelf({ posts, library }: ExploreData): ShelfSection[] {
  * run inside a view transition where the browser has them, so a prototype can
  * name the parts that should travel (the sentence, a pill) and they morph.
  */
+/** Counts glides, so one cut short by the next doesn't end the next's pause. */
+let glides = 0
+
 const depthOf = (s: { section: SectionId | null; item: string | null }) => (s.item ? 2 : s.section ? 1 : 0)
 
 export function useExploreState() {
@@ -159,10 +170,21 @@ export function useExploreState() {
     if (next.section !== from.section && document.startViewTransition && !still) {
       // A second change that comes in mid-glide (two quick Escapes) skips
       // the first one's animation; that's fine, so its promises may reject quietly.
+      // The columns' own width transitions sit out the glide: the new layout
+      // lands at its end state at once, so the glide measures where things
+      // really end up instead of a row still resizing under it.
+      // From one open place to another the columns move as whole pieces
+      // (the row re-centres when an item column closes): otherwise only the
+      // pills would glide and the plain words between them would jump.
+      // Set before the transition starts, so the old snapshot has the names too.
+      const root = document.documentElement
+      const glide = ++glides
+      root.setAttribute("data-explore-glide", from.section && next.section ? "across" : "")
       const t = document.startViewTransition(apply)
       t.ready.catch(() => {})
-      t.finished.catch(() => {})
       t.updateCallbackDone.catch(() => {})
+      // Only the latest glide hands the transitions back.
+      t.finished.catch(() => {}).finally(() => glide === glides && root.removeAttribute("data-explore-glide"))
     } else apply()
     // Deeper (or across to another place) steps up; back out steps down.
     const d = depthOf(next) - depthOf(from)

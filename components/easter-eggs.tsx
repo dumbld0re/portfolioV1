@@ -101,12 +101,24 @@ export function EasterEggs() {
 
     let title = ""
     let leftAt = 0
+    let awayTimer = 0
+    let lastAway = -1
+    // A different line from the last one, so it never seems stuck.
+    const nextAway = () => {
+      const n = words.away.length
+      let i = Math.floor(Math.random() * n)
+      if (n > 1 && i === lastAway) i = (i + 1) % n
+      lastAway = i
+      document.title = words.away[i]
+    }
     const onVisibility = () => {
       if (document.hidden) {
         leftAt = Date.now()
         title = document.title
-        document.title = words.away
+        nextAway()
+        awayTimer = window.setInterval(nextAway, 4000)
       } else if (leftAt) {
+        window.clearInterval(awayTimer)
         document.title = title
         if (Date.now() - leftAt > 1500) {
           heroName()?.regroup()
@@ -145,6 +157,7 @@ export function EasterEggs() {
       window.removeEventListener("pointerdown", pickUp)
       document.removeEventListener("visibilitychange", onVisibility)
       activity.forEach((type) => window.removeEventListener(type, active))
+      window.clearInterval(awayTimer)
       if (leftAt) document.title = title
       window.clearTimeout(fallTimer)
       window.clearTimeout(idleTimer)

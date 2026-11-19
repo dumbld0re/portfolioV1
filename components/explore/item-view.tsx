@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -47,12 +48,15 @@ export function ItemView({ item, className }: { item: ShelfItem; className?: str
               height={s.height}
               alt={`${p.title}, ${s.name ?? ""}`}
               sizes="(min-width: 1024px) 40rem, 100vw"
-              className="w-full rounded-lg border border-border"
+              // A bar widget's panel stays near its real size instead of filling the column.
+              style={{ maxWidth: s.bare ? s.width / 2 : undefined }}
+              className={cn("w-full", !s.bare && "rounded-lg border border-border")}
             />
           ))}
         </div>
         <p className="mt-8 text-lg leading-relaxed">{p.description}</p>
         <p className={cn(note, "mt-6")}>{p.tech.join(" · ").toLowerCase()}</p>
+        {p.install && <InstallLine lines={p.install} />}
         <p className="mt-6 flex flex-wrap gap-x-6 gap-y-2 font-mono text-sm">
           {p.demoHref && (
             <a href={p.demoHref} target="_blank" rel="noreferrer" className={inlineLink}>
@@ -105,6 +109,41 @@ export function ItemView({ item, className }: { item: ShelfItem; className?: str
   }
 
   return null
+}
+
+/** A tool's install commands, with a way to copy them all. */
+function InstallLine({ lines }: { lines: string[] }) {
+  const command = lines.join("\n")
+  const { language } = useLanguage()
+  const t = exploreContent[language]
+  const [copied, setCopied] = useState(false)
+  const copy = () => {
+    navigator.clipboard?.writeText(command).then(
+      () => {
+        setCopied(true)
+        setTimeout(() => setCopied(false), 1600)
+      },
+      () => {},
+    )
+  }
+
+  return (
+    <div className="mt-6 rounded-lg border border-border">
+      <div className="flex items-center justify-between border-b border-border px-4 py-2 font-mono text-xs text-muted-foreground">
+        <span>{t.install}</span>
+        <button type="button" onClick={copy} className="transition-colors hover:text-foreground">
+          {copied ? t.copied : t.copy}
+        </button>
+      </div>
+      <code className="block space-y-1.5 overflow-x-auto whitespace-nowrap px-4 py-3 font-mono text-xs">
+        {lines.map((line) => (
+          <span key={line} className="block">
+            {line}
+          </span>
+        ))}
+      </code>
+    </div>
+  )
 }
 
 /** A list row that is only a link goes there; the rest open in place. */
