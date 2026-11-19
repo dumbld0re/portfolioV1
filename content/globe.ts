@@ -16,6 +16,8 @@ export const globeContent: Record<
     visitors: (n: number) => string
     none: string
     since: string
+    /** Visitors with no known country, last in the list. */
+    elsewhere: string
   }
 > = {
   de: {
@@ -29,6 +31,7 @@ export const globeContent: Record<
     visitors: (n) => (n === 1 ? "1 besucher" : `${n} besucher`),
     none: "noch niemand von hier",
     since: "seit oktober 2026",
+    elsewhere: "irgendwo anders",
   },
   en: {
     title: "who's been here",
@@ -41,6 +44,7 @@ export const globeContent: Record<
     visitors: (n) => (n === 1 ? "1 visitor" : `${n} visitors`),
     none: "nobody from here yet",
     since: "since october 2026",
+    elsewhere: "somewhere else",
   },
   it: {
     title: "chi è passato di qui",
@@ -53,5 +57,6 @@ export const globeContent: Record<
     visitors: (n) => (n === 1 ? "1 visitatore" : `${n} visitatori`),
     none: "ancora nessuno da qui",
     since: "da ottobre 2026",
+    elsewhere: "altrove",
   },
 }

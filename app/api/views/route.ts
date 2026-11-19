@@ -2,7 +2,7 @@ import { createHash } from "node:crypto"
 import { NextResponse, type NextRequest } from "next/server"
 
 import { BOT, redis, redisReady } from "@/lib/redis"
-import { COUNTRIES_KEY } from "@/lib/visitors"
+import { COUNTRIES_KEY, countsFrom } from "@/lib/visitors"
 
 // All-time visitor count, kept in Upstash Redis. Each device is counted once:
 // the first visit increments the counter and leaves a long-lived cookie, later
@@ -26,6 +26,28 @@ function addressKey(request: NextRequest) {
   return `seen:${createHash("sha256").update(`${day}:${address}`).digest("hex").slice(0, 32)}`
 }
 
+function asker(request: NextRequest) {
+  const country = request.headers.get("x-vercel-ip-country")
+  return country && /^[A-Z]{2}$/.test(country) ? country : null
+}
+
+async function read(views: number, request: NextRequest) {
+  const hash = await redis(["HGETALL", COUNTRIES_KEY]).catch(() => null)
+  return countsFrom(START + views, hash, asker(request))
+}
+
+/** The numbers again, without counting anyone: the globe refreshes with this. */
+export async function GET(request: NextRequest) {
+  if (!redisReady) return NextResponse.json({ views: null }, { status: 503 })
+  try {
+    const views = Number((await redis(["GET", KEY])) ?? 0)
+    return NextResponse.json(await read(views, request), { headers: { "Cache-Control": "no-store" } })
+  } catch {
+    return NextResponse.json({ views: null }, { status: 502 })
+  }
+}
+
+/** Counts this visit (once per device), then answers with every number. */
 export async function POST(request: NextRequest) {
   if (!redisReady) return NextResponse.json({ views: null }, { status: 503 })
 
@@ -35,11 +57,12 @@ export async function POST(request: NextRequest) {
   try {
     const fresh = !seen && !bot && (await redis(["SET", addressKey(request), "1", "NX", "EX", String(ONE_DAY)])) === "OK"
     const views = Number((await redis(fresh ? ["INCR", KEY] : ["GET", KEY])) ?? 0)
-    // Where the visitor is, for the globe (app/api/visitors): the country
-    // code only, from Vercel's geolocation header.
-    const country = request.headers.get("x-vercel-ip-country")
-    if (fresh && country && /^[A-Z]{2}$/.test(country)) await redis(["HINCRBY", COUNTRIES_KEY, country, "1"]).catch(() => null)
-    const response = NextResponse.json({ views: START + views }, { headers: { "Cache-Control": "no-store" } })
+    // Where the visitor is, for the globe: the country code only, from
+    // Vercel's geolocation header. Counted before the read below, so this
+    // visit is already on the globe it gets back.
+    const country = asker(request)
+    if (fresh && country) await redis(["HINCRBY", COUNTRIES_KEY, country, "1"]).catch(() => null)
+    const response = NextResponse.json(await read(views, request), { headers: { "Cache-Control": "no-store" } })
     if (!seen && !bot) {
       response.cookies.set(COOKIE, "1", {
         maxAge: TEN_YEARS,

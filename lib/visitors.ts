@@ -29,3 +29,29 @@ export function bandOf(count: number) {
   })
   return band
 }
+
+/** What every counter on the site shows, from one read: the all-time count
+ *  (the footer's eye) and where those people came from (the globe).
+ *  The count is the total; the countries add up to less, because the
+ *  country tally started later (16 Nov) and some visits carry no country.
+ *  That gap is `elsewhere`, so the globe's total is always the footer's. */
+export type VisitorCounts = {
+  views: number
+  countries: Record<string, number>
+  elsewhere: number
+  you: string | null
+}
+
+export function countsFrom(views: number, hash: unknown, you: string | null): VisitorCounts {
+  const countries: Record<string, number> = { ...SEED }
+  if (Array.isArray(hash)) {
+    for (let i = 0; i < hash.length; i += 2) {
+      const code = String(hash[i])
+      countries[code] = (countries[code] ?? 0) + Number(hash[i + 1])
+    }
+  }
+  const placed = Object.values(countries).reduce((a, b) => a + b, 0)
+  // Never fewer people than dots on the globe.
+  const total = Math.max(views, placed)
+  return { views: total, countries, elsewhere: total - placed, you }
+}

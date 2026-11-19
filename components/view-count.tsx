@@ -1,35 +1,17 @@
 "use client"
 
-import { useEffect, useId, useState } from "react"
+import { useId } from "react"
 
 import { useLanguage } from "@/components/language-provider"
 import { LOCALE } from "@/lib/i18n"
 import { siteCopy } from "@/content/site"
 import { openGlobe } from "@/components/visitor-globe"
+import { useVisitorCounts } from "@/components/visitor-data"
 
-// The footer can render twice on one page (contact section + site footer), so
-// every instance shares a single request: one visit, one count.
-let request: Promise<number | null> | null = null
-
-function fetchViews() {
-  request ??= fetch("/api/views", { method: "POST" })
-    .then((res) => (res.ok ? res.json() : { views: null }))
-    .then(({ views }: { views: number | null }) => views)
-    .catch(() => null)
-  return request
-}
-
-/** The all-time count of unique devices, once it has loaded. */
+/** The all-time count of unique devices, once it has loaded. The same
+ *  number the globe shows as its total (components/visitor-data.ts). */
 export function useViews() {
-  const [views, setViews] = useState<number | null>(null)
-  useEffect(() => {
-    let live = true
-    fetchViews().then((n) => live && setViews(n))
-    return () => {
-      live = false
-    }
-  }, [])
-  return views
+  return useVisitorCounts()?.views ?? null
 }
 
 /** " | <eye> 1,204": all-time count of unique devices, shown after "last updated". */

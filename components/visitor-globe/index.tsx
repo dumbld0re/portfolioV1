@@ -10,7 +10,8 @@ import { lockScroll } from "@/lib/scroll"
 import { sectionLabel } from "@/lib/styles"
 import { useMediaQuery } from "@/lib/use-media-query"
 import { cn } from "@/lib/utils"
-import { BANDS, SEED, bandOf } from "@/lib/visitors"
+import { BANDS, SEED, bandOf, type VisitorCounts } from "@/lib/visitors"
+import { refreshVisitors, useVisitorCounts } from "@/components/visitor-data"
 
 import type { GlobeEngine, GlobeMode, Pick } from "./engine"
 
@@ -18,37 +19,22 @@ import type { GlobeEngine, GlobeMode, Pick } from "./engine"
 // globe opens in a dialog (from the eye count, or the footer on phones),
 // and on phones the top of it rises out of the bottom of the footer.
 
-type Visitors = { countries: Record<string, number>; you: string | null }
+type Visitors = VisitorCounts
 
-let request: Promise<Visitors | null> | null = null
-function fetchVisitors() {
-  request ??= fetch("/api/visitors")
-    .then((res) => (res.ok ? (res.json() as Promise<Visitors>) : null))
-    .catch(() => null)
-  return request
-}
-
+/** The visitor numbers, shared with the footer's count (components/visitor-data.ts). */
 export function useVisitors() {
-  const [data, setData] = useState<Visitors | null>(null)
-  // The country list steps aside once the globe is zoomed in far enough to
-  // run under it.
-  const [listClear, setListClear] = useState(true)
-  const onEdge = (right: number) => setListClear(right < window.innerWidth - 48 - 224 - 32)
-  useEffect(() => {
-    let live = true
-    fetchVisitors().then((d) => live && setData(d))
-    return () => {
-      live = false
-    }
-  }, [])
-  return data
+  return useVisitorCounts()
 }
 
+/** The globe's total is the footer's count, not the sum of its countries:
+ *  people with no known country are part of it (`elsewhere`). */
 export function visitorTotals(data: Visitors | null) {
   if (!data) return null
-  const values = Object.values(data.countries)
-  return { people: values.reduce((a, b) => a + b, 0), countries: values.filter(Boolean).length }
+  return { people: data.views, countries: Object.values(data.countries).filter(Boolean).length }
 }
+
+/** Without the live count: the analytics baseline alone. */
+const FALLBACK: Visitors = { views: Object.values(SEED).reduce((a, b) => a + b, 0), countries: SEED, elsewhere: 0, you: null }
 
 const OPEN_EVENT = "globe:open"
 export function openGlobe() {
@@ -204,20 +190,28 @@ export function GlobeDialog() {
   const [open, setOpen] = useState(false)
   const [pick, setPick] = useState<Pick>(null)
   const engine = useRef<GlobeEngine | null>(null)
-  const [data, setData] = useState<Visitors | null>(null)
+  const live = useVisitorCounts()
+  // A failed count still opens on the analytics numbers.
+  const data: Visitors | null = live ?? (open ? FALLBACK : null)
   // The country list steps aside once the globe is zoomed in far enough to
   // run under it.
   const [listClear, setListClear] = useState(true)
   const onEdge = (right: number) => setListClear(right < window.innerWidth - 48 - 224 - 32)
+
+  // While it's open the numbers keep up: anyone arriving meanwhile shows up
+  // here and in the footer behind it.
+  useEffect(() => {
+    if (!open) return
+    const id = window.setInterval(refreshVisitors, 30_000)
+    return () => window.clearInterval(id)
+  }, [open])
 
   useEffect(() => {
     const show = () => {
       const dialog = ref.current
       if (!dialog || dialog.open) return
       // Fresh numbers each time it opens.
-      request = null
-      // A failed fetch still opens on the analytics numbers.
-      fetchVisitors().then((d) => setData(d ?? { countries: SEED, you: null }))
+      refreshVisitors()
       dialog.showModal()
       lockScroll(true)
       setOpen(true)
@@ -299,6 +293,14 @@ export function GlobeDialog() {
                 </button>
               </li>
             ))}
+            {/* Counted, but with no country to put them in: so the list adds up to the total. */}
+            {data.elsewhere > 0 && (
+              <li className="flex items-center gap-2 py-0.5 text-muted-foreground/70">
+                <span className="size-2 shrink-0 rounded-full border border-current" />
+                <span className="truncate">{t.elsewhere}</span>
+                <span className="ml-auto tabular-nums">{number(data.elsewhere, language)}</span>
+              </li>
+            )}
           </ol>
 
           <footer className="pointer-events-none relative z-10 flex flex-col [&>*]:pointer-events-auto items-center gap-4 px-6 pt-2 pb-[max(1.5rem,env(safe-area-inset-bottom))] text-center md:pb-10">
