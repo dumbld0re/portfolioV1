@@ -10,7 +10,7 @@ summary: "con cosa faccio tutto."
 
 ## software
 
-- omarchy
+- arch
 - claude
 - obsidian
 - next.js

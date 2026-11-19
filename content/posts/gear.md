@@ -12,7 +12,7 @@ pinned: true
 
 ## software
 
-- omarchy
+- arch
 - claude
 - obsidian
 - next.js
