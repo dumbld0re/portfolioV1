@@ -79,6 +79,7 @@ export function useShelf({ posts, library }: ExploreData): ShelfSection[] {
         ...t.sections.posts,
         tone: "red",
         mark: "page",
+        more: { label: t.allPosts, href: localize("/posts") },
         items: posts.map((source) => inLanguage(source, language)).map((post) => ({
           id: post.slug,
           title: post.title,
@@ -95,6 +96,7 @@ export function useShelf({ posts, library }: ExploreData): ShelfSection[] {
         ...t.sections.projects,
         tone: "red",
         mark: "window",
+        more: { label: t.allProjects, href: localize("/projects") },
         items: projects.map((project) => ({
           id: project.slug ?? project.title,
           title: project.title,

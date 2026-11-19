@@ -27,6 +27,8 @@ export const exploreContent: Record<
     readIt: string
     fullCase: string
     fullLibrary: string
+    allPosts: string
+    allProjects: string
     noNotes: string
     minutes: string
     cv: string
@@ -62,6 +64,8 @@ export const exploreContent: Record<
     readIt: "read it",
     fullCase: "the whole project",
     fullLibrary: "the whole library",
+    allPosts: "all posts",
+    allProjects: "all projects",
     noNotes: "no notes on this one yet.",
     minutes: "min",
     cv: "cv (pdf)",
@@ -92,6 +96,8 @@ export const exploreContent: Record<
     readIt: "lesen",
     fullCase: "das ganze projekt",
     fullLibrary: "die ganze bibliothek",
+    allPosts: "alle beiträge",
+    allProjects: "alle projekte",
     noNotes: "dazu noch keine notizen.",
     minutes: "min",
     cv: "lebenslauf (pdf)",
@@ -122,6 +128,8 @@ export const exploreContent: Record<
     readIt: "leggilo",
     fullCase: "il progetto intero",
     fullLibrary: "la biblioteca intera",
+    allPosts: "tutti gli articoli",
+    allProjects: "tutti i progetti",
     noNotes: "ancora nessuna nota su questo.",
     minutes: "min",
     cv: "cv (pdf)",
