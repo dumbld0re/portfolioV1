@@ -66,6 +66,10 @@ export function SiteFooter({ className, globe = false }: { className?: string; g
               {copy.dontClickHere}
             </Link>
             <span aria-hidden="true">·</span>
+            <Link href={localize("/masters-thesis")} className={cn(quiet, whole)}>
+              {copy.thesis}
+            </Link>
+            <span aria-hidden="true">·</span>
             <SecretsCount className="whitespace-nowrap" buttonClassName={whole} />
           </div>
         </div>
@@ -84,6 +88,9 @@ export function SiteFooter({ className, globe = false }: { className?: string; g
           <Link href={localize("/dont-click-here")} className={cn(quiet, whole)}>
             {copy.dontClickHere}
           </Link>
+          <Link href={localize("/masters-thesis")} className={cn(quiet, whole)}>
+            {copy.thesis}
+          </Link>
           <SecretsCount className="whitespace-nowrap" buttonClassName={whole} />
         </span>
         <span className="flex items-baseline gap-x-6">
@@ -100,6 +107,9 @@ export function SiteFooter({ className, globe = false }: { className?: string; g
         <div className="relative mt-3 flex flex-wrap items-baseline justify-center gap-x-6 gap-y-5">
           <Link href={localize("/dont-click-here")} className={cn(quiet, tap, whole)}>
             {copy.dontClickHere}
+          </Link>
+          <Link href={localize("/masters-thesis")} className={cn(quiet, tap, whole)}>
+            {copy.thesis}
           </Link>
           <SecretsCount className="static whitespace-nowrap" buttonClassName={cn(tap, whole)} />
         </div>

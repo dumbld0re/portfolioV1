@@ -20,6 +20,7 @@ export const siteCopy: Record<
     lastUpdated: string
     visitors: string
     dontClickHere: string
+    thesis: string
     boring: string
     boringLabel: string
     sound: string
@@ -49,6 +50,7 @@ export const siteCopy: Record<
     lastUpdated: "zuletzt aktualisiert",
     visitors: "besucher",
     dontClickHere: "bloß nicht klicken",
+    thesis: "meine masterarbeit lesen",
     boring: "Langweilig",
     boringLabel: "Langweiligen Modus umschalten",
     sound: "ton",
@@ -77,6 +79,7 @@ export const siteCopy: Record<
     lastUpdated: "last updated",
     visitors: "visitors",
     dontClickHere: "dont click here",
+    thesis: "read my master's thesis",
     boring: "Boring",
     boringLabel: "Toggle boring mode",
     sound: "sound",
@@ -105,6 +108,7 @@ export const siteCopy: Record<
     lastUpdated: "ultimo aggiornamento",
     visitors: "visitatori",
     dontClickHere: "non cliccare qui",
+    thesis: "leggi la mia tesi magistrale",
     boring: "Noioso",
     boringLabel: "Attiva o disattiva la modalità noiosa",
     sound: "suono",
