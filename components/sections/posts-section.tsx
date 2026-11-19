@@ -5,6 +5,7 @@ import Link from "next/link"
 import { postsContent } from "@/content/posts"
 import { useLanguage } from "@/components/language-provider"
 import { formatPostDate } from "@/lib/format-date"
+import { inLanguage } from "@/lib/post-language"
 import type { PostMeta } from "@/lib/posts"
 import { column } from "@/lib/styles"
 
@@ -27,17 +28,21 @@ export function PostsSection({ posts }: { posts: PostMeta[] }) {
             <p className="mt-16 text-muted-foreground">{t.emptyState}</p>
           ) : (
             <ol className="mt-12 space-y-6 short:mt-8">
-              {posts.map((post) => (
+              {posts.map((source) => inLanguage(source, language)).map((post) => (
                 <li key={post.slug}>
                   <Link href={localize(`/posts/${post.slug}`)} className="group block">
                     <div className="flex items-baseline justify-between gap-6">
                       <h2 className="font-serif text-xl lowercase tracking-[-0.01em] underline decoration-transparent decoration-1 underline-offset-[5px] transition-colors group-hover:decoration-primary md:text-2xl">
                         {post.title}
                       </h2>
-                      {post.date && (
-                        <time dateTime={post.date} className="shrink-0 font-mono text-xs text-muted-foreground">
-                          {formatPostDate(post.date, language)}
-                        </time>
+                      {post.pinned ? (
+                        <span className="shrink-0 font-mono text-xs text-primary">{t.pinned}</span>
+                      ) : (
+                        post.date && (
+                          <time dateTime={post.date} className="shrink-0 font-mono text-xs text-muted-foreground">
+                            {formatPostDate(post.date, language)}
+                          </time>
+                        )
                       )}
                     </div>
                     {post.summary && <p className="mt-1 text-sm text-muted-foreground">{post.summary}</p>}

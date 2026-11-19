@@ -5,6 +5,7 @@ import { LayoutWrapper } from "@/components/layout-wrapper"
 import { PostSection } from "@/components/sections/post-section"
 import { SHOW_POSTS } from "@/lib/features"
 import { DEFAULT_LANGUAGE, isLanguage } from "@/lib/i18n"
+import { inLanguage } from "@/lib/post-language"
 import { getAllPosts, getPostBySlug } from "@/lib/posts"
 import { SITE_NAME, SITE_URL, baseOpenGraph, jsonLdScript } from "@/lib/seo"
 
@@ -14,8 +15,9 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/posts/[slug]">): Promise<Metadata> {
   const { lang, slug } = await params
-  const post = SHOW_POSTS ? getPostBySlug(slug) : null
-  if (!post) return {}
+  const source = SHOW_POSTS ? getPostBySlug(slug) : null
+  if (!source) return {}
+  const post = inLanguage(source, isLanguage(lang) ? lang : DEFAULT_LANGUAGE)
 
   // Posts are written in English only, so the /de copy points search engines
   // at the English URL instead of competing with it as a duplicate.

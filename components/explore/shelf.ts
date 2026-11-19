@@ -11,6 +11,7 @@ import { projectsContent, type Project } from "@/content/projects"
 import { useLanguage } from "@/components/language-provider"
 import type { MarkName } from "@/components/dot-mark"
 import { formatPostDate } from "@/lib/format-date"
+import { inLanguage } from "@/lib/post-language"
 import type { LibraryEntry } from "@/lib/library-types"
 import type { Post } from "@/lib/posts"
 import { BOOKSHELF_LIVE } from "@/lib/features"
@@ -78,7 +79,7 @@ export function useShelf({ posts, library }: ExploreData): ShelfSection[] {
         ...t.sections.posts,
         tone: "red",
         mark: "page",
-        items: posts.map((post) => ({
+        items: posts.map((source) => inLanguage(source, language)).map((post) => ({
           id: post.slug,
           title: post.title,
           meta: post.pinned
