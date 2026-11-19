@@ -63,6 +63,11 @@ export function ItemView({ item, className }: { item: ShelfItem; className?: str
               {(p.demoKind === "site" ? labels.viewSiteLabel : labels.viewDemoLabel).toLowerCase()} ↗
             </a>
           )}
+          {p.more && (
+            <a href={p.more.href} target="_blank" rel="noreferrer" className={inlineLink}>
+              {p.more.label} ↗
+            </a>
+          )}
           {p.githubHref && (
             <a href={p.githubHref} target="_blank" rel="noreferrer" className={inlineLink}>
               {labels.viewSourceLabel.toLowerCase()} ↗

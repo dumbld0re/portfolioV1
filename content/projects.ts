@@ -41,6 +41,8 @@ export type Project = {
   /** Which label the demoHref button uses. Defaults to "demo". */
   demoKind?: "demo" | "site"
   githubHref?: string
+  /** One more way out, beside the demo: where to see more of this kind of work. */
+  more?: { label: string; href: string }
   internalTool?: boolean
   /** "tools": listed under "internal tools", below the main projects.
    *  "fun": listed under "random cool things", after the internal tools. */
@@ -228,6 +230,7 @@ export const projectsContent: Record<
           "Vier Arten, eine Sammlung von Arbeiten zu durchstöbern. Zwei aus einem Moodboard-Video geliehen, zwei von mir. Hovern, drehen, scrollen oder werfen.",
         tech: ["HTML", "CSS", "JavaScript", "GSAP"],
         demoHref: "/gallery-ways/index.html",
+        more: { label: "mehr arbeiten auf aestudio.site", href: "https://aestudio.site" },
         preview: {
           kind: "screens",
           screens: [
@@ -383,6 +386,7 @@ export const projectsContent: Record<
           "Four ways to browse a body of work. Two borrowed from a moodboard video, two of my own. Hover, spin, scroll or throw.",
         tech: ["HTML", "CSS", "JavaScript", "GSAP"],
         demoHref: "/gallery-ways/index.html",
+        more: { label: "more work on aestudio.site", href: "https://aestudio.site" },
         preview: {
           kind: "screens",
           screens: [
@@ -538,6 +542,7 @@ export const projectsContent: Record<
           "Quattro modi di sfogliare un archivio di lavori. Due presi in prestito da un video di moodboard, due miei. Passa sopra, gira, scorri o lancia.",
         tech: ["HTML", "CSS", "JavaScript", "GSAP"],
         demoHref: "/gallery-ways/index.html",
+        more: { label: "altri lavori su aestudio.site", href: "https://aestudio.site" },
         preview: {
           kind: "screens",
           screens: [

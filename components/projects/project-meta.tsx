@@ -19,10 +19,15 @@ export function ProjectStatus({ project, t }: { project: Project; t: ProjectsCop
 export function ProjectLinks({ project, t }: { project: Project; t: ProjectsCopy }) {
   if (!project.demoHref) return null
   return (
-    <p className="flex flex-wrap gap-x-3 font-mono text-base text-muted-foreground">
+    <p className="flex flex-wrap gap-x-6 gap-y-2 font-mono text-base text-muted-foreground">
       <a href={project.demoHref} target="_blank" rel="noreferrer" className={inlineLink}>
         {(project.demoKind === "site" ? t.viewSiteLabel : t.viewDemoLabel).toLowerCase()} ↗
       </a>
+      {project.more && (
+        <a href={project.more.href} target="_blank" rel="noreferrer" className={inlineLink}>
+          {project.more.label} ↗
+        </a>
+      )}
     </p>
   )
 }
