@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 
-import { projectPath } from "@/content/projects"
+import { hasCase, projectPath } from "@/content/projects"
 import { useLanguage } from "@/components/language-provider"
 import type { ProjectsCopy } from "@/components/projects/project-meta"
 import { ProjectMorph } from "@/components/projects/morph"
@@ -37,7 +37,7 @@ export function ProjectList({ t }: { t: ProjectsCopy }) {
                   "motion-reduce:transition-opacity",
                 )}
               >
-                →
+                {project.demoOnly ? "↗" : "→"}
               </span>
             </div>
             {subtitle && <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>}
@@ -45,7 +45,16 @@ export function ProjectList({ t }: { t: ProjectsCopy }) {
         )
         return (
           <li key={project.slug ?? i}>
-            {project.slug ? (
+            {project.demoOnly && project.demoHref ? (
+              <a
+                href={project.demoHref}
+                target="_blank"
+                rel="noreferrer"
+                className="group block outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-4 focus-visible:ring-offset-background"
+              >
+                {body}
+              </a>
+            ) : hasCase(project) ? (
               <Link
                 href={localizePath(language, projectPath(project.slug))}
                 transitionTypes={["nav-forward"]}

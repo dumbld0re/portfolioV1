@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { useEffect, useRef, useState, type ReactNode } from "react"
 
-import { projectPath, projectShots, projectsContent, type Screen } from "@/content/projects"
+import { hasCase, projectPath, projectShots, projectsContent, type Screen } from "@/content/projects"
 import { useLanguage } from "@/components/language-provider"
 import { ProjectLinks } from "@/components/projects/project-meta"
 import { ProjectMorph } from "@/components/projects/morph"
@@ -56,11 +56,13 @@ function Reveal({ children, className, delay = 0 }: { children: ReactNode; class
 export function ProjectCase({ slug }: { slug: string }) {
   const { language } = useLanguage()
   const t = projectsContent[language]
-  const index = t.projects.findIndex((p) => p.slug === slug)
+  // Demo-only projects have no page, so the "next project" chain skips them.
+  const cases = t.projects.filter(hasCase)
+  const index = cases.findIndex((p) => p.slug === slug)
   if (index < 0) return null
 
-  const project = t.projects[index]
-  const next = t.projects[(index + 1) % t.projects.length]
+  const project = cases[index]
+  const next = cases[(index + 1) % cases.length]
   const shots = projectShots(project)
   const hero = shots.find((s) => !isTall(s))
   const more = shots.filter((s) => s !== hero)

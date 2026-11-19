@@ -42,8 +42,11 @@ export type Project = {
   demoKind?: "demo" | "site"
   githubHref?: string
   internalTool?: boolean
-  /** "tools": listed under "internal tools", below the main projects. */
-  group?: "tools"
+  /** "tools": listed under "internal tools", below the main projects.
+   *  "fun": listed under "random cool things", after the internal tools. */
+  group?: "tools" | "fun"
+  /** No case study page: every link to it opens the demo instead. */
+  demoOnly?: boolean
   /** The shell lines that install it, in order, shown on its page. */
   install?: string[]
   status?: ProjectStatus
@@ -216,6 +219,31 @@ export const projectsContent: Record<
         },
         status: "inUse",
       },
+      {
+        slug: "gallery-ways",
+        title: "Gallery Ways",
+        short: "vier arten, eine galerie zu zeigen.",
+        tagline: "Vier Arten, eine Galerie zu zeigen: ein Dock, ein Orbit, ein Barcode und ein Stapel.",
+        description:
+          "Vier Arten, eine Sammlung von Arbeiten zu durchstöbern. Zwei aus einem Moodboard-Video geliehen, zwei von mir. Hovern, drehen, scrollen oder werfen.",
+        tech: ["HTML", "CSS", "JavaScript", "GSAP"],
+        demoHref: "/gallery-ways/index.html",
+        preview: {
+          kind: "screens",
+          screens: [
+            { src: "/projects/gallery-ways-orbit.webp", width: 2880, height: 1800, name: "Orbit" },
+            { src: "/projects/gallery-ways-barcode.webp", width: 2880, height: 1800, name: "Barcode" },
+          ],
+        },
+        phone: { src: "/projects/gallery-ways-phone.webp", width: 1170, height: 2532, name: "Handy" },
+        gallery: [
+          { src: "/projects/gallery-ways-globe.webp", width: 2880, height: 1800, name: "Globus" },
+          { src: "/projects/gallery-ways-dock.webp", width: 2880, height: 1800, name: "Dock-Leiste" },
+          { src: "/projects/gallery-ways-deck.webp", width: 2880, height: 1800, name: "Stapel" },
+        ],
+        group: "fun",
+        demoOnly: true,
+      },
     ],
   },
   en: {
@@ -345,6 +373,31 @@ export const projectsContent: Record<
           ],
         },
         status: "inUse",
+      },
+      {
+        slug: "gallery-ways",
+        title: "Gallery Ways",
+        short: "four ways to show a gallery of work.",
+        tagline: "Four ways to show a gallery of work: a dock, an orbit, a barcode and a deck.",
+        description:
+          "Four ways to browse a body of work. Two borrowed from a moodboard video, two of my own. Hover, spin, scroll or throw.",
+        tech: ["HTML", "CSS", "JavaScript", "GSAP"],
+        demoHref: "/gallery-ways/index.html",
+        preview: {
+          kind: "screens",
+          screens: [
+            { src: "/projects/gallery-ways-orbit.webp", width: 2880, height: 1800, name: "orbit" },
+            { src: "/projects/gallery-ways-barcode.webp", width: 2880, height: 1800, name: "barcode" },
+          ],
+        },
+        phone: { src: "/projects/gallery-ways-phone.webp", width: 1170, height: 2532, name: "phone" },
+        gallery: [
+          { src: "/projects/gallery-ways-globe.webp", width: 2880, height: 1800, name: "globe" },
+          { src: "/projects/gallery-ways-dock.webp", width: 2880, height: 1800, name: "dock strip" },
+          { src: "/projects/gallery-ways-deck.webp", width: 2880, height: 1800, name: "deck and toss" },
+        ],
+        group: "fun",
+        demoOnly: true,
       },
     ],
   },
@@ -476,6 +529,31 @@ export const projectsContent: Record<
         },
         status: "inUse",
       },
+      {
+        slug: "gallery-ways",
+        title: "Gallery Ways",
+        short: "quattro modi di mostrare una galleria.",
+        tagline: "Quattro modi di mostrare una galleria: un dock, un’orbita, un codice a barre e un mazzo.",
+        description:
+          "Quattro modi di sfogliare un archivio di lavori. Due presi in prestito da un video di moodboard, due miei. Passa sopra, gira, scorri o lancia.",
+        tech: ["HTML", "CSS", "JavaScript", "GSAP"],
+        demoHref: "/gallery-ways/index.html",
+        preview: {
+          kind: "screens",
+          screens: [
+            { src: "/projects/gallery-ways-orbit.webp", width: 2880, height: 1800, name: "orbita" },
+            { src: "/projects/gallery-ways-barcode.webp", width: 2880, height: 1800, name: "codice a barre" },
+          ],
+        },
+        phone: { src: "/projects/gallery-ways-phone.webp", width: 1170, height: 2532, name: "telefono" },
+        gallery: [
+          { src: "/projects/gallery-ways-globe.webp", width: 2880, height: 1800, name: "globo" },
+          { src: "/projects/gallery-ways-dock.webp", width: 2880, height: 1800, name: "striscia dock" },
+          { src: "/projects/gallery-ways-deck.webp", width: 2880, height: 1800, name: "mazzo" },
+        ],
+        group: "fun",
+        demoOnly: true,
+      },
     ],
   },
 }
@@ -490,3 +568,6 @@ export function projectShots(project: Project): Screen[] {
 }
 
 export const projectPath = (slug: string) => `/projects/${slug}`
+
+/** Whether the project has its own case study page. */
+export const hasCase = (project: Project): project is Project & { slug: string } => !!project.slug && !project.demoOnly

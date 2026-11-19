@@ -68,7 +68,7 @@ export function ItemView({ item, className }: { item: ShelfItem; className?: str
               {labels.viewSourceLabel.toLowerCase()} ↗
             </a>
           )}
-          {p.slug && (
+          {p.slug && !p.demoOnly && (
             <Link href={localize(`/projects/${p.slug}`)} className={inlineLink}>
               {t.fullCase} →
             </Link>

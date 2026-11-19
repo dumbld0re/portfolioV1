@@ -101,7 +101,7 @@ export function useShelf({ posts, library }: ExploreData): ShelfSection[] {
           meta: project.tech[0]?.toLowerCase(),
           image: project.preview.kind === "screens" ? project.preview.screens[0].src : undefined,
           project,
-          group: project.group === "tools" ? t.tools : undefined,
+          group: project.group === "tools" ? t.tools : project.group === "fun" ? t.fun : undefined,
         })),
       },
       reading: BOOKSHELF_LIVE

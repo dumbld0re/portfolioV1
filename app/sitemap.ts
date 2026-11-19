@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next"
 
 import { LANGUAGES, localizePath } from "@/lib/i18n"
 import { PROJECTS_LIVE, SHOW_POSTS } from "@/lib/features"
-import { projectPath, projectsContent } from "@/content/projects"
+import { projectPath, projectsContent, hasCase } from "@/content/projects"
 import { getLibrary } from "@/lib/library"
 import { LIBRARY_URL } from "@/lib/library-host"
 import { getAllPosts } from "@/lib/posts"
@@ -27,9 +27,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...localized("/", { changeFrequency: "monthly", priority: 1 }),
     ...localized("/projects", { changeFrequency: "monthly", priority: 0.7 }),
     ...(PROJECTS_LIVE
-      ? projectsContent.en.projects.flatMap((p) =>
-          p.slug ? localized(projectPath(p.slug), { changeFrequency: "monthly", priority: 0.6 }) : [],
-        )
+      ? projectsContent.en.projects
+          .filter(hasCase)
+          .flatMap((p) => localized(projectPath(p.slug), { changeFrequency: "monthly", priority: 0.6 }))
       : []),
     ...(SHOW_POSTS ? localized("/posts", { lastModified: latestPost, changeFrequency: "weekly", priority: 0.7 }) : []),
     // Posts are English-only; the /de copies canonicalize to these URLs.

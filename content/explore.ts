@@ -36,6 +36,8 @@ export const exploreContent: Record<
     bookshelfSoon: string
     /** The heading over the projects place's second list. */
     tools: string
+    /** The heading over the third list, after the internal tools. */
+    fun: string
     /** The label on a tool's install line. */
     install: string
     copy: string
@@ -67,6 +69,7 @@ export const exploreContent: Record<
     status: { read: "read", reading: "reading now", queued: "next up" },
     bookshelfSoon: "currently working on it.",
     tools: "internal tools",
+    fun: "random cool things (mostly ui/ux)",
     install: "install",
     copy: "copy",
     copied: "copied",
@@ -96,6 +99,7 @@ export const exploreContent: Record<
     status: { read: "gelesen", reading: "lese ich gerade", queued: "als nächstes" },
     bookshelfSoon: "gerade in arbeit.",
     tools: "interne tools",
+    fun: "zufällige coole sachen (meist ui/ux)",
     install: "installieren",
     copy: "kopieren",
     copied: "kopiert",
@@ -125,6 +129,7 @@ export const exploreContent: Record<
     status: { read: "letto", reading: "sto leggendo", queued: "il prossimo" },
     bookshelfSoon: "ci sto ancora lavorando.",
     tools: "strumenti interni",
+    fun: "cose belle a caso (soprattutto ui/ux)",
     install: "installa",
     copy: "copia",
     copied: "copiato",

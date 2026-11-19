@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dock Strip</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="base.css">
+<style>
+  body { touch-action: none; }
+  #row { position: fixed; inset: 0; }
+  .it { position: absolute; top: 50%; left: 0; will-change: transform, width, height; }
+  .it img { width: 100%; height: 100%; object-fit: cover; border-radius: 2px; }
+</style>
+</head>
+<body>
+<a class="back" href="index.html" aria-label="back to all four"><i>←</i></a>
+<div id="row"></div>
+<div class="credit"><span>designed by <a href="https://dannymiguel.com" target="_blank" rel="noopener">dannymiguel.com</a></span><span class="note"><span class="l">All images pulled straight from Pinterest, so sadly I can&rsquo;t credit the artists.</span><span class="s">Images via Pinterest, can&rsquo;t credit the artists.</span></span></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/Draggable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/InertiaPlugin.min.js"></script>
+<script src="data.js"></script>
+<script>
+gsap.registerPlugin(Draggable, InertiaPlugin);
+const WORK = window.WORK;
+const row = document.getElementById('row');
+const touch = matchMedia('(pointer: coarse)').matches;
+
+const items = WORK.map(w => {
+  const el = document.createElement('div');
+  el.className = 'it';
+  const img = new Image();
+  img.src = w.src; img.alt = ''; img.draggable = false;
+  el.appendChild(img);
+  row.appendChild(el);
+  return { el, img, ar: w.w / w.h };
+});
+
+let vw, vh, base, maxH, gap, sigma, bw = [], bc = [], baseTotal, baseOffset;
+function measure() {
+  vw = innerWidth; vh = innerHeight;
+  const small = vw < 700;
+  base = small ? 38 : 46;
+  gap = small ? 4 : 6;
+  maxH = Math.min(vh * (small ? 0.36 : 0.44), (vw * (small ? 0.56 : 0.4)) / 0.72);
+  let x = 0;
+  items.forEach((it, i) => {
+    bw[i] = base * it.ar;
+    bc[i] = x + bw[i] / 2;
+    x += bw[i] + gap;
+  });
+  baseTotal = x - gap;
+  sigma = (baseTotal / items.length) * (small ? 0.75 : 1.25);
+  baseOffset = (vw - baseTotal) / 2;
+}
+measure();
+
+// focus point in base-row coordinates, and magnification strength
+const s = { fx: baseTotal / 2, tfx: baseTotal / 2, k: 0, tk: 0, cx: vw / 2, scroll: 0 };
+
+if (!touch) {
+  addEventListener('pointermove', e => {
+    s.cx = e.clientX;
+    s.tfx = e.clientX - baseOffset;
+    const dy = Math.abs(e.clientY - vh / 2);
+    s.tk = gsap.utils.clamp(0, 1, 1 - (dy - maxH * 0.5) / 160);
+  });
+  document.addEventListener('pointerleave', () => { s.tk = 0; });
+} else {
+  // touch: the focus sits at screen centre, the strip scrolls under it
+  const proxy = document.createElement('div');
+  Draggable.create(proxy, {
+    type: 'x', trigger: document.body, inertia: true,
+    bounds: { minX: -baseTotal / 2, maxX: baseTotal / 2 },
+    snap: v => { let best = 0, bd = 1e9; bc.forEach(c => { const t = baseTotal / 2 - c; if (Math.abs(t - v) < bd) { bd = Math.abs(t - v); best = t; } }); return best; },
+    onDrag() { s.scroll = this.x; },
+    onThrowUpdate() { s.scroll = this.x; },
+    edgeResistance: 0.85
+  });
+  s.tk = 1;
+  const mid = Math.floor(items.length / 2);
+  s.scroll = baseTotal / 2 - bc[mid];
+  gsap.set(proxy, { x: s.scroll });
+  Draggable.get(proxy).update();
+  s.fx = s.tfx = vw / 2 - baseOffset - s.scroll;
+}
+
+function newCoord(fx, w, starts) {
+  if (fx <= 0) return fx;
+  for (let i = 0; i < items.length; i++) {
+    const b0 = bc[i] - bw[i] / 2, b1 = b0 + bw[i];
+    if (fx < b1) {
+      if (fx < b0) { // in the gap before item i
+        return starts[i] - (b0 - fx);
+      }
+      return starts[i] + ((fx - b0) / bw[i]) * w[i];
+    }
+  }
+  const last = items.length - 1;
+  return starts[last] + w[last] + (fx - (bc[last] + bw[last] / 2));
+}
+
+const w = [], h = [], starts = [];
+gsap.ticker.add(() => {
+  if (touch) {
+    s.cx = vw / 2;
+    s.tfx = vw / 2 - baseOffset - s.scroll;
+  }
+  s.fx += (s.tfx - s.fx) * 0.16;
+  s.k += (s.tk - s.k) * 0.12;
+  let x = 0;
+  for (let i = 0; i < items.length; i++) {
+    const d = bc[i] - s.fx;
+    const f = Math.exp(-(d * d) / (2 * sigma * sigma));
+    h[i] = base + (maxH - base) * f * s.k;
+    w[i] = h[i] * items[i].ar;
+    starts[i] = x;
+    x += w[i] + gap * (1 + f * s.k * 1.2);
+  }
+  // keep the point under the cursor anchored under the cursor
+  const cursorScreen = touch ? s.cx : baseOffset + s.fx;
+  const origin = cursorScreen - newCoord(s.fx, w, starts);
+  for (let i = 0; i < items.length; i++) {
+    const el = items[i].el;
+    el.style.width = w[i] + 'px';
+    el.style.height = h[i] + 'px';
+    el.style.transform = `translate3d(${origin + starts[i]}px, ${-h[i] / 2}px, 0)`;
+    el.style.zIndex = Math.round(h[i]);
+  }
+});
+
+addEventListener('resize', () => { measure(); });
+
+gsap.from(items.map(i => i.img), {
+  opacity: 0, y: 30, duration: 0.9, ease: 'expo.out',
+  stagger: { each: 0.025, from: 'center' }, delay: 0.1
+});
+</script>
+</body>
+</html>

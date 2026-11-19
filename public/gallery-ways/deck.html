@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deck and Toss</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="base.css">
+<style>
+  body { touch-action: none; }
+  #table { position: fixed; inset: 0; }
+  .card { position: absolute; left: 50%; top: 50%; cursor: grab; will-change: transform; }
+  .card:active { cursor: grabbing; }
+  .card img {
+    width: 100%; height: 100%; object-fit: cover; border-radius: 2px;
+    box-shadow: 0 1px 1px rgba(20,18,18,.06), 0 10px 30px -12px rgba(20,18,18,.25);
+    transition: box-shadow .3s;
+  }
+  .card.lift img { box-shadow: 0 2px 4px rgba(20,18,18,.06), 0 30px 60px -18px rgba(20,18,18,.38); }
+  #ghost {
+    position: absolute; left: 50%; top: 50%;
+    border: 1px dashed #D9D0D0; border-radius: 3px;
+    display: grid; place-items: center;
+    font: 400 11px/1 'Geist Mono', ui-monospace, monospace; color: var(--mute); letter-spacing: .02em;
+    opacity: 0; pointer-events: none; cursor: pointer;
+    transition: opacity .4s, border-color .2s, color .2s;
+  }
+  #ghost.on { opacity: 1; pointer-events: auto; }
+  #ghost:hover { border-color: var(--ink); color: var(--ink); }
+</style>
+</head>
+<body>
+<a class="back" href="index.html" aria-label="back to all four"><i>←</i></a>
+<div id="table"><div id="ghost">gather</div></div>
+<div class="credit"><span>designed by <a href="https://dannymiguel.com" target="_blank" rel="noopener">dannymiguel.com</a></span><span class="note"><span class="l">All images pulled straight from Pinterest, so sadly I can&rsquo;t credit the artists.</span><span class="s">Images via Pinterest, can&rsquo;t credit the artists.</span></span></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/Draggable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/InertiaPlugin.min.js"></script>
+<script src="data.js"></script>
+<script>
+gsap.registerPlugin(Draggable, InertiaPlugin);
+const table = document.getElementById('table');
+const ghost = document.getElementById('ghost');
+const R = gsap.utils.random;
+let z = 10;
+
+const cards = WORK.map((w, i) => {
+  const el = document.createElement('div'); el.className = 'card';
+  const img = new Image(); img.src = w.src; img.alt = ''; img.draggable = false;
+  el.appendChild(img); table.appendChild(el);
+  return { el, ar: w.w / w.h, onTable: false, drag: null };
+});
+
+let W, H, tableScale;
+function size() {
+  W = innerWidth; H = innerHeight;
+  const portrait = W < H;
+  tableScale = portrait ? 0.5 : 0.58;
+  let gw = 0, gh = 0;
+  cards.forEach(c => {
+    const h = Math.min(H * (portrait ? 0.5 : 0.6), (W * (portrait ? 0.66 : 0.5)) / c.ar);
+    c.w = h * c.ar; c.h = h;
+    c.el.style.width = c.w + 'px'; c.el.style.height = c.h + 'px';
+    c.el.style.marginLeft = -c.w / 2 + 'px'; c.el.style.marginTop = -c.h / 2 + 'px';
+    gw = Math.max(gw, c.w); gh = Math.max(gh, c.h);
+  });
+  ghost.style.width = gw * 0.62 + 'px'; ghost.style.height = gh * 0.62 + 'px';
+  ghost.style.marginLeft = -gw * 0.31 + 'px'; ghost.style.marginTop = -gh * 0.31 - 10 + 'px';
+  cards.forEach(c => c.drag && c.drag.applyBounds(bounds()));
+}
+function bounds() { return { minX: -W / 2 + 40, maxX: W / 2 - 40, minY: -H / 2 + 40, maxY: H / 2 - 60 }; }
+
+function stackPose(i) { return { x: R(-5, 5), y: R(-5, 5) - 10, rotation: R(-2.5, 2.5), scale: 1 }; }
+
+function topOfStack() {
+  let best = null;
+  cards.forEach(c => { if (!c.onTable && (!best || +c.el.style.zIndex > +best.el.style.zIndex)) best = c; });
+  return best;
+}
+function checkEmpty() { ghost.classList.toggle('on', cards.every(c => c.onTable)); }
+
+function land(c) {
+  c.onTable = true;
+  gsap.to(c.el, { rotation: R(-14, 14), scale: tableScale, duration: 0.6, ease: 'back.out(1.6)', overwrite: false });
+  checkEmpty();
+}
+
+function toss(c) {
+  c.el.style.zIndex = ++z;
+  c.onTable = true;
+  const portrait = W < H;
+  const a = R(0, Math.PI * 2), r = R(0.45, 1);
+  const ax = W / 2 - c.w * tableScale * 0.5 - 20, ay = H / 2 - c.h * tableScale * 0.5 - 50;
+  gsap.to(c.el, {
+    x: Math.cos(a) * ax * r, y: Math.sin(a) * ay * r,
+    rotation: R(-16, 16), scale: tableScale,
+    duration: 0.9, ease: 'power3.out',
+    onComplete: () => c.drag.update()
+  });
+  checkEmpty();
+}
+
+function gather() {
+  ghost.classList.remove('on');
+  const order = cards.slice().sort((a, b) => +a.el.style.zIndex - +b.el.style.zIndex);
+  order.forEach((c, k) => {
+    c.onTable = false;
+    c.el.style.zIndex = 10 + (order.length - k); // last thrown ends up at the bottom
+    gsap.to(c.el, { ...stackPose(k), duration: 0.9, ease: 'expo.inOut', delay: k * 0.03, onComplete: () => c.drag.update() });
+  });
+  z = 100;
+}
+ghost.addEventListener('click', gather);
+
+size();
+cards.forEach((c, i) => {
+  c.el.style.zIndex = 10 + (cards.length - i);
+  gsap.set(c.el, stackPose(i));
+  c.drag = Draggable.create(c.el, {
+    type: 'x,y', inertia: true, bounds: bounds(), edgeResistance: 0.75,
+    onPress() { c.el.style.zIndex = ++z; c.el.classList.add('lift'); },
+    onRelease() { c.el.classList.remove('lift'); },
+    onDragStart() { if (!c.onTable) land(c); },
+    onClick() { if (!c.onTable) toss(c); }
+  })[0];
+});
+
+// deal in
+gsap.from(cards.map(c => c.el), { y: H, rotation: () => R(-20, 20), duration: 1.1, ease: 'expo.out', stagger: { each: 0.035, from: 'end' } });
+
+let rt;
+addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(size, 80); });
+</script>
+</body>
+</html>
