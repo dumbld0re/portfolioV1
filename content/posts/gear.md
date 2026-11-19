@@ -12,7 +12,7 @@ pinned: true
 
 ## software
 
-- arch
+- arch (btw)
 - claude
 - obsidian
 - next.js
