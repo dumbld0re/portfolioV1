@@ -1142,3 +1142,34 @@ html[data-place-open] [data-loop-echo] {
     transition: none;
   }
 }
+
+/* /things (components/sections/things-section.tsx) */
+.things-bar {
+  /* the page shows through, blurred, fading out downwards */
+  background: linear-gradient(to bottom, var(--background) 35%, color-mix(in srgb, var(--background) 0%, transparent));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  mask-image: linear-gradient(to bottom, #000 60%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent);
+}
+.thing {
+  animation: thing-in 520ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes thing-in {
+  from { opacity: 0; transform: translateY(14px) scale(0.97); filter: blur(4px); }
+}
+.thing-img {
+  transition: transform 420ms cubic-bezier(0.3, 1.3, 0.5, 1), filter 420ms ease;
+  filter: drop-shadow(0 6px 10px rgb(0 0 0 / 0.06));
+}
+.thing:hover .thing-img {
+  transform: translateY(-8px) scale(1.035);
+  filter: drop-shadow(0 18px 18px rgb(0 0 0 / 0.12));
+}
+.dark .thing-img { filter: drop-shadow(0 6px 12px rgb(0 0 0 / 0.35)); }
+.dark .thing:hover .thing-img { filter: drop-shadow(0 20px 22px rgb(0 0 0 / 0.5)); }
+.things-grid { transition: gap 300ms ease; }
+@media (prefers-reduced-motion: reduce) {
+  .thing { animation: none; }
+  .thing-img { transition: none; }
+}
