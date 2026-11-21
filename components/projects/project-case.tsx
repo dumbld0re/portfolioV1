@@ -7,7 +7,7 @@ import { hasCase, projectPath, projectShots, projectsContent, type Screen } from
 import { useLanguage } from "@/components/language-provider"
 import { ProjectLinks } from "@/components/projects/project-meta"
 import { ProjectMorph } from "@/components/projects/morph"
-import { Thumb, alt, ease } from "@/components/projects/layouts/shared"
+import { alt, ease } from "@/components/projects/layouts/shared"
 import { Shot, Window } from "@/components/project-preview"
 import { PROJECTS_LIVE } from "@/lib/features"
 import { localizePath } from "@/lib/i18n"
@@ -65,7 +65,10 @@ export function ProjectCase({ slug }: { slug: string }) {
   const next = cases[(index + 1) % cases.length]
   const shots = projectShots(project)
   const hero = shots.find((s) => !isTall(s))
-  const more = shots.filter((s) => s !== hero)
+  // With no wide hero, the preview's phone pair stays on the projects list only:
+  // the page opens on the description and shows the gallery phones below.
+  const inHero = hero || project.preview.kind !== "screens" ? [] : project.preview.screens.slice(0, 2)
+  const more = shots.filter((s) => s !== hero && !inHero.some((h) => h.src === s.src))
   const wide = more.filter((s) => !isTall(s))
   const phones = more.filter(isTall)
 
@@ -92,17 +95,13 @@ export function ProjectCase({ slug }: { slug: string }) {
           </div>
         </header>
 
-        <div className="mt-14 md:mt-20">
-          {hero ? (
+        {hero && (
+          <div className="mt-14 md:mt-20">
             <Window className="w-full rounded-lg md:rounded-xl">
               <Shot screen={hero} alt={alt(project, hero.name)} eager />
             </Window>
-          ) : (
-            <div className="mx-auto max-w-[44rem]">
-              <Thumb project={project} />
-            </div>
-          )}
-        </div>
+          </div>
+        )}
 
         <Reveal className="mt-20 grid gap-y-4 md:mt-28 md:grid-cols-12">
           <p className="font-serif text-2xl leading-[1.4] tracking-[-0.01em] text-muted-foreground text-pretty md:col-span-9 md:col-start-4 md:text-3xl">

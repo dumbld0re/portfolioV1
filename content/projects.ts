@@ -156,6 +156,28 @@ export const projectsContent: Record<
         status: "inUse",
       },
       {
+        slug: "remote",
+        title: "Remote",
+        short: "Der Laptop vom Handy aus.",
+        tagline:
+          "Ich hasste es, jedes Mal aufzustehen, wenn ich pausieren wollte, also habe ich mir eine Website über Tailscale gebaut.",
+        description:
+          "Eine Fernbedienung auf dem Handy für den Laptop am HDMI. Irgendwo tippen zum Pausieren, ziehen zum Spulen, Lautstärke und Audioausgang wechseln, einen Sleep-Timer stellen. Kein App Store, kein Konto, es läuft auf dem Laptop selbst.",
+        tech: ["Python", "Server-Sent Events", "D-Bus", "PipeWire", "Tailscale"],
+        preview: {
+          kind: "screens",
+          screens: [{ src: "/projects/remote-phones.webp", width: 880, height: 943, bare: true, name: "Laptop und Steuerung" }],
+        },
+        gallery: [
+          { src: "/projects/remote-scrub.webp", width: 1170, height: 2532, name: "Spulen" },
+          { src: "/projects/remote-controls.webp", width: 1170, height: 2532, name: "Steuerung" },
+          { src: "/projects/remote-session.webp", width: 1170, height: 2532, name: "Sleep-Timer" },
+        ],
+        internalTool: true,
+        group: "tools",
+        status: "inUse",
+      },
+      {
         slug: "uni",
         title: "uni — Werkzeugkasten für Nachhilfe & Studium",
         short: "eine typst-datei, ein arbeitsblatt und sein lösungsschlüssel.",
@@ -312,6 +334,27 @@ export const projectsContent: Record<
         status: "inUse",
       },
       {
+        slug: "remote",
+        title: "Remote",
+        short: "my laptop, from my phone.",
+        tagline: "I hated having to stand up every time I wanted to pause, so I made a website over Tailscale.",
+        description:
+          "A phone remote for the laptop on HDMI. Tap anywhere to pause, drag to scrub, change the volume or the audio output, set a sleep timer. No app store, no account, it runs on the laptop itself.",
+        tech: ["Python", "Server-Sent Events", "D-Bus", "PipeWire", "Tailscale"],
+        preview: {
+          kind: "screens",
+          screens: [{ src: "/projects/remote-phones.webp", width: 880, height: 943, bare: true, name: "laptop and controls" }],
+        },
+        gallery: [
+          { src: "/projects/remote-scrub.webp", width: 1170, height: 2532, name: "scrubbing" },
+          { src: "/projects/remote-controls.webp", width: 1170, height: 2532, name: "controls" },
+          { src: "/projects/remote-session.webp", width: 1170, height: 2532, name: "sleep timer" },
+        ],
+        internalTool: true,
+        group: "tools",
+        status: "inUse",
+      },
+      {
         slug: "uni",
         title: "uni — tutoring & coursework ops suite",
         short: "one typst file, a worksheet and its answer key.",
@@ -465,6 +508,27 @@ export const projectsContent: Record<
           { src: "/projects/finance-tracker-entry.webp", width: 1170, height: 2532, name: "nuova voce sul telefono" },
         ],
         internalTool: true,
+        status: "inUse",
+      },
+      {
+        slug: "remote",
+        title: "Remote",
+        short: "il portatile, dal telefono.",
+        tagline: "Odiavo dovermi alzare ogni volta che volevo mettere in pausa, così ho fatto un sito tramite Tailscale.",
+        description:
+          "Un telecomando da telefono per il portatile in HDMI. Tocchi ovunque per la pausa, trascini per scorrere nel video, cambi il volume o l'uscita audio, imposti un timer di spegnimento. Niente App Store, niente account: gira sul portatile stesso.",
+        tech: ["Python", "Server-Sent Events", "D-Bus", "PipeWire", "Tailscale"],
+        preview: {
+          kind: "screens",
+          screens: [{ src: "/projects/remote-phones.webp", width: 880, height: 943, bare: true, name: "portatile e controlli" }],
+        },
+        gallery: [
+          { src: "/projects/remote-scrub.webp", width: 1170, height: 2532, name: "scorrimento" },
+          { src: "/projects/remote-controls.webp", width: 1170, height: 2532, name: "controlli" },
+          { src: "/projects/remote-session.webp", width: 1170, height: 2532, name: "timer di spegnimento" },
+        ],
+        internalTool: true,
+        group: "tools",
         status: "inUse",
       },
       {
