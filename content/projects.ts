@@ -128,6 +128,7 @@ export const projectsContent: Record<
           ],
         },
         phone: { src: "/projects/fairhour-mobile.webp", width: 1170, height: 2532, name: "Handy" },
+        gallery: [{ src: "/projects/fairhour-mobile-people.webp", width: 1170, height: 2532, name: "Teilnehmer wählen" }],
         status: "inUse",
       },
       {
@@ -306,6 +307,7 @@ export const projectsContent: Record<
           ],
         },
         phone: { src: "/projects/fairhour-mobile.webp", width: 1170, height: 2532, name: "phone" },
+        gallery: [{ src: "/projects/fairhour-mobile-people.webp", width: 1170, height: 2532, name: "who's joining" }],
         status: "inUse",
       },
       {
@@ -483,6 +485,7 @@ export const projectsContent: Record<
           ],
         },
         phone: { src: "/projects/fairhour-mobile.webp", width: 1170, height: 2532, name: "telefono" },
+        gallery: [{ src: "/projects/fairhour-mobile-people.webp", width: 1170, height: 2532, name: "chi partecipa" }],
         status: "inUse",
       },
       {

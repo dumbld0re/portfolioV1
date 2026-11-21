@@ -37,7 +37,7 @@ export function ProjectList({ t }: { t: ProjectsCopy }) {
                   "motion-reduce:transition-opacity",
                 )}
               >
-                {project.demoOnly ? "↗" : "→"}
+                →
               </span>
             </div>
             {subtitle && <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>}
