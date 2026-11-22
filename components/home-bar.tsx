@@ -25,7 +25,7 @@ export function HomeBar() {
 
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute right-[4.25rem] top-full mt-1 flex items-start text-muted-foreground"
+            className="pointer-events-none absolute right-[4.25rem] top-full mt-1 hidden items-start text-muted-foreground md:flex"
           >
             <span className="mt-6 whitespace-nowrap font-mono text-xs md:text-[13px]">{t.languageNote}</span>
             {/* From the end of the note, a curve up to the codes. */}
