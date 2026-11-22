@@ -1,6 +1,6 @@
 import { Suspense } from "react"
 
-import { SentenceHome, SentenceLanding } from "@/components/explore/sentence-view"
+import { SentenceCounts, SentenceHome, SentenceLanding } from "@/components/explore/sentence-view"
 import { LayoutWrapper } from "@/components/layout-wrapper"
 import { HomeFooter } from "@/components/sections/home-footer"
 import { BOOKSHELF_LIVE } from "@/lib/features"
@@ -15,21 +15,28 @@ export default function Home() {
   const library = BOOKSHELF_LIVE ? getLibrary() : []
 
   return (
-    <LayoutWrapper>
-      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(personJsonLd)} />
-      <main className="flex-1">
-        {/* Which place is open lives in the URL, read on the client. */}
-        <Suspense
-          fallback={
-            <>
-              <SentenceLanding />
-              <HomeFooter />
-            </>
-          }
-        >
-          <SentenceHome data={{ posts, library }} />
-        </Suspense>
-      </main>
-    </LayoutWrapper>
+    <SentenceCounts
+      counts={{
+        posts: posts.length,
+        ...(BOOKSHELF_LIVE ? { reading: library.length } : {}),
+      }}
+    >
+      <LayoutWrapper>
+        <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(personJsonLd)} />
+        <main className="flex-1">
+          {/* Which place is open lives in the URL, read on the client. */}
+          <Suspense
+            fallback={
+              <>
+                <SentenceLanding />
+                <HomeFooter />
+              </>
+            }
+          >
+            <SentenceHome data={{ posts, library }} />
+          </Suspense>
+        </main>
+      </LayoutWrapper>
+    </SentenceCounts>
   )
 }

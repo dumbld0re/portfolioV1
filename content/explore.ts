@@ -22,6 +22,8 @@ export const exploreContent: Record<
     hi: string
     /** The note pointing at the language switch, top right. */
     languageNote: string
+    /** The note beside the sentence, saying its words are the way in. */
+    sentenceNote: string
     back: string
     close: string
     readIt: string
@@ -59,6 +61,7 @@ export const exploreContent: Record<
     sentenceWords: { about: "me", posts: "posts", projects: "projects", reading: "bookshelf", elsewhere: "elsewhere" },
     hi: "say hi",
     languageNote: "change the language",
+    sentenceNote: "click the words to look around",
     back: "back",
     close: "close",
     readIt: "read it",
@@ -91,6 +94,7 @@ export const exploreContent: Record<
     sentenceWords: { about: "mich", posts: "beiträge", projects: "projekten", reading: "bücherregal", elsewhere: "anderswo" },
     hi: "sag einfach hallo",
     languageNote: "sprache ändern",
+    sentenceNote: "klick die wörter an, um dich umzusehen",
     back: "zurück",
     close: "schließen",
     readIt: "lesen",
@@ -123,6 +127,7 @@ export const exploreContent: Record<
     sentenceWords: { about: "conoscimi", posts: "articoli", projects: "progetti", reading: "libreria", elsewhere: "altrove" },
     hi: "saluta",
     languageNote: "cambia lingua",
+    sentenceNote: "clicca le parole per guardarti intorno",
     back: "indietro",
     close: "chiudi",
     readIt: "leggilo",
