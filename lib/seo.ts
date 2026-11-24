@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 
+import { X_URL } from "@/lib/styles"
 import { LANGUAGES, localizePath, type Language } from "@/lib/i18n"
 
 export const SITE_URL = "https://www.dannymiguel.com"
@@ -45,6 +46,14 @@ export function languageAlternates(language: Language, path: string): Metadata["
   }
 }
 
+// My public profiles, as on the home page's "elsewhere" (Instagram is left out
+// while it is still a placeholder). Pinterest is the profile pin.it points to.
+export const PROFILES: [string, string][] = [
+  ["GitHub", "https://github.com/dumbld0re"],
+  ["X", X_URL],
+  ["Pinterest", "https://www.pinterest.com/dm1pldg/"],
+]
+
 // schema.org Person for the home page — helps search engines tie the site,
 // the name and the linked profiles together.
 export const personJsonLd = {
@@ -66,7 +75,7 @@ export const personJsonLd = {
     name: "University of Namibia",
   },
   knowsAbout: ["Web development", "Next.js", "React", "TypeScript", "Linux", "Quantitative finance"],
-  sameAs: ["https://github.com/dumbld0re"],
+  sameAs: PROFILES.map(([, href]) => href),
 }
 
 // Escapes "<" so post titles or summaries can never close the script tag.
