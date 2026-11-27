@@ -256,6 +256,7 @@ export const projectsContent: Record<
             { src: "/projects/ae-contact.webp", width: 2880, height: 1800, name: "contact" },
           ],
         },
+        phone: { src: "/projects/ae-mobile.webp", width: 1170, height: 2532, name: "Handy" },
         status: "inUse",
       },
       {
@@ -453,6 +454,7 @@ export const projectsContent: Record<
             { src: "/projects/ae-contact.webp", width: 2880, height: 1800, name: "contact" },
           ],
         },
+        phone: { src: "/projects/ae-mobile.webp", width: 1170, height: 2532, name: "phone" },
         status: "inUse",
       },
       {
@@ -650,6 +652,7 @@ export const projectsContent: Record<
             { src: "/projects/ae-contact.webp", width: 2880, height: 1800, name: "contact" },
           ],
         },
+        phone: { src: "/projects/ae-mobile.webp", width: 1170, height: 2532, name: "telefono" },
         status: "inUse",
       },
       {
