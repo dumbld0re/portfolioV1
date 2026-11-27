@@ -63,15 +63,6 @@ export type Project = {
 // Personal and engineering work only. All web design and client work (sites,
 // case studies) lives on aestudio, which the "æ design studio" entry links to.
 
-// Illustrative only — swap in a real session from the CLI.
-const UNI_SESSION = [
-  "$ uni build worksheets/praeteritum.typ",
-  "  compiling student version …",
-  "  ✓ praeteritum.pdf",
-  "  compiling answer key …",
-  "  ✓ praeteritum-loesungen.pdf",
-]
-
 export const projectsContent: Record<
   Language,
   {
@@ -184,22 +175,6 @@ export const projectsContent: Record<
         internalTool: true,
         group: "tools",
         status: "inUse",
-      },
-      {
-        slug: "uni",
-        title: "uni — Werkzeugkasten für Nachhilfe & Studium",
-        short: "eine typst-datei, ein arbeitsblatt und sein lösungsschlüssel.",
-        tagline:
-          "Ein Kommandozeilen-Tool, das aus einer einzigen Typst-Datei das Arbeitsblatt und das passende Lösungsblatt erzeugt.",
-        why:
-          "Ich gebe Deutsch-Nachhilfe und studiere, und ich habe jedes Arbeitsblatt zweimal geschrieben: einmal für die Schüler, einmal mit den Lösungen. Jetzt schreibe ich es einmal und bekomme beides.",
-        description:
-          "Ein typisiertes Python-CLI für meinen Deutsch-Nachhilfeunterricht und mein Studium.",
-        tech: ["Python", "typer", "Typst", "pytest"],
-        preview: { kind: "terminal", lines: UNI_SESSION },
-        internalTool: true,
-        group: "tools",
-        status: "inDevelopment",
       },
       {
         slug: "seed",
@@ -399,22 +374,6 @@ export const projectsContent: Record<
         status: "inUse",
       },
       {
-        slug: "uni",
-        title: "uni — tutoring & coursework ops suite",
-        short: "one typst file, a worksheet and its answer key.",
-        tagline:
-          "A CLI that turns one Typst source into both a student worksheet and its answer key.",
-        why:
-          "I tutor German and study at uni, and I was writing every worksheet twice: once for the students, once with the answers. Now I write it once and get both.",
-        description:
-          "A typed Python CLI for my German tutoring and university coursework.",
-        tech: ["Python", "typer", "Typst", "pytest"],
-        preview: { kind: "terminal", lines: UNI_SESSION },
-        internalTool: true,
-        group: "tools",
-        status: "inDevelopment",
-      },
-      {
         slug: "seed",
         title: "seed",
         tagline: "Grows a whole palette from one colour and sets it into my catalog of Typst templates, for any PDF I make.",
@@ -610,22 +569,6 @@ export const projectsContent: Record<
         internalTool: true,
         group: "tools",
         status: "inUse",
-      },
-      {
-        slug: "uni",
-        title: "uni — kit per ripetizioni e università",
-        short: "un file typst, una scheda e le sue soluzioni.",
-        tagline:
-          "Una CLI che da un unico file Typst genera sia la scheda per lo studente sia le soluzioni.",
-        why:
-          "Do ripetizioni di tedesco e studio all'università, e scrivevo ogni scheda due volte: una per gli studenti, una con le soluzioni. Ora la scrivo una volta e ottengo entrambe.",
-        description:
-          "Una CLI in Python tipizzato per le mie ripetizioni di tedesco e lo studio universitario.",
-        tech: ["Python", "typer", "Typst", "pytest"],
-        preview: { kind: "terminal", lines: UNI_SESSION },
-        internalTool: true,
-        group: "tools",
-        status: "inDevelopment",
       },
       {
         slug: "seed",

@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { useEffect, useRef, useState, type ReactNode } from "react"
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react"
 
 import { hasCase, projectPath, projectShots, projectsContent, type Screen } from "@/content/projects"
 import { useLanguage } from "@/components/language-provider"
@@ -12,6 +12,7 @@ import { Shot, Window } from "@/components/project-preview"
 import { PROJECTS_LIVE } from "@/lib/features"
 import { localizePath } from "@/lib/i18n"
 import { column } from "@/lib/styles"
+import { getLenis } from "@/lib/scroll"
 import { cn } from "@/lib/utils"
 
 const isTall = (s: Screen) => s.height > s.width
@@ -65,6 +66,14 @@ function Reveal({ children, className, delay = 0 }: { children: ReactNode; class
 export function ProjectCase({ slug }: { slug: string }) {
   const { language } = useLanguage()
   const t = projectsContent[language]
+
+  // Opening a project (also from "next project" at the bottom of another) starts at
+  // the top. It runs before paint, so the title morph lands on the new heading.
+  // Lenis keeps its own scroll position, so it's reset too, or it glides back down.
+  useLayoutEffect(() => {
+    getLenis()?.scrollTo(0, { immediate: true, force: true })
+    window.scrollTo(0, 0)
+  }, [slug])
   // Demo-only projects have no page, so the "next project" chain skips them.
   const cases = t.projects.filter(hasCase)
   const index = cases.findIndex((p) => p.slug === slug)
@@ -78,6 +87,8 @@ export function ProjectCase({ slug }: { slug: string }) {
   // the page opens on the description and shows the gallery phones below.
   const inHero = hero || project.preview.kind !== "screens" ? [] : project.preview.screens.slice(0, 2)
   const more = shots.filter((s) => s !== hero && !inHero.some((h) => h.src === s.src))
+  // a bare capture (a widget, or Remote's laptop-and-phone shot) leads the page beside the description
+  const lead = hero ?? inHero.find((s) => s.bare)
   const wide = more.filter((s) => !isTall(s))
   const phones = more.filter(isTall)
 
@@ -90,7 +101,7 @@ export function ProjectCase({ slug }: { slug: string }) {
 
         <header className="grid gap-x-16 gap-y-6 lg:grid-cols-12 lg:items-end">
           {/* the title clicked on the list lands here */}
-          <h1 className="font-serif text-5xl leading-[1] tracking-[-0.03em] text-balance md:text-7xl lg:col-span-7 lg:text-8xl">
+          <h1 className="font-serif text-[min(3rem,11.5vw)] leading-[1] tracking-[-0.03em] text-balance md:text-7xl lg:col-span-7 lg:text-8xl">
             <ProjectMorph slug={project.slug}>
               <span className="inline-block">
                 {project.title}
@@ -113,23 +124,33 @@ export function ProjectCase({ slug }: { slug: string }) {
           </section>
         )}
 
-        {hero && (
-          <div className="mt-14 md:mt-20">
-            {hero.bare ? (
-              <Bare screen={hero} alt={alt(project, hero.name)} />
-            ) : (
-              <Window className="w-full rounded-lg md:rounded-xl">
-                <Shot screen={hero} alt={alt(project, hero.name)} eager />
-              </Window>
-            )}
+        {lead?.bare ? (
+          // a small widget: the description sits beside it instead of below
+          <div className="mt-14 grid items-center gap-x-16 gap-y-10 md:mt-20 lg:grid-cols-12">
+            <div className="lg:col-span-5">
+              <Bare screen={lead} alt={alt(project, lead.name)} />
+            </div>
+            <p className="font-serif text-2xl leading-[1.4] tracking-[-0.01em] text-muted-foreground text-pretty lg:col-span-7 md:text-3xl">
+              {project.description}
+            </p>
           </div>
-        )}
+        ) : (
+          <>
+            {hero && (
+              <div className="mt-14 md:mt-20">
+                <Window className="w-full rounded-lg md:rounded-xl">
+                  <Shot screen={hero} alt={alt(project, hero.name)} eager />
+                </Window>
+              </div>
+            )}
 
-        <Reveal className="mt-20 grid gap-y-4 md:mt-28 md:grid-cols-12">
-          <p className="font-serif text-2xl leading-[1.4] tracking-[-0.01em] text-muted-foreground text-pretty md:col-span-9 md:col-start-4 md:text-3xl">
-            {project.description}
-          </p>
-        </Reveal>
+            <Reveal className="mt-20 grid gap-y-4 md:mt-28 md:grid-cols-12">
+              <p className="font-serif text-2xl leading-[1.4] tracking-[-0.01em] text-muted-foreground text-pretty md:col-span-9 md:col-start-4 md:text-3xl">
+                {project.description}
+              </p>
+            </Reveal>
+          </>
+        )}
 
         {wide.length > 0 && (
           <div className="mt-20 space-y-8 md:mt-28 md:space-y-14">

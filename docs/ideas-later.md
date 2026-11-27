@@ -103,8 +103,5 @@ theme wave, the sound kits, the share-card cursor, each live and playable.
   the ghost word, the `007 / Index` label), while the home page moved to the
   quiet style. Restyling it changes a design that was agreed, so it needs a
   decision first.
-- **`uni` terminal card.** The session shown in the projects list is
-  illustrative (`UNI_SESSION` in `content/projects.ts`). It needs a real
-  session pasted in.
 - **CV file.** `public/cv.pdf` was last changed on 8 July 2026. Check that it
   includes the Oratores Novi role that started in October.
