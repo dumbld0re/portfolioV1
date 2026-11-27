@@ -256,7 +256,7 @@ export const projectsContent: Record<
             { src: "/projects/ae-contact.webp", width: 2880, height: 1800, name: "contact" },
           ],
         },
-        phone: { src: "/projects/ae-mobile.webp", width: 1170, height: 2532, name: "Handy" },
+        phone: { src: "/projects/ae-mobile.webp", width: 948, height: 1892, bare: true, name: "Handy" },
         status: "inUse",
       },
       {
@@ -454,7 +454,7 @@ export const projectsContent: Record<
             { src: "/projects/ae-contact.webp", width: 2880, height: 1800, name: "contact" },
           ],
         },
-        phone: { src: "/projects/ae-mobile.webp", width: 1170, height: 2532, name: "phone" },
+        phone: { src: "/projects/ae-mobile.webp", width: 948, height: 1892, bare: true, name: "phone" },
         status: "inUse",
       },
       {
@@ -652,7 +652,7 @@ export const projectsContent: Record<
             { src: "/projects/ae-contact.webp", width: 2880, height: 1800, name: "contact" },
           ],
         },
-        phone: { src: "/projects/ae-mobile.webp", width: 1170, height: 2532, name: "telefono" },
+        phone: { src: "/projects/ae-mobile.webp", width: 948, height: 1892, bare: true, name: "telefono" },
         status: "inUse",
       },
       {

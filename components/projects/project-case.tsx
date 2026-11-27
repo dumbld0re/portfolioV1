@@ -172,9 +172,14 @@ export function ProjectCase({ slug }: { slug: string }) {
           <div className="mx-auto mt-14 grid max-w-[64rem] grid-cols-3 gap-3 sm:gap-5 md:mt-20 md:gap-10">
             {phones.map((screen, i) => (
               <Reveal key={screen.src} delay={i * 90} className={cn(i % 3 === 1 && "mt-8 sm:mt-16")}>
-                <Window className="rounded-xl md:rounded-2xl">
+                {screen.bare ? (
+                  // already in its own device frame
                   <Shot screen={screen} alt={alt(project, screen.name)} eager />
-                </Window>
+                ) : (
+                  <Window className="rounded-xl md:rounded-2xl">
+                    <Shot screen={screen} alt={alt(project, screen.name)} eager />
+                  </Window>
+                )}
               </Reveal>
             ))}
           </div>
