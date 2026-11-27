@@ -35,6 +35,8 @@ export type Project = {
   /** One short line under the title on the projects list. */
   short?: string
   tagline?: string
+  /** Why I made it. Every project page opens with this, right under the title. */
+  why?: string
   description: string
   tech: string[]
   demoHref?: string
@@ -85,6 +87,8 @@ export const projectsContent: Record<
     viewSiteLabel: string
     viewSourceLabel: string
     internalToolLabel: string
+    /** The label over a project's "why", the first thing on its page. */
+    whyLabel: string
     /** The hint on a project's picture, the case study's way back, and its link onward. */
     openLabel: string
     backLabel: string
@@ -103,6 +107,7 @@ export const projectsContent: Record<
     viewSiteLabel: "Website ansehen",
     viewSourceLabel: "Quellcode",
     internalToolLabel: "Internes Tool",
+    whyLabel: "warum ich das gebaut habe",
     openLabel: "projekt ansehen",
     backLabel: "projekte",
     nextLabel: "nächstes projekt",
@@ -191,6 +196,38 @@ export const projectsContent: Record<
         internalTool: true,
         group: "tools",
         status: "inDevelopment",
+      },
+      {
+        slug: "proposal-kit",
+        title: "proposal-kit",
+        short: "eine farbe rein, eine fertige angebotspalette raus.",
+        tagline: "Macht aus einer Farbe eine ganze, kontrastgeprüfte Palette und setzt sie in einen Katalog von Typst-Angebotsvorlagen.",
+        why:
+          "Bei einem Sponsoring-Angebot kam die Bitte nach „einer Mischung aus dunklen und hellen Tönen“, und ich habe einen Nachmittag lang Brauntöne für drei Layouts von Hand ausgesucht. Solche Angebote werde ich noch oft schreiben, also habe ich gebaut, was ich mir gewünscht hätte: eine Farbe rein, und heraus kommt eine ganze Palette, die auf dem Papier funktioniert und schon in einer Vorlage sitzt.",
+        description:
+          "Ein Python-CLI ohne Abhängigkeiten. pk palette leitet aus einer einzigen Farbe zwölf Töne in vier Stimmungen ab, nach Regeln, die ich an von Hand abgestimmten Paletten gemessen habe, und prüft jede Kombination auf Kontrast. pk new kopiert eine Vorlage, färbt sie um und erzeugt das PDF; pk view rendert den ganzen Katalog in beliebigen Farben und öffnet ihn im Browser. Kundenarbeit bleibt in einem privaten Ordner, die öffentlichen Vorlagen kommen mit einer erfundenen Marke.",
+        preview: {
+          kind: "screens",
+          screens: [
+            { src: "/projects/proposal-kit-templates.webp", width: 2880, height: 1800, name: "Vorlagen in erzeugten Paletten" },
+            { src: "/projects/proposal-kit-gallery.webp", width: 2880, height: 1800, name: "der Katalog im Browser" },
+          ],
+        },
+        phone: { src: "/projects/proposal-kit-mobile.webp", width: 1170, height: 2532, name: "Handy" },
+        gallery: [
+          { src: "/projects/proposal-kit-palette.webp", width: 2880, height: 1800, name: "eine Farbe, vier Stimmungen" },
+          { src: "/projects/proposal-kit-brand.webp", width: 2880, height: 1620, name: "die Beispielmarke" },
+        ],
+        githubHref: "https://github.com/dumbld0re/proposal-kit",
+        install: [
+          "git clone https://github.com/dumbld0re/proposal-kit.git",
+          "ln -s \"$PWD/proposal-kit/pk.py\" ~/.local/bin/pk",
+          "pk view teal",
+        ],
+        tech: ["Python", "Typst", "OKLCH", "Poppler"],
+        internalTool: true,
+        group: "tools",
+        status: "inUse",
       },
       {
         slug: "localsend-drop",
@@ -282,6 +319,7 @@ export const projectsContent: Record<
     viewSiteLabel: "View site",
     viewSourceLabel: "View source",
     internalToolLabel: "Internal tool",
+    whyLabel: "why i made this",
     openLabel: "view project",
     backLabel: "projects",
     nextLabel: "next project",
@@ -369,6 +407,38 @@ export const projectsContent: Record<
         internalTool: true,
         group: "tools",
         status: "inDevelopment",
+      },
+      {
+        slug: "proposal-kit",
+        title: "proposal-kit",
+        short: "one colour in, a finished proposal palette out.",
+        tagline: "Turns one colour into a full, contrast-checked palette and sets it into a catalog of Typst proposal templates.",
+        why:
+          "On a sponsorship proposal, my boss asked for “a mix of dark and light shades”, and I spent an afternoon hand-picking browns for three layouts. I'll be writing a lot more proposals like it, so I built what I wished I'd had: give it one colour and get back a whole palette that works on a page, already set in a template.",
+        description:
+          "A Python CLI with no dependencies. pk palette works out twelve colours in four moods from a single seed, using rules measured from palettes I tuned by hand, and checks every pairing for contrast. pk new copies a template, recolours it and compiles the PDF; pk view renders the whole catalog in any colours and opens it in the browser. Client work stays in a private folder, and the public templates ship with a made-up brand.",
+        preview: {
+          kind: "screens",
+          screens: [
+            { src: "/projects/proposal-kit-templates.webp", width: 2880, height: 1800, name: "templates in generated palettes" },
+            { src: "/projects/proposal-kit-gallery.webp", width: 2880, height: 1800, name: "the catalog in the browser" },
+          ],
+        },
+        phone: { src: "/projects/proposal-kit-mobile.webp", width: 1170, height: 2532, name: "phone" },
+        gallery: [
+          { src: "/projects/proposal-kit-palette.webp", width: 2880, height: 1800, name: "one colour, four moods" },
+          { src: "/projects/proposal-kit-brand.webp", width: 2880, height: 1620, name: "the sample brand" },
+        ],
+        githubHref: "https://github.com/dumbld0re/proposal-kit",
+        install: [
+          "git clone https://github.com/dumbld0re/proposal-kit.git",
+          "ln -s \"$PWD/proposal-kit/pk.py\" ~/.local/bin/pk",
+          "pk view teal",
+        ],
+        tech: ["Python", "Typst", "OKLCH", "Poppler"],
+        internalTool: true,
+        group: "tools",
+        status: "inUse",
       },
       {
         slug: "localsend-drop",
@@ -460,6 +530,7 @@ export const projectsContent: Record<
     viewSiteLabel: "Vai al sito",
     viewSourceLabel: "Codice sorgente",
     internalToolLabel: "Strumento interno",
+    whyLabel: "perché l'ho fatto",
     openLabel: "vedi progetto",
     backLabel: "progetti",
     nextLabel: "prossimo progetto",
@@ -547,6 +618,38 @@ export const projectsContent: Record<
         internalTool: true,
         group: "tools",
         status: "inDevelopment",
+      },
+      {
+        slug: "proposal-kit",
+        title: "proposal-kit",
+        short: "un colore dentro, una palette per proposte già pronta fuori.",
+        tagline: "Trasforma un colore in una palette completa e verificata per il contrasto, e la inserisce in un catalogo di modelli Typst per proposte.",
+        why:
+          "Per una proposta di sponsorizzazione mi è stato chiesto “un mix di toni scuri e chiari”, e ho passato un pomeriggio a scegliere a mano i marroni per tre layout. Scriverò ancora tante proposte così, quindi ho costruito quello che avrei voluto avere: gli dai un colore e ti restituisce un'intera palette che funziona sulla pagina, già inserita in un modello.",
+        description:
+          "Una CLI in Python senza dipendenze. pk palette ricava da un solo colore dodici tonalità in quattro atmosfere, con regole misurate su palette che ho calibrato a mano, e controlla il contrasto di ogni abbinamento. pk new copia un modello, lo ricolora e compila il PDF; pk view mostra tutto il catalogo nei colori che vuoi e lo apre nel browser. Il lavoro per i clienti resta in una cartella privata, e i modelli pubblici usano un marchio inventato.",
+        preview: {
+          kind: "screens",
+          screens: [
+            { src: "/projects/proposal-kit-templates.webp", width: 2880, height: 1800, name: "modelli in palette generate" },
+            { src: "/projects/proposal-kit-gallery.webp", width: 2880, height: 1800, name: "il catalogo nel browser" },
+          ],
+        },
+        phone: { src: "/projects/proposal-kit-mobile.webp", width: 1170, height: 2532, name: "telefono" },
+        gallery: [
+          { src: "/projects/proposal-kit-palette.webp", width: 2880, height: 1800, name: "un colore, quattro atmosfere" },
+          { src: "/projects/proposal-kit-brand.webp", width: 2880, height: 1620, name: "il marchio di esempio" },
+        ],
+        githubHref: "https://github.com/dumbld0re/proposal-kit",
+        install: [
+          "git clone https://github.com/dumbld0re/proposal-kit.git",
+          "ln -s \"$PWD/proposal-kit/pk.py\" ~/.local/bin/pk",
+          "pk view teal",
+        ],
+        tech: ["Python", "Typst", "OKLCH", "Poppler"],
+        internalTool: true,
+        group: "tools",
+        status: "inUse",
       },
       {
         slug: "localsend-drop",

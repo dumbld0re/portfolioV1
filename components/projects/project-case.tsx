@@ -95,6 +95,16 @@ export function ProjectCase({ slug }: { slug: string }) {
           </div>
         </header>
 
+        {/* every project starts with why I made it */}
+        {project.why && (
+          <section className="mt-14 grid gap-y-3 border-t border-border/70 pt-8 md:mt-20 md:grid-cols-12 md:pt-10">
+            <h2 className="font-mono text-sm lowercase text-muted-foreground md:col-span-3">{t.whyLabel}</h2>
+            <p className="font-serif text-xl leading-[1.45] tracking-[-0.01em] text-foreground/90 text-pretty md:col-span-9 md:text-2xl">
+              {project.why}
+            </p>
+          </section>
+        )}
+
         {hero && (
           <div className="mt-14 md:mt-20">
             <Window className="w-full rounded-lg md:rounded-xl">
