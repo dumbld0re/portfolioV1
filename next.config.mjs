@@ -40,6 +40,13 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  // proposal-kit was renamed to seed; old links keep working.
+  async redirects() {
+    return [
+      { source: "/projects/proposal-kit", destination: "/projects/seed", permanent: true },
+      { source: "/:lang(de|en|it)/projects/proposal-kit", destination: "/:lang/projects/seed", permanent: true },
+    ]
+  },
 }
 
 export default nextConfig
