@@ -200,24 +200,15 @@ export const projectsContent: Record<
       {
         slug: "seed",
         title: "seed",
-        short: "eine farbe rein, eine fertige angebotspalette raus.",
-        tagline: "Macht aus einer Farbe eine ganze, kontrastgeprüfte Palette und setzt sie in einen Katalog von Typst-Angebotsvorlagen.",
+        tagline: "Lässt aus einer Farbe eine ganze Palette wachsen und setzt sie in meinen Katalog von Typst-Vorlagen, für jedes PDF, das ich mache.",
         why:
-          "Bei einem Sponsoring-Angebot kam die Bitte nach „einer Mischung aus dunklen und hellen Tönen“, und ich habe einen Nachmittag lang Brauntöne für drei Layouts von Hand ausgesucht. Solche Angebote werde ich noch oft schreiben, also habe ich gebaut, was ich mir gewünscht hätte: eine Farbe rein, und heraus kommt eine ganze Palette, die auf dem Papier funktioniert und schon in einer Vorlage sitzt.",
+          "Ich mache viele PDFs: Angebote, Projektskizzen, Unterlagen für mein Designstudio und für meine eigene Arbeit. Jedes Mal hieß das, ein Layout neu zu bauen und Farben von Hand auszusuchen, bis sie auf dem Papier funktionierten. seed hält meine Typst-Vorlagen in einem Katalog und lässt aus einer Farbe eine ganze Palette wachsen, die zu jeder davon passt.",
         description:
-          "Ein Python-CLI ohne Abhängigkeiten. seed palette leitet aus einer einzigen Farbe zwölf Töne in vier Stimmungen ab, nach Regeln, die ich an von Hand abgestimmten Paletten gemessen habe, und prüft jede Kombination auf Kontrast. seed new kopiert eine Vorlage, färbt sie um und erzeugt das PDF; seed view rendert den ganzen Katalog in beliebigen Farben und öffnet ihn im Browser. Kundenarbeit bleibt in einem privaten Ordner, die öffentlichen Vorlagen kommen mit einer erfundenen Marke.",
+          "Ein Python-CLI ohne Abhängigkeiten. seed palette leitet aus einer einzigen Farbe zwölf kontrastgeprüfte Töne in vier Stimmungen ab; seed new kopiert eine Vorlage, färbt sie um und erzeugt das PDF; seed view rendert den Katalog in beliebigen Farben und öffnet ihn im Browser. Angebote kommen zuerst, und der Katalog wächst mit Projektskizzen und allem, was mein Studio und meine eigene Arbeit als Nächstes brauchen.",
         preview: {
           kind: "screens",
-          screens: [
-            { src: "/projects/seed-templates.webp", width: 2880, height: 1800, name: "Vorlagen in erzeugten Paletten" },
-            { src: "/projects/seed-gallery.webp", width: 2880, height: 1800, name: "der Katalog im Browser" },
-          ],
+          screens: [{ src: "/projects/seed-catalog.webp", width: 2880, height: 1800, name: "der Vorlagenkatalog in vier Farben" }],
         },
-        phone: { src: "/projects/seed-mobile.webp", width: 1170, height: 2532, name: "Handy" },
-        gallery: [
-          { src: "/projects/seed-palette.webp", width: 2880, height: 1800, name: "eine Farbe, vier Stimmungen" },
-          { src: "/projects/seed-brand.webp", width: 2880, height: 1620, name: "die Beispielmarke" },
-        ],
         githubHref: "https://github.com/dumbld0re/seed",
         install: [
           "git clone https://github.com/dumbld0re/seed.git",
@@ -411,24 +402,15 @@ export const projectsContent: Record<
       {
         slug: "seed",
         title: "seed",
-        short: "one colour in, a finished proposal palette out.",
-        tagline: "Turns one colour into a full, contrast-checked palette and sets it into a catalog of Typst proposal templates.",
+        tagline: "Grows a whole palette from one colour and sets it into my catalog of Typst templates, for any PDF I make.",
         why:
-          "On a sponsorship proposal, my boss asked for “a mix of dark and light shades”, and I spent an afternoon hand-picking browns for three layouts. I'll be writing a lot more proposals like it, so I built what I wished I'd had: give it one colour and get back a whole palette that works on a page, already set in a template.",
+          "I make a lot of PDFs: proposals, project outlines, documents for my design studio and for my own work. Each one meant rebuilding a layout and hand-picking colours until they worked on the page. seed keeps my Typst templates in one catalog and, from one colour, grows a whole palette that fits any of them.",
         description:
-          "A Python CLI with no dependencies. seed palette works out twelve colours in four moods from a single seed, using rules measured from palettes I tuned by hand, and checks every pairing for contrast. seed new copies a template, recolours it and compiles the PDF; seed view renders the whole catalog in any colours and opens it in the browser. Client work stays in a private folder, and the public templates ship with a made-up brand.",
+          "A Python CLI with no dependencies. seed palette works out twelve contrast-checked colours in four moods from a single seed; seed new copies a template, recolours it and compiles the PDF; seed view renders the catalog in any colours and opens it in the browser. Proposals come first, and the catalog grows with project outlines and whatever my studio and personal work need next.",
         preview: {
           kind: "screens",
-          screens: [
-            { src: "/projects/seed-templates.webp", width: 2880, height: 1800, name: "templates in generated palettes" },
-            { src: "/projects/seed-gallery.webp", width: 2880, height: 1800, name: "the catalog in the browser" },
-          ],
+          screens: [{ src: "/projects/seed-catalog.webp", width: 2880, height: 1800, name: "the template catalog in four colours" }],
         },
-        phone: { src: "/projects/seed-mobile.webp", width: 1170, height: 2532, name: "phone" },
-        gallery: [
-          { src: "/projects/seed-palette.webp", width: 2880, height: 1800, name: "one colour, four moods" },
-          { src: "/projects/seed-brand.webp", width: 2880, height: 1620, name: "the sample brand" },
-        ],
         githubHref: "https://github.com/dumbld0re/seed",
         install: [
           "git clone https://github.com/dumbld0re/seed.git",
@@ -622,24 +604,15 @@ export const projectsContent: Record<
       {
         slug: "seed",
         title: "seed",
-        short: "un colore dentro, una palette per proposte già pronta fuori.",
-        tagline: "Trasforma un colore in una palette completa e verificata per il contrasto, e la inserisce in un catalogo di modelli Typst per proposte.",
+        tagline: "Fa crescere un'intera palette da un solo colore e la inserisce nel mio catalogo di modelli Typst, per qualsiasi PDF che creo.",
         why:
-          "Per una proposta di sponsorizzazione mi è stato chiesto “un mix di toni scuri e chiari”, e ho passato un pomeriggio a scegliere a mano i marroni per tre layout. Scriverò ancora tante proposte così, quindi ho costruito quello che avrei voluto avere: gli dai un colore e ti restituisce un'intera palette che funziona sulla pagina, già inserita in un modello.",
+          "Creo molti PDF: proposte, schemi di progetto, documenti per il mio studio di design e per il mio lavoro personale. Ogni volta dovevo ricostruire un layout e scegliere i colori a mano finché non funzionavano sulla pagina. seed tiene i miei modelli Typst in un unico catalogo e, da un solo colore, fa crescere un'intera palette adatta a ognuno di essi.",
         description:
-          "Una CLI in Python senza dipendenze. seed palette ricava da un solo colore dodici tonalità in quattro atmosfere, con regole misurate su palette che ho calibrato a mano, e controlla il contrasto di ogni abbinamento. seed new copia un modello, lo ricolora e compila il PDF; seed view mostra tutto il catalogo nei colori che vuoi e lo apre nel browser. Il lavoro per i clienti resta in una cartella privata, e i modelli pubblici usano un marchio inventato.",
+          "Una CLI in Python senza dipendenze. seed palette ricava da un solo colore dodici tonalità con contrasto verificato, in quattro atmosfere; seed new copia un modello, lo ricolora e compila il PDF; seed view mostra il catalogo nei colori che vuoi e lo apre nel browser. Prima vengono le proposte, poi il catalogo cresce con schemi di progetto e tutto ciò che servirà al mio studio e al mio lavoro personale.",
         preview: {
           kind: "screens",
-          screens: [
-            { src: "/projects/seed-templates.webp", width: 2880, height: 1800, name: "modelli in palette generate" },
-            { src: "/projects/seed-gallery.webp", width: 2880, height: 1800, name: "il catalogo nel browser" },
-          ],
+          screens: [{ src: "/projects/seed-catalog.webp", width: 2880, height: 1800, name: "il catalogo dei modelli in quattro colori" }],
         },
-        phone: { src: "/projects/seed-mobile.webp", width: 1170, height: 2532, name: "telefono" },
-        gallery: [
-          { src: "/projects/seed-palette.webp", width: 2880, height: 1800, name: "un colore, quattro atmosfere" },
-          { src: "/projects/seed-brand.webp", width: 2880, height: 1620, name: "il marchio di esempio" },
-        ],
         githubHref: "https://github.com/dumbld0re/seed",
         install: [
           "git clone https://github.com/dumbld0re/seed.git",
