@@ -16,6 +16,15 @@ import { cn } from "@/lib/utils"
 
 const isTall = (s: Screen) => s.height > s.width
 
+// A bar widget's own panel: no window frame, at half its pixel size (it was taken at 2x).
+function Bare({ screen, alt }: { screen: Screen; alt: string }) {
+  return (
+    <div style={{ maxWidth: screen.width / 2 }}>
+      <Shot screen={screen} alt={alt} eager />
+    </div>
+  )
+}
+
 // Rises into place the first time it scrolls into view.
 function Reveal({ children, className, delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -106,9 +115,13 @@ export function ProjectCase({ slug }: { slug: string }) {
 
         {hero && (
           <div className="mt-14 md:mt-20">
-            <Window className="w-full rounded-lg md:rounded-xl">
-              <Shot screen={hero} alt={alt(project, hero.name)} eager />
-            </Window>
+            {hero.bare ? (
+              <Bare screen={hero} alt={alt(project, hero.name)} />
+            ) : (
+              <Window className="w-full rounded-lg md:rounded-xl">
+                <Shot screen={hero} alt={alt(project, hero.name)} eager />
+              </Window>
+            )}
           </div>
         )}
 
@@ -122,9 +135,13 @@ export function ProjectCase({ slug }: { slug: string }) {
           <div className="mt-20 space-y-8 md:mt-28 md:space-y-14">
             {wide.map((screen) => (
               <Reveal key={screen.src}>
-                <Window className="w-full rounded-lg md:rounded-xl">
-                  <Shot screen={screen} alt={alt(project, screen.name)} eager />
-                </Window>
+                {screen.bare ? (
+                  <Bare screen={screen} alt={alt(project, screen.name)} />
+                ) : (
+                  <Window className="w-full rounded-lg md:rounded-xl">
+                    <Shot screen={screen} alt={alt(project, screen.name)} eager />
+                  </Window>
+                )}
               </Reveal>
             ))}
           </div>

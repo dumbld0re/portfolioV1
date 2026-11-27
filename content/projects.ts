@@ -191,6 +191,8 @@ export const projectsContent: Record<
         short: "eine typst-datei, ein arbeitsblatt und sein lösungsschlüssel.",
         tagline:
           "Ein Kommandozeilen-Tool, das aus einer einzigen Typst-Datei das Arbeitsblatt und das passende Lösungsblatt erzeugt.",
+        why:
+          "Ich gebe Deutsch-Nachhilfe und studiere, und ich habe jedes Arbeitsblatt zweimal geschrieben: einmal für die Schüler, einmal mit den Lösungen. Jetzt schreibe ich es einmal und bekomme beides.",
         description:
           "Ein typisiertes Python-CLI für meinen Deutsch-Nachhilfeunterricht und mein Studium.",
         tech: ["Python", "typer", "Typst", "pytest"],
@@ -229,6 +231,8 @@ export const projectsContent: Record<
         slug: "localsend-drop",
         title: "LocalSend Drop",
         short: "dateien auf die leiste ziehen, schon landen sie auf dem gerät nebenan.",
+        why:
+          "Eine Datei aufs Handy zu schicken hieß: LocalSend öffnen, das Gerät suchen und die Datei noch einmal auswählen. Ich wollte sie einfach auf die Leiste ziehen und fertig.",
         description:
           "Ein Omarchy-Leisten-Widget für LocalSend. Dateien aufs Symbol ziehen, ein Gerät wählen, und sie gehen direkt übers lokale Netz – ohne die LocalSend-App zu öffnen. Darunter steckt ein kleiner LocalSend-Client in reinem Python, ganz ohne Abhängigkeiten.",
         tech: ["QML", "Quickshell", "Python", "LocalSend"],
@@ -245,6 +249,8 @@ export const projectsContent: Record<
         slug: "speed",
         title: "Speed",
         short: "fast.com-speedtests direkt in der leiste.",
+        why:
+          "Wenn sich das Internet langsam anfühlte, habe ich fast.com in einem Browser-Tab geöffnet, um nachzusehen. Ich wollte die Antwort lieber direkt in meiner Leiste haben.",
         description:
           "Ein Omarchy-Leisten-Widget, das meine letzte Download-Geschwindigkeit zeigt. Ein Klick öffnet Upload, Latenz im Leerlauf und unter Last, eine Bufferbloat-Note und ein Diagramm der letzten Tests. Es nutzt einen eigenen fast.com-Client, in TypeScript auf Bun geschrieben, und testet auf Wunsch nach Zeitplan.",
         tech: ["QML", "Quickshell", "TypeScript", "Bun", "SQLite"],
@@ -398,6 +404,8 @@ export const projectsContent: Record<
         short: "one typst file, a worksheet and its answer key.",
         tagline:
           "A CLI that turns one Typst source into both a student worksheet and its answer key.",
+        why:
+          "I tutor German and study at uni, and I was writing every worksheet twice: once for the students, once with the answers. Now I write it once and get both.",
         description:
           "A typed Python CLI for my German tutoring and university coursework.",
         tech: ["Python", "typer", "Typst", "pytest"],
@@ -436,6 +444,8 @@ export const projectsContent: Record<
         slug: "localsend-drop",
         title: "LocalSend Drop",
         short: "drop files on the bar and they land on the device next to you.",
+        why:
+          "Sending a file to my phone meant opening LocalSend, finding the device and picking the file all over again. I wanted to drop it on the bar and be done.",
         description:
           "An Omarchy bar widget for LocalSend. Drag files onto the icon, pick a device, and they go straight over the local network, without opening the LocalSend app. Underneath is a small LocalSend client in plain Python, with no dependencies.",
         tech: ["QML", "Quickshell", "Python", "LocalSend"],
@@ -452,6 +462,8 @@ export const projectsContent: Record<
         slug: "speed",
         title: "Speed",
         short: "fast.com speed tests, right in the bar.",
+        why:
+          "Whenever the internet felt slow, I'd open fast.com in a browser tab to check. I wanted the answer sitting in my bar instead.",
         description:
           "An Omarchy bar widget that shows my last download speed. Click it for upload, idle and loaded latency, a bufferbloat grade and a chart of recent tests. It runs its own fast.com client, written in TypeScript on Bun, and can test on a timer.",
         tech: ["QML", "Quickshell", "TypeScript", "Bun", "SQLite"],
@@ -605,6 +617,8 @@ export const projectsContent: Record<
         short: "un file typst, una scheda e le sue soluzioni.",
         tagline:
           "Una CLI che da un unico file Typst genera sia la scheda per lo studente sia le soluzioni.",
+        why:
+          "Do ripetizioni di tedesco e studio all'università, e scrivevo ogni scheda due volte: una per gli studenti, una con le soluzioni. Ora la scrivo una volta e ottengo entrambe.",
         description:
           "Una CLI in Python tipizzato per le mie ripetizioni di tedesco e lo studio universitario.",
         tech: ["Python", "typer", "Typst", "pytest"],
@@ -643,6 +657,8 @@ export const projectsContent: Record<
         slug: "localsend-drop",
         title: "LocalSend Drop",
         short: "trascina i file sulla barra e arrivano al dispositivo accanto.",
+        why:
+          "Mandare un file al telefono voleva dire aprire LocalSend, trovare il dispositivo e scegliere di nuovo il file. Volevo trascinarlo sulla barra e basta.",
         description:
           "Un widget per la barra di Omarchy che usa LocalSend. Trascini i file sull'icona, scegli un dispositivo e partono direttamente sulla rete locale, senza aprire l'app LocalSend. Sotto c'è un piccolo client LocalSend in Python puro, senza dipendenze.",
         tech: ["QML", "Quickshell", "Python", "LocalSend"],
@@ -659,6 +675,8 @@ export const projectsContent: Record<
         slug: "speed",
         title: "Speed",
         short: "speed test di fast.com, direttamente nella barra.",
+        why:
+          "Quando internet sembrava lento, aprivo fast.com in una scheda del browser per controllare. Volevo invece avere la risposta direttamente nella barra.",
         description:
           "Un widget per la barra di Omarchy che mostra la mia ultima velocità di download. Un clic apre upload, latenza a riposo e sotto carico, un voto sul bufferbloat e un grafico dei test recenti. Usa un client fast.com tutto suo, scritto in TypeScript su Bun, e può fare test a intervalli.",
         tech: ["QML", "Quickshell", "TypeScript", "Bun", "SQLite"],
