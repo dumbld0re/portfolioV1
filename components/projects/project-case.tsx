@@ -90,7 +90,6 @@ export function ProjectCase({ slug }: { slug: string }) {
             </ProjectMorph>
           </h1>
           <div className="space-y-5 lg:col-span-5 lg:pb-2">
-            {project.tagline && <p className="text-lg leading-relaxed text-foreground/85 md:text-xl">{project.tagline}</p>}
             <ProjectLinks project={project} t={t} />
           </div>
         </header>

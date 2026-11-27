@@ -167,6 +167,8 @@ export const projectsContent: Record<
         short: "Der Laptop vom Handy aus.",
         tagline:
           "Ich hasste es, jedes Mal aufzustehen, wenn ich pausieren wollte, also habe ich mir eine Website über Tailscale gebaut.",
+        why:
+          "Ich hasste es, jedes Mal aufzustehen, wenn ich pausieren wollte, also habe ich mir eine Website über Tailscale gebaut.",
         description:
           "Eine Fernbedienung auf dem Handy für den Laptop am HDMI. Irgendwo tippen zum Pausieren, ziehen zum Spulen, Lautstärke und Audioausgang wechseln, einen Sleep-Timer stellen. Kein App Store, kein Konto, es läuft auf dem Laptop selbst.",
         tech: ["Python", "Server-Sent Events", "D-Bus", "PipeWire", "Tailscale"],
@@ -207,7 +209,10 @@ export const projectsContent: Record<
           "Ein Python-CLI ohne Abhängigkeiten. seed palette leitet aus einer einzigen Farbe zwölf kontrastgeprüfte Töne in vier Stimmungen ab; seed new kopiert eine Vorlage, färbt sie um und erzeugt das PDF; seed view rendert den Katalog in beliebigen Farben und öffnet ihn im Browser. Angebote kommen zuerst, und der Katalog wächst mit Projektskizzen und allem, was mein Studio und meine eigene Arbeit als Nächstes brauchen.",
         preview: {
           kind: "screens",
-          screens: [{ src: "/projects/seed-catalog.webp", width: 2880, height: 1800, name: "der Vorlagenkatalog in vier Farben" }],
+          screens: [
+            { src: "/projects/seed-templates.webp", width: 2880, height: 1800, name: "Vorlagen in vier Farben" },
+            { src: "/projects/seed-catalog.webp", width: 2880, height: 1800, name: "der Vorlagenkatalog in vier Farben" },
+          ],
         },
         githubHref: "https://github.com/dumbld0re/seed",
         install: [
@@ -369,6 +374,8 @@ export const projectsContent: Record<
         title: "Remote",
         short: "my laptop, from my phone.",
         tagline: "I hated having to stand up every time I wanted to pause, so I made a website over Tailscale.",
+        why:
+          "I hated having to stand up every time I wanted to pause, so I made a website over Tailscale.",
         description:
           "A phone remote for the laptop on HDMI. Tap anywhere to pause, drag to scrub, change the volume or the audio output, set a sleep timer. No app store, no account, it runs on the laptop itself.",
         tech: ["Python", "Server-Sent Events", "D-Bus", "PipeWire", "Tailscale"],
@@ -409,7 +416,10 @@ export const projectsContent: Record<
           "A Python CLI with no dependencies. seed palette works out twelve contrast-checked colours in four moods from a single seed; seed new copies a template, recolours it and compiles the PDF; seed view renders the catalog in any colours and opens it in the browser. Proposals come first, and the catalog grows with project outlines and whatever my studio and personal work need next.",
         preview: {
           kind: "screens",
-          screens: [{ src: "/projects/seed-catalog.webp", width: 2880, height: 1800, name: "the template catalog in four colours" }],
+          screens: [
+            { src: "/projects/seed-templates.webp", width: 2880, height: 1800, name: "templates in four colours" },
+            { src: "/projects/seed-catalog.webp", width: 2880, height: 1800, name: "the template catalog in four colours" },
+          ],
         },
         githubHref: "https://github.com/dumbld0re/seed",
         install: [
@@ -571,6 +581,8 @@ export const projectsContent: Record<
         title: "Remote",
         short: "il portatile, dal telefono.",
         tagline: "Odiavo dovermi alzare ogni volta che volevo mettere in pausa, così ho fatto un sito tramite Tailscale.",
+        why:
+          "Odiavo dovermi alzare ogni volta che volevo mettere in pausa, così ho fatto un sito tramite Tailscale.",
         description:
           "Un telecomando da telefono per il portatile in HDMI. Tocchi ovunque per la pausa, trascini per scorrere nel video, cambi il volume o l'uscita audio, imposti un timer di spegnimento. Niente App Store, niente account: gira sul portatile stesso.",
         tech: ["Python", "Server-Sent Events", "D-Bus", "PipeWire", "Tailscale"],
@@ -611,7 +623,10 @@ export const projectsContent: Record<
           "Una CLI in Python senza dipendenze. seed palette ricava da un solo colore dodici tonalità con contrasto verificato, in quattro atmosfere; seed new copia un modello, lo ricolora e compila il PDF; seed view mostra il catalogo nei colori che vuoi e lo apre nel browser. Prima vengono le proposte, poi il catalogo cresce con schemi di progetto e tutto ciò che servirà al mio studio e al mio lavoro personale.",
         preview: {
           kind: "screens",
-          screens: [{ src: "/projects/seed-catalog.webp", width: 2880, height: 1800, name: "il catalogo dei modelli in quattro colori" }],
+          screens: [
+            { src: "/projects/seed-templates.webp", width: 2880, height: 1800, name: "modelli in quattro colori" },
+            { src: "/projects/seed-catalog.webp", width: 2880, height: 1800, name: "il catalogo dei modelli in quattro colori" },
+          ],
         },
         githubHref: "https://github.com/dumbld0re/seed",
         install: [
